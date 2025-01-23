@@ -19,8 +19,7 @@ import java.util.*
  * that are contained in the dictionary data resources.
  * Each unique object of this type will correspond to a particular resource or file.
  *
- * In the standard Wordnet distributions, examples of content types would
- * include, but would not be limited to,
+ * In the standard Wordnet distributions, examples of content types would include, but would not be limited to,
  * *Index*,
  * *Data*, and
  * *Exception*

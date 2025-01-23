@@ -33,7 +33,7 @@ import java.util.*
  * @param hints a varargs array of resource name hints for identifying the resource that contains the data
  * @param <T> the type of object for the content type, the type of the object returned by the parser for this data type
  */
-class DataType<T>(
+class DataType<T> constructor (
     userFriendlyName: String?,
     private val hasVersion: Boolean,
     val parser: ILineParser<T>,

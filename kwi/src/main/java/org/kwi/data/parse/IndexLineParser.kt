@@ -60,7 +60,7 @@ object IndexLineParser : ILineParser<Index> {
      * This is implemented in its own method for ease of subclassing.
      *
      * @param symbol the symbol of the pointer to return
-     * @param pos the part-of-speech of the pointer to return, can be null unless the pointer symbol is ambiguous
+     * @param pos the part-of-speech of the pointer to return, can be null if the pointer symbol is meant to be ambiguous
      * @return the pointer corresponding to the specified symbol and part-of-speech combination
      * @throws IllegalArgumentException if the symbol and part-of-speech combination does not correspond to a known pointer
      */

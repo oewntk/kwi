@@ -11,7 +11,7 @@ object ExceptionLineParser : ILineParser<ExceptionEntryProxy> {
 
     override fun parseLine(line: String): ExceptionEntryProxy {
 
-        val forms = SEPARATOR.split(line).asSequence().map { it.trim { it <= ' ' } }.toMutableList()
+        val forms = SEPARATOR.split(line).asSequence().map { it.trim { it <= ' ' } }.toList()
         if (forms.size < 2) {
             throw MisformattedLineException(line)
         }

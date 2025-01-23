@@ -27,8 +27,9 @@ class BinaryStartSearchWordnetFile<T>(file: File, contentType: ContentType<T>) :
             var start = 0
             var stop = buffer.limit()
             while (stop - start > 1) {
+
                 // find the middle of the buffer
-                var midpoint: Int = (start + stop) / 2
+                val midpoint: Int = (start + stop) / 2
                 buffer.position(midpoint)
 
                 // back up to the beginning of the line
@@ -38,7 +39,7 @@ class BinaryStartSearchWordnetFile<T>(file: File, contentType: ContentType<T>) :
                 var line: String? = getLine(buffer, contentType.charset)
 
                 // if we get a null, we've reached the end of the file
-                var cmp: Int = if (line == null) 1 else comparator!!.compare(line, key)
+                val cmp: Int = if (line == null) 1 else comparator!!.compare(line, key)
 
                 // found our line
                 if (cmp == 0) {
@@ -57,17 +58,23 @@ class BinaryStartSearchWordnetFile<T>(file: File, contentType: ContentType<T>) :
         return null
     }
 
+    /**
+     * Constructs a new line iterator over this buffer, starting at the specified key.
+     *
+     * @param buffer the buffer over which the iterator should iterate
+     * @param key the key of the line to start at
+     */
     override fun makeIterator(buffer: ByteBuffer, key: String?): LineIterator {
         return BinarySearchLineIterator(buffer, key)
     }
 
     /**
-     * Used to iterate over lines in a file.
+     * Iterator over lines in a file.
      * It is a look-ahead iterator.
      *
      * Constructs a new line iterator over this buffer, starting at the specified key.
      *
-     * @param buffer the buffer over which the iterator should iterator
+     * @param buffer the buffer over which the iterator should iterate
      * @param key the key of the line to start at
      */
     inner class BinarySearchLineIterator(buffer: ByteBuffer, key: String?) : LineIterator(buffer) {
@@ -97,7 +104,6 @@ class BinaryStartSearchWordnetFile<T>(file: File, contentType: ContentType<T>) :
                     }
                     var compare: Int = comparator!!.compare(line, key)
                     if (compare == 0) {
-                        // if the key matches exactly, we know we have found the start of this pattern in the file
                         nextLine = line
                         return
                     } else if (compare > 0) {

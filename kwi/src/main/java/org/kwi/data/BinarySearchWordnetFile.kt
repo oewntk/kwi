@@ -27,6 +27,7 @@ class BinarySearchWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
             var start = 0
             var stop = buffer.limit()
             while (stop - start > 1) {
+
                 // find the middle of the buffer
                 val midpoint: Int = (start + stop) / 2
                 buffer.position(midpoint)
@@ -56,12 +57,18 @@ class BinarySearchWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
         return null
     }
 
+    /**
+     * Constructs a new line iterator over this buffer, starting at the specified key.
+     *
+     * @param buffer the buffer over which the iterator should iterate
+     * @param key the key of the line to start at
+     */
     override fun makeIterator(buffer: ByteBuffer, key: String?): LineIterator {
         return BinarySearchLineIterator(buffer, key)
     }
 
     /**
-     * Used to iterate over lines in a file.
+     * Iterator over lines in a file.
      * It is a look-ahead iterator.
      *
      * Constructs a new line iterator over this buffer, starting at the specified key.
@@ -88,16 +95,15 @@ class BinarySearchWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
                     itrBuffer.position(midpoint)
                     getLine(itrBuffer, contentType.charset)
                     var offset: Int = itrBuffer.position()
-                    var line: String? = getLine(itrBuffer, contentType.charset)
+                    var line = getLine(itrBuffer, contentType.charset)
 
-                    // if the line is null, we've reached the end of the file, so just advance to the first line
                     if (line == null) {
+                        // if the line is null, we've reached the end of the file, so just advance to the first line
                         itrBuffer.position(itrBuffer.limit())
                         return
                     }
 
                     var compare: Int = comparator!!.compare(line, key)
-                    // if the key matches exactly, we know we have found the start of this pattern in the file
                     if (compare == 0) {
                         nextLine = line
                         return
