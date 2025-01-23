@@ -33,8 +33,7 @@ import java.util.*
  * @param lineComparator the line comparator for this content type; may be null if the lines are not ordered
  * @param charset the character set for this content type
  */
-class ContentType<T>
-@JvmOverloads constructor(
+class ContentType<T>(
     /**
      * Content type key
      */
@@ -48,12 +47,7 @@ class ContentType<T>
      */
     val lineComparator: ILineComparator?,
 
-    /**
-     * Character set used by the data
-     */
-    override val charset: Charset? = null,
-
-    ) : IHasPOS, IHasCharset {
+    ) : IHasPOS {
 
     val dataType: DataType<T>
         get() {
