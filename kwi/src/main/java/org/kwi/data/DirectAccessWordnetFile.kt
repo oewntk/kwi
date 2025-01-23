@@ -2,6 +2,7 @@ package org.kwi.data
 
 import java.io.File
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 
 /**
  * A Wordnet file data source.
@@ -12,9 +13,14 @@ import java.nio.ByteBuffer
  *
  * @param file the file which backs this Wordnet file
  * @param contentType the content type for this file
+ * @param charset the character sset used for decoding
  * @param <T> the type of object represented in this data resource
  */
-class DirectAccessWordnetFile<T>(file: File, contentType: ContentType<T>) : WordnetFile<T>(file, contentType) {
+class DirectAccessWordnetFile<T>(
+    file: File,
+    contentType: ContentType<T>,
+    charset: Charset?,
+) : WordnetFile<T>(file, contentType, charset) {
 
     private val bufferLock = Any()
 
@@ -27,7 +33,7 @@ class DirectAccessWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
                     return null
                 }
                 buffer.position(byteOffset)
-                val line = getLine(buffer, contentType.charset)
+                val line = getLine(buffer, charset)
                 return if (line != null && line.startsWith(key)) line else null
             } catch (_: NumberFormatException) {
                 return null
@@ -63,7 +69,7 @@ class DirectAccessWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
                         return
                     }
                     itrBuffer.position(byteOffset)
-                    nextLine = getLine(itrBuffer, contentType.charset)
+                    nextLine = getLine(itrBuffer, charset)
                 } catch (_: NumberFormatException) {
                     // ignore
                 }

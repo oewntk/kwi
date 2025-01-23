@@ -329,7 +329,7 @@ class FileProvider @JvmOverloads constructor(
 
         if (contentType.dataType === DataType.DATA) {
 
-            val daSrc: DirectAccessWordnetFile<T> = prepareSource(createDirectAccess<T>(file, contentType), policy) as DirectAccessWordnetFile<T>
+            val daSrc: DirectAccessWordnetFile<T> = prepareSource(createDirectAccess<T>(file, contentType, charset), policy) as DirectAccessWordnetFile<T>
 
             // check to see if direct access works with the file
             // often people will extract the files incorrectly on Windows machines and the binary files will be corrupted with extra CRs
@@ -341,7 +341,7 @@ class FileProvider @JvmOverloads constructor(
             // fallback
         }
 
-        return prepareSource(createBinarySearch<T>(file, contentType), policy)
+        return prepareSource(createBinarySearch<T>(file, contentType, charset), policy)
     }
 
     private fun <T> prepareSource(src: ILoadableDataSource<T>, policy: Int): ILoadableDataSource<T> {
@@ -376,10 +376,11 @@ class FileProvider @JvmOverloads constructor(
      * @param <T> the parameter of the content type
      * @param file the file on which the data source is based
      * @param contentType the data type for the data source
+     * @param charset the character sset used for decoding
      * @return the data source
      */
-    private fun <T> createDirectAccess(file: File, contentType: ContentType<T>): DirectAccessWordnetFile<T> {
-        return DirectAccessWordnetFile<T>(file, contentType)
+    private fun <T> createDirectAccess(file: File, contentType: ContentType<T>, charset: Charset?): DirectAccessWordnetFile<T> {
+        return DirectAccessWordnetFile<T>(file, contentType, charset)
     }
 
     /**
@@ -388,11 +389,12 @@ class FileProvider @JvmOverloads constructor(
      * @param <T> the parameter of the content type
      * @param file the file on which the data source is based
      * @param contentType the data type for the data source
+     * @param charset the character sset used for decoding
      * @return the data source
      */
-    private fun <T> createBinarySearch(file: File, contentType: ContentType<T>): ILoadableDataSource<T> {
+    private fun <T> createBinarySearch(file: File, contentType: ContentType<T>, charset: Charset?): ILoadableDataSource<T> {
         //TODO HACK
-        return if ("Word" == contentType.dataType.toString()) BinaryStartSearchWordnetFile<T>(file, contentType) else BinarySearchWordnetFile<T>(file, contentType)
+        return if ("Word" == contentType.dataType.toString()) BinaryStartSearchWordnetFile<T>(file, contentType, charset) else BinarySearchWordnetFile<T>(file, contentType, charset)
     }
 
     override val isOpen: Boolean

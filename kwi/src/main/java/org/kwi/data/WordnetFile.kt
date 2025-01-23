@@ -25,22 +25,23 @@ import java.util.concurrent.locks.ReentrantLock
  * No effort is made to ensure that the data in the specified file is actually formatted in the proper manner for the line parser associated with the content type's data type.
  * If these are mismatched, this will result in MisformattedLineExceptions in later calls.
  *
- * @param file the file which backs this Wordnet file
- * @param contentType the content type for this file
+ * @property file the file which backs this Wordnet file
+ * @property contentType the content type for this file
+ * @property contentType the content type for this file
+ * @property charset the character sset used for decoding
  * @param <T> the type of the objects represented in this file
  */
 abstract class WordnetFile<T>(
-    /**
-     * The file which backs this object.
-     */
+    /** The file which backs this object.*/
     val file: File,
 
-    /**
-     * The content type
-     */
+    /** The content type */
     override val contentType: ContentType<T>,
 
-    ) : ILoadableDataSource<T> {
+    /** Character set */
+    override val charset: Charset?,
+
+    ) : ILoadableDataSource<T>, IHasCharset {
 
     override val name: String
         get() = file.name
@@ -306,7 +307,7 @@ abstract class WordnetFile<T>(
 
             var line: String?
             do {
-                line = getLine(itrBuffer, contentType.charset)
+                line = getLine(itrBuffer, charset)
             } while (line != null && isComment(line))
             nextLine = line
         }
@@ -368,14 +369,14 @@ abstract class WordnetFile<T>(
          * If the provided character set is null, the method defaults to the previous method getLine.
          *
          * @param buf the buffer from which the line should be extracted
-         * @param cs the character set to use for decoding
+         * @param charset the character set to use for decoding
          * @return the remainder of line in the specified buffer, starting from the buffer's current position
          */
         @JvmStatic
-        fun getLine(buf: ByteBuffer, cs: Charset?): String? {
+        fun getLine(buf: ByteBuffer, charset: Charset?): String? {
             // redirect to old method if no charset specified
             var buf = buf
-            if (cs == null) {
+            if (charset == null) {
                 return getLine(buf)
             }
 
@@ -416,7 +417,7 @@ abstract class WordnetFile<T>(
             buf = buf2
 
             // decode the buffer using the provided character set
-            return cs.decode(buf).toString()
+            return charset.decode(buf).toString()
         }
 
         /**

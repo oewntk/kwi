@@ -2,6 +2,7 @@ package org.kwi.data
 
 import java.io.File
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 
 /**
  * A Wordnet file data source with binary search.
@@ -12,9 +13,14 @@ import java.nio.ByteBuffer
  *
  * @param file the file which backs this Wordnet file
  * @param contentType the content type for this file
+ * @param charset the character sset used for decoding
  * @param <T> the type of object represented in this data resource
  */
-class BinarySearchWordnetFile<T>(file: File, contentType: ContentType<T>) : WordnetFile<T>(file, contentType) {
+class BinarySearchWordnetFile<T>(
+    file: File,
+    contentType: ContentType<T>,
+    charset: Charset?,
+) : WordnetFile<T>(file, contentType, charset) {
 
     private val comparator: Comparator<String>? = contentType.lineComparator
 
@@ -36,7 +42,7 @@ class BinarySearchWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
                 rewindToLineStart(buffer)
 
                 // read line
-                var line: String? = getLine(buffer, contentType.charset)
+                var line: String? = getLine(buffer, charset)
 
                 // if we get a null, we've reached the end of the file
                 val cmp: Int = if (line == null) 1 else comparator!!.compare(line, key)
@@ -93,9 +99,9 @@ class BinarySearchWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
                     var midpoint: Int = (start + stop) / 2
 
                     itrBuffer.position(midpoint)
-                    getLine(itrBuffer, contentType.charset)
+                    getLine(itrBuffer, charset)
                     var offset: Int = itrBuffer.position()
-                    var line = getLine(itrBuffer, contentType.charset)
+                    var line = getLine(itrBuffer, charset)
 
                     if (line == null) {
                         // if the line is null, we've reached the end of the file, so just advance to the first line
@@ -121,7 +127,7 @@ class BinarySearchWordnetFile<T>(file: File, contentType: ContentType<T>) : Word
                 // getting here means that we didn't find an exact match to the key, so we take the last line that started with the pattern
                 if (lastOffset > -1) {
                     itrBuffer.position(lastOffset)
-                    nextLine = getLine(itrBuffer, contentType.charset)
+                    nextLine = getLine(itrBuffer, charset)
                     return
                 }
 
