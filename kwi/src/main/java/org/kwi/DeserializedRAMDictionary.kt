@@ -96,6 +96,7 @@ constructor(
     }
 
     override fun configure(config: Config?) {
+        // no-op
     }
 
     override fun startLoad(): Boolean {

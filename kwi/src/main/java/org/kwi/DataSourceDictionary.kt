@@ -80,8 +80,6 @@ class DataSourceDictionary(
      * Configure from config bundle
      */
     override fun configure(config: Config?) {
-        // default
-        charset = Charset.defaultCharset()
 
         // enforce config
         if (config == null) {

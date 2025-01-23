@@ -119,12 +119,12 @@ class FileProvider @JvmOverloads constructor(
      * @param charset the possibly null character set to use when decoding files.
      * @throws IllegalStateException if the provider is currently open
      */
-    override var charset: Charset? = null
+    override var charset: Charset? = Charset.defaultCharset()
         set(charset) {
             try {
                 lifecycleLock.lock()
                 check(!isOpen) { "provider currently open" }
-                field = charset ?: null
+                field = charset
             } finally {
                 lifecycleLock.unlock()
             }
