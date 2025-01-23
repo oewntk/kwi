@@ -19,7 +19,6 @@ import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
-import java.util.function.Function
 
 /**
  * Manage access to data source objects.
@@ -285,17 +284,10 @@ class FileProvider @JvmOverloads constructor(
             }
 
             // get files in directory
-            val fileArray = directory.listFiles(FileFilter { obj: File? -> obj!!.isFile })
-            if (fileArray == null || fileArray.size == 0) {
+            val files = directory.listFiles(FileFilter { obj: File -> obj.isFile })
+            if (files == null || files.size == 0) {
                 throw IOException("No files found in $directory")
             }
-            val files: MutableList<File> = ArrayList<File>(listOf<File?>(*fileArray))
-            if (files.isEmpty()) {
-                throw IOException("No files found in $directory")
-            }
-
-            // sort them
-            files.sortWith(Comparator.comparing<File?, String?>(Function { obj: File? -> obj!!.name }))
 
             // make the source map
             var hiddenMap = createSourceMap(files, policy)
@@ -303,11 +295,7 @@ class FileProvider @JvmOverloads constructor(
                 return false
             }
 
-            // determine if it's already unmodifiable, wrap if not
-            val map: MutableMap<*, *> = mutableMapOf<Any?, Any?>()
-            if (hiddenMap.javaClass != map.javaClass) {
-                hiddenMap = Collections.unmodifiableMap<ContentType<*>, ILoadableDataSource<*>>(hiddenMap)
-            }
+
             @Suppress("UNCHECKED_CAST")
             fileMap = hiddenMap as Map<ContentType<*>, ILoadableDataSource<*>>?
 
@@ -376,53 +364,50 @@ class FileProvider @JvmOverloads constructor(
     /**
      * Creates the map that contains the content types mapped to the data sources.
      * The method should return a non-null result, but it may be empty if no data sources can be created.
-     * Subclasses may override this method.
      *
-     * @param files the files from which the data sources should be created
+     * @param files0 the files from which the data sources should be created
      * @param policy the load policy of the provider
      * @return a map, possibly empty, of content types mapped to data sources
      * @throws IOException if there is a problem creating the data source
      */
     @Throws(IOException::class)
-    private fun createSourceMap(files: MutableList<File>, policy: Int): MutableMap<ContentType<*>?, ILoadableDataSource<*>> {
-        val result: MutableMap<ContentType<*>?, ILoadableDataSource<*>> = HashMap<ContentType<*>?, ILoadableDataSource<*>>()
-        for (contentType in prototypeMap.values) {
-            var file: File? = null
+    private fun createSourceMap(files0: Array<File>, policy: Int): Map<ContentType<*>, ILoadableDataSource<*>> {
 
-            // give first chance to matcher
-            if (sourceMatcher.containsKey(contentType.key)) {
-                val regex = sourceMatcher[contentType.key]!!
-                file = match(regex, files)
-            }
+        // sort them
+        var files = files0
+            .sortedBy { it.name }
+            .toMutableList()
 
-            // if it failed fall back on data types
-            if (file == null) {
-                val dataType: DataType<*> = contentType.dataType
-                file = dataType.find(contentType.pOS, files)
-            }
+        return prototypeMap.values
+            .map { contentType: ContentType<*> ->
+                var file: File? = null
 
-            // if it failed continue
-            if (file == null) {
-                continue
-            }
+                // give first chance to matcher
+                if (sourceMatcher.containsKey(contentType.key)) {
+                    val regex = sourceMatcher[contentType.key]!!
+                    file = match(regex, files)
+                }
 
-            // do not remove file from possible choices as both content types may use the same file
-            if ((contentType.key != ContentTypeKey.SENSE) &&
-                (contentType.key != ContentTypeKey.INDEX_ADJECTIVE) &&
-                (contentType.key != ContentTypeKey.INDEX_ADVERB) &&
-                (contentType.key != ContentTypeKey.INDEX_NOUN) &&
-                (contentType.key != ContentTypeKey.INDEX_VERB)
-            ) {
-                files.remove(file)
+                // if it failed fall back on data types
+                if (file == null) {
+                    file = contentType.dataType.find(contentType.pOS, files)
+                }
+                contentType to file
             }
-
-            result.put(contentType, createDataSource(file, contentType, policy))
-            if (verbose) {
-                println("$contentType ${file.name}")
+            .filter { (_, file) -> file != null }
+            .onEach { (contentType, file) ->
+                // do not remove file from possible choices as both content types may use the same file
+                if ((contentType.key != ContentTypeKey.SENSE) &&
+                    (contentType.key != ContentTypeKey.INDEX_ADJECTIVE) &&
+                    (contentType.key != ContentTypeKey.INDEX_ADVERB) &&
+                    (contentType.key != ContentTypeKey.INDEX_NOUN) &&
+                    (contentType.key != ContentTypeKey.INDEX_VERB)
+                ) {
+                    files.remove(file)
+                }
             }
-        }
-        return result
-    }
+            .associate { (contentType, file) -> contentType to createDataSource(file!!, contentType, policy) }
+   }
 
     private fun match(pattern: String, files: MutableList<File>): File? {
         for (file in files) {
