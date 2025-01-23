@@ -458,7 +458,7 @@ constructor(
          * @return a dictionary object that uses the specified local directory as its data source
          */
         fun createBackingDictionary(file: File): IDictionary {
-            if (!FileProvider.Companion.isLocalDirectory(file))
+            if (!FileProvider.isLocalDirectory(file))
                 throw RuntimeException("Not a local directory")
             return DataSourceDictionary(FileProvider(file))
         }
@@ -470,7 +470,7 @@ constructor(
          * @return a dictionary object that uses the specified local directory as its data source
          */
         fun createBackingDictionary(url: URL): IDictionary {
-            if (!FileProvider.Companion.isLocalDirectory(url))
+            if (!FileProvider.isLocalDirectory(url))
                 throw RuntimeException("Not a local directory")
             return DataSourceDictionary(FileProvider(url))
         }

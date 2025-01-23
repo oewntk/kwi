@@ -93,7 +93,7 @@ class SenseKey(
 
     init {
         if (isAdjectiveSatellite) {
-            Synset.Companion.checkLexicalID(headID!!)
+            Synset.checkLexicalID(headID!!)
             require(headWord!!.isNotEmpty())
         }
     }

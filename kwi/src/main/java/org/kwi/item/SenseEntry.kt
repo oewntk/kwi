@@ -43,7 +43,7 @@ class SenseEntry(
         }
 
     init {
-        Synset.Companion.checkOffset(offset)
+        Synset.checkOffset(offset)
     }
 
     override fun hashCode(): Int {

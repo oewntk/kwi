@@ -90,7 +90,7 @@ class DataSourceDictionary(
 
         // global params
         if (config.checkLexicalId != null) {
-            Synset.Companion.checkLexicalId = config.checkLexicalId == true
+            Synset.checkLexicalId = config.checkLexicalId == true
         }
 
         // dictionary params
@@ -135,7 +135,7 @@ class DataSourceDictionary(
 
     override fun getIndex(id: IndexID): Index? {
         checkOpen()
-        val content = dataProvider.resolveContentType(DataType.Companion.INDEX, id.pOS)!!
+        val content = dataProvider.resolveContentType(DataType.INDEX, id.pOS)!!
         val file = dataProvider.getSource(content)!!
         val line = file.getLine(id.lemma) ?: return null
         return content.dataType.parser.parseLine(line)
@@ -174,7 +174,7 @@ class DataSourceDictionary(
 
     override fun getSenseEntry(key: SenseKey): SenseEntry? {
         checkOpen()
-        val content = dataProvider.resolveContentType(DataType.Companion.SENSE, null)!!
+        val content = dataProvider.resolveContentType(DataType.SENSE, null)!!
         val file = dataProvider.getSource(content)!!
         val line = file.getLine(key.toString()) ?: return null
         return content.dataType.parser.parseLine(line)
@@ -182,9 +182,9 @@ class DataSourceDictionary(
 
     override fun getSynset(id: SynsetID): Synset? {
         checkOpen()
-        val content = dataProvider.resolveContentType(DataType.Companion.DATA, id.pOS)!!
+        val content = dataProvider.resolveContentType(DataType.DATA, id.pOS)!!
         val file = dataProvider.getSource(content)!!
-        val zeroFilledOffset = Synset.Companion.zeroFillOffset(id.offset)
+        val zeroFilledOffset = Synset.zeroFillOffset(id.offset)
         val line = file.getLine(zeroFilledOffset) ?: return null
         val synset = content.dataType.parser.parseLine(line)
         if (synset.isAdjectiveSatellite) {
@@ -199,7 +199,7 @@ class DataSourceDictionary(
 
     override fun getExceptionEntry(id: ExceptionKey): ExceptionEntry? {
         checkOpen()
-        val content = dataProvider.resolveContentType(DataType.Companion.EXCEPTION, id.pOS)!!
+        val content = dataProvider.resolveContentType(DataType.EXCEPTION, id.pOS)!!
         val file = dataProvider.getSource(content)!!
         val line = file.getLine(id.surfaceForm) ?: return null
         val proxy = content.dataType.parser.parseLine(line)
@@ -216,7 +216,7 @@ class DataSourceDictionary(
 
     private fun getSequenceStartingWith(start: String, pos: POS): Sequence<String> {
         checkOpen()
-        val content = dataProvider.resolveContentType(DataType.Companion.INDEX, pos)!!
+        val content = dataProvider.resolveContentType(DataType.INDEX, pos)!!
         val parser = content.dataType.parser
         val file = dataProvider.getSource<Index>(content)!!
         val lines = file.iterator(start)
@@ -312,7 +312,7 @@ class DataSourceDictionary(
      * Iterates over index files.
      */
     inner class IndexFileIterator @JvmOverloads constructor(pos: POS, pattern: String = "") : FileIterator2<Index>(
-        dataProvider.resolveContentType<Index>(DataType.Companion.INDEX, pos)!!,
+        dataProvider.resolveContentType<Index>(DataType.INDEX, pos)!!,
         pattern
     ) {
 
@@ -325,7 +325,7 @@ class DataSourceDictionary(
      * Iterates over the sense file.
      */
     inner class SenseEntryFileIterator : FileIterator2<SenseEntry>(
-        dataProvider.resolveContentType<SenseEntry>(DataType.Companion.SENSE, null)!!
+        dataProvider.resolveContentType<SenseEntry>(DataType.SENSE, null)!!
     ) {
 
         override fun parseLine(line: String): SenseEntry {
@@ -337,7 +337,7 @@ class DataSourceDictionary(
      * Iterates over data files.
      */
     inner class DataFileIterator(pos: POS?) : FileIterator2<Synset>(
-        dataProvider.resolveContentType<Synset>(DataType.Companion.DATA, pos)!!
+        dataProvider.resolveContentType<Synset>(DataType.DATA, pos)!!
     ) {
 
         override fun parseLine(line: String): Synset {
@@ -357,7 +357,7 @@ class DataSourceDictionary(
      * Iterates over exception files.
      */
     inner class ExceptionFileIterator(pos: POS?) : FileIterator<ExceptionEntryProxy, ExceptionEntry>(
-        dataProvider.resolveContentType<ExceptionEntryProxy>(DataType.Companion.EXCEPTION, pos)!!
+        dataProvider.resolveContentType<ExceptionEntryProxy>(DataType.EXCEPTION, pos)!!
     ) {
 
         override fun parseLine(line: String): ExceptionEntry {
@@ -380,7 +380,7 @@ class DataSourceDictionary(
 
         // go find the head synset
         // assume first 'similar' adjective head is the right one
-        val headSynset: Synset = synset.getRelatedSynsetsFor(Pointer.Companion.SIMILAR_TO)
+        val headSynset: Synset = synset.getRelatedSynsetsFor(Pointer.SIMILAR_TO)
             .asSequence()
             .map { getSynset(it)!! }
             .filter { it.isAdjectiveHead }

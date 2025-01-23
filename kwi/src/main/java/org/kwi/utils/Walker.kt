@@ -107,7 +107,7 @@ open class Walker(val dict: IDictionary) {
         relatedIDs.forEach { synsetid2 ->
             val synset2 = dict.getSynset(synsetid2)!!
             consumeRelatedSynset(synset2, ptr, level)
-            if (Pointer.Companion.canRecurse(ptr)) {
+            if (Pointer.canRecurse(ptr)) {
                 walk(synset2, ptr, level + 1)
             }
         }

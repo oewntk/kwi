@@ -84,7 +84,7 @@ abstract class SenseID(
 class SenseIDWithNum(synsetID: SynsetID, val senseNumber: Int) : SenseID(synsetID) {
 
     init {
-        Synset.Companion.checkSenseNumber(senseNumber)
+        Synset.checkSenseNumber(senseNumber)
     }
 
     override fun hashCode(): Int {
@@ -110,7 +110,7 @@ class SenseIDWithNum(synsetID: SynsetID, val senseNumber: Int) : SenseID(synsetI
     }
 
     override fun toString(): String {
-        return "${super.toString()}-${Synset.Companion.zeroFillSenseNumber(senseNumber)}-$UNKNOWN_LEMMA"
+        return "${super.toString()}-${Synset.zeroFillSenseNumber(senseNumber)}-$UNKNOWN_LEMMA"
     }
 
     companion object {
@@ -183,7 +183,7 @@ open class SenseIDWithLemma(synsetID: SynsetID, lemma: String) : SenseID(synsetI
 class SenseIDWithLemmaAndNum(synsetID: SynsetID, val senseNumber: Int, lemma: String) : SenseIDWithLemma(synsetID, lemma) {
 
     init {
-        Synset.Companion.checkSenseNumber(senseNumber)
+        Synset.checkSenseNumber(senseNumber)
     }
 
     override fun hashCode(): Int {
@@ -209,6 +209,6 @@ class SenseIDWithLemmaAndNum(synsetID: SynsetID, val senseNumber: Int, lemma: St
     }
 
     override fun toString(): String {
-        return "${super.toString()}-${Synset.Companion.zeroFillSenseNumber(senseNumber)}-$lemma"
+        return "${super.toString()}-${Synset.zeroFillSenseNumber(senseNumber)}-$lemma"
     }
 }

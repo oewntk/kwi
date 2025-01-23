@@ -1,7 +1,6 @@
 package org.kwi.data
 
 import org.kwi.data.IHasLifecycle.ObjectClosedException
-import org.kwi.data.compare.ILineComparator
 import org.kwi.item.IHasVersion
 import org.kwi.item.POS
 import org.kwi.item.Synset
@@ -36,7 +35,7 @@ import java.util.concurrent.locks.ReentrantLock
 class FileProvider @JvmOverloads constructor(
     url: URL,
     loadPolicy: Int = LoadPolicy.NO_LOAD,
-    contentTypes: Collection<ContentType<*>> = ContentType.Companion.values(),
+    contentTypes: Collection<ContentType<*>> = ContentType.values(),
 ) : IHasVersion, IHasLifecycle, IHasCharset, ILoadable {
 
     private val lifecycleLock: Lock = ReentrantLock()

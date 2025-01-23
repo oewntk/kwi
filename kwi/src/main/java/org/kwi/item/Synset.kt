@@ -110,7 +110,7 @@ class Synset internal constructor(
 
     init {
         require(!(isAdjectiveSatellite && isAdjectiveHead))
-        require(!((isAdjectiveSatellite || isAdjectiveHead) && lexicalFile.number != LexFile.Companion.ADJ_ALL.number))
+        require(!((isAdjectiveSatellite || isAdjectiveHead) && lexicalFile.number != LexFile.ADJ_ALL.number))
     }
 
     override fun hashCode(): Int {
