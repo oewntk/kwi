@@ -27,120 +27,71 @@ import java.util.*
  *
  * Constructs a new data type. This constructor takes the hints as a varargs array.
  *
- * @param userFriendlyName a user-friendly name, for easy identification of this data type
+ * @param name a user-friendly name, for easy identification of this data type
  * @param hasVersion true if the comment header for this data type usually contains a version number
  * @param parser the line parser for transforming lines from this data type into objects
- * @param hints a varargs array of resource name hints for identifying the resource that contains the data
+ * @param resourceNameHints a varargs array of resource name hints for identifying the resource that contains the data
  * @param <T> the type of object for the content type, the type of the object returned by the parser for this data type
  */
-class DataType<T> constructor (
-    userFriendlyName: String?,
+class DataType<T>(
+    private val name: String,
     private val hasVersion: Boolean,
     val parser: ILineParser<T>,
-    hints: Collection<String>?,
+    val resourceNameHints: Array<String>,
 ) {
 
-    private val name: String? = userFriendlyName
-
-    /**
-     * An immutable set of strings that can be used as keywords to identify resources that are of this type.
-     * Set of strings that can be used as keywords to identify resources that are of this type.
-     *
-     * A set of resource name fragments
-     */
-    var resourceNameHints: Set<String> = if (hints == null || hints.isEmpty()) setOf<String>() else Collections.unmodifiableSet<String>(HashSet<String>(hints))
-
-    /**
-     * Constructs a new data type. This constructor takes the hints as a varargs array.
-     *
-     * @param userFriendlyName a user-friendly name, for easy identification of this data type
-     * @param hasVersion true if the comment header for this data type usually contains a version number
-     * @param parser the line parser for transforming lines from this data type into objects
-     * @param hints a varargs array of resource name hints for identifying the resource that contains the data
-     */
-    constructor(
-        userFriendlyName: String?,
-        hasVersion: Boolean,
-        parser: ILineParser<T>,
-        vararg hints: String,
-    ) : this(userFriendlyName, hasVersion, parser, listOf(*hints))
-
-    /**
-     * Whether this content type usually has Wordnet version information encoded in its header.
-     * Whether the content file that underlies this content usually has Wordnet version information in its comment header
-     */
-    fun hasVersion(): Boolean {
-        return hasVersion
+    override fun toString(): String {
+        return name
     }
 
-    override fun toString(): String {
-        return name!!
+    /**
+     * Finds the first file that satisfies the naming constraints of both the data type and part-of-speech.
+     *
+     * @param pos the part-of-speech whose resource name hints should be used
+     * @param files the files to be searched
+     * @return the file that matches both the pos and type naming conventions, or null if none is found.
+     */
+    fun find(pos: POS?, files: Collection<File>): File? {
+        val posPatterns: Set<String> = pos?.resourceNameHints ?: emptySet()
+        for (typePattern in resourceNameHints) {
+            for (file in files) {
+                val name = file.name.lowercase()
+                if (name.contains(typePattern) && containsOneOf(name, posPatterns)) {
+                    return file
+                }
+            }
+        }
+        return null
     }
 
     companion object {
 
         @JvmField
-        val INDEX: DataType<Index> = DataType<Index>("Index", true, IndexLineParser, "index", "idx")
+        val INDEX: DataType<Index> = DataType<Index>("Index", true, IndexLineParser, arrayOf("index", "idx"))
 
         @JvmField
-        val DATA: DataType<Synset> = DataType<Synset>("Data", true, DataLineParser, "data", "dat")
+        val DATA: DataType<Synset> = DataType<Synset>("Data", true, DataLineParser, arrayOf("data", "dat"))
 
         @JvmField
-        val EXCEPTION: DataType<ExceptionEntryProxy> = DataType<ExceptionEntryProxy>("Exception", false, ExceptionLineParser, "exception", "exc")
+        val EXCEPTION: DataType<ExceptionEntryProxy> = DataType<ExceptionEntryProxy>("Exception", false, ExceptionLineParser, arrayOf("exception", "exc"))
 
         @JvmField
-        val SENSE: DataType<SenseEntry> = DataType<SenseEntry>("Sense", false, SenseLineParser, "sense")
+        val SENSE: DataType<SenseEntry> = DataType<SenseEntry>("Sense", false, SenseLineParser, arrayOf("sense"))
 
         /**
          * Set of all data types implemented in this class
          */
-        private val dataTypes: Set<DataType<*>> = Collections.unmodifiableSet<DataType<*>>(
-            setOf(INDEX, DATA, EXCEPTION, SENSE)
-        )
+        private val dataTypes: Set<DataType<*>> = setOf(INDEX, DATA, EXCEPTION, SENSE)
 
         /**
          * Emulates the Enum.values() function.
-         *
-         * @return all the static data type instances listed in the class, in the order they are declared.
          */
-        fun values(): Collection<DataType<*>> {
-            return dataTypes
-        }
-
-        /**
-         * Finds the first file that satisfies the naming constraints of both the data type and part-of-speech.
-         *
-         * @param dataType the data type whose resource name hints should be used
-         * @param pos the part-of-speech whose resource name hints should be used
-         * @param files the files to be searched
-         * @return the file that matches both the pos and type naming conventions, or null if none is found.
-         */
-        fun find(dataType: DataType<*>, pos: POS?, files: Collection<File>): File? {
-            val typePatterns = dataType.resourceNameHints
-            val posPatterns: Set<String> = pos?.resourceNameHints ?: emptySet()
-            if (typePatterns.isEmpty()) {
-                for (file in files) {
-                    val name = file.name.lowercase()
-                    if (containsOneOf(name, posPatterns)) {
-                        return file
-                    }
-                }
-            } else {
-                for (typePattern in typePatterns) {
-                    for (file in files) {
-                        val name = file.name.lowercase()
-                        if (name.contains(typePattern) && containsOneOf(name, posPatterns)) {
-                            return file
-                        }
-                    }
-                }
-            }
-            return null
-        }
+        val values: Collection<DataType<*>>
+            get() = dataTypes
 
         /**
          * Checks to see if one of the string patterns specified in the set of strings is found in the specified target string.
-         * If the pattern set is empty or null, returns true.
+         * If the pattern set is empty, returns true.
          * If a pattern is found in the target string, returns true; otherwise, returns false.
          *
          * @param target the string to be searched
