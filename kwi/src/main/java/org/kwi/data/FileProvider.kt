@@ -125,7 +125,7 @@ class FileProvider @JvmOverloads constructor(
             try {
                 lifecycleLock.lock()
                 check(!isOpen) { "provider currently open" }
-                 field = charset?: null
+                field = charset ?: null
             } finally {
                 lifecycleLock.unlock()
             }
@@ -192,14 +192,7 @@ class FileProvider @JvmOverloads constructor(
             }
 
             // make the source map
-            var hiddenMap = createSourceMap(files, policy)
-            if (hiddenMap.isEmpty()) {
-                return false
-            }
-
-
-            @Suppress("UNCHECKED_CAST")
-            fileMap = hiddenMap as Map<ContentType<*>, ILoadableDataSource<*>>?
+            fileMap = createSourceMap(files, policy)
 
             // do load
             try {
