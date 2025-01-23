@@ -458,28 +458,21 @@ open class Version(
         }
 
         // internal cache of declared version
-        private var versions: List<Version>
-
-        init {
-            val l = listOf(
-                ver16,
-                ver17,
-                ver171,
-                ver20,
-                ver21,
-                ver30,
-                ver31,
-                ver21swn_10k,
-                ver21swn_20k,
-                ver21swn_30k,
-                ver21swn_40k,
-                ver21swn_400k_cropped,
-                ver21swn_400k_full,
-            )
-
-            // make the value set unmodifiable
-            versions = Collections.unmodifiableList<Version?>(l)
-        }
+        private var versions: List<Version> = listOf(
+            ver16,
+            ver17,
+            ver171,
+            ver20,
+            ver21,
+            ver30,
+            ver31,
+            ver21swn_10k,
+            ver21swn_20k,
+            ver21swn_30k,
+            ver21swn_40k,
+            ver21swn_400k_cropped,
+            ver21swn_400k_full,
+        )
 
         /**
          * Emulates the Enum.values() function.

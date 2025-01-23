@@ -196,62 +196,55 @@ open class LexFile(
             return num.toString()
         }
 
-        private val lexFileMap: MutableMap<Int?, LexFile>
-
-        init {
-            val m = listOf(
-                ADJ_ALL,
-                ADJ_PERT,
-                ADV_ALL,
-                NOUN_TOPS,
-                NOUN_ACT,
-                NOUN_ANIMAL,
-                NOUN_ARTIFACT,
-                NOUN_ATTRIBUTE,
-                NOUN_BODY,
-                NOUN_COGNITION,
-                NOUN_COMMUNICATION,
-                NOUN_EVENT,
-                NOUN_FEELING,
-                NOUN_FOOD,
-                NOUN_GROUP,
-                NOUN_LOCATION,
-                NOUN_MOTIVE,
-                NOUN_OBJECT,
-                NOUN_PERSON,
-                NOUN_PHENOMENON,
-                NOUN_PLANT,
-                NOUN_POSSESSION,
-                NOUN_PROCESS,
-                NOUN_QUANTITY,
-                NOUN_RELATION,
-                NOUN_SHAPE,
-                NOUN_STATE,
-                NOUN_SUBSTANCE,
-                NOUN_TIME,
-                VERB_BODY,
-                VERB_CHANGE,
-                VERB_COGNITION,
-                VERB_COMMUNICATION,
-                VERB_COMPETITION,
-                VERB_CONSUMPTION,
-                VERB_CONTACT,
-                VERB_CREATION,
-                VERB_EMOTION,
-                VERB_MOTION,
-                VERB_PERCEPTION,
-                VERB_POSSESSION,
-                VERB_SOCIAL,
-                VERB_STATIVE,
-                VERB_WEATHER,
-                ADJ_PPL,
-            ).asSequence()
-                .map { it.number to it }
-                .toMap()
-
-            // make backing map unmodifiable
-            lexFileMap = Collections.unmodifiableMap<Int, LexFile>(m)
-        }
+        private val lexFileMap: Map<Int, LexFile> = listOf(
+            ADJ_ALL,
+            ADJ_PERT,
+            ADV_ALL,
+            NOUN_TOPS,
+            NOUN_ACT,
+            NOUN_ANIMAL,
+            NOUN_ARTIFACT,
+            NOUN_ATTRIBUTE,
+            NOUN_BODY,
+            NOUN_COGNITION,
+            NOUN_COMMUNICATION,
+            NOUN_EVENT,
+            NOUN_FEELING,
+            NOUN_FOOD,
+            NOUN_GROUP,
+            NOUN_LOCATION,
+            NOUN_MOTIVE,
+            NOUN_OBJECT,
+            NOUN_PERSON,
+            NOUN_PHENOMENON,
+            NOUN_PLANT,
+            NOUN_POSSESSION,
+            NOUN_PROCESS,
+            NOUN_QUANTITY,
+            NOUN_RELATION,
+            NOUN_SHAPE,
+            NOUN_STATE,
+            NOUN_SUBSTANCE,
+            NOUN_TIME,
+            VERB_BODY,
+            VERB_CHANGE,
+            VERB_COGNITION,
+            VERB_COMMUNICATION,
+            VERB_COMPETITION,
+            VERB_CONSUMPTION,
+            VERB_CONTACT,
+            VERB_CREATION,
+            VERB_EMOTION,
+            VERB_MOTION,
+            VERB_PERCEPTION,
+            VERB_POSSESSION,
+            VERB_SOCIAL,
+            VERB_STATIVE,
+            VERB_WEATHER,
+            ADJ_PPL,
+        ).asSequence()
+            .map { it.number to it }
+            .toMap()
 
         /**
          * Emulates the `Enum#values()` function. Returns an unmodifiable collection of all the lexical file descriptions declared in this class, in the order they are declared.

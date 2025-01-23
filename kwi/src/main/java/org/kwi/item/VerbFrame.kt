@@ -98,56 +98,49 @@ class VerbFrame(
         val NUM_39: VerbFrame = VerbFrame(39, "Somebody ----s out of somebody")
 
         // verb frame cache
-        private val verbFrameMap: Map<Int, VerbFrame>
-
-        init {
-            val m = listOf(
-                NUM_01,
-                NUM_02,
-                NUM_03,
-                NUM_04,
-                NUM_05,
-                NUM_06,
-                NUM_07,
-                NUM_08,
-                NUM_09,
-                NUM_10,
-                NUM_11,
-                NUM_12,
-                NUM_13,
-                NUM_14,
-                NUM_15,
-                NUM_16,
-                NUM_17,
-                NUM_18,
-                NUM_19,
-                NUM_20,
-                NUM_21,
-                NUM_22,
-                NUM_23,
-                NUM_24,
-                NUM_25,
-                NUM_26,
-                NUM_27,
-                NUM_28,
-                NUM_29,
-                NUM_30,
-                NUM_31,
-                NUM_32,
-                NUM_33,
-                NUM_34,
-                NUM_35,
-                NUM_36,
-                NUM_37,
-                NUM_38,
-                NUM_39,
-            )
-                .asSequence()
-                .map { it.number to it }
-                .toMap()
-
-            verbFrameMap = Collections.unmodifiableMap<Int?, VerbFrame>(m)
-        }
+        private val verbFrameMap: Map<Int, VerbFrame> = listOf(
+            NUM_01,
+            NUM_02,
+            NUM_03,
+            NUM_04,
+            NUM_05,
+            NUM_06,
+            NUM_07,
+            NUM_08,
+            NUM_09,
+            NUM_10,
+            NUM_11,
+            NUM_12,
+            NUM_13,
+            NUM_14,
+            NUM_15,
+            NUM_16,
+            NUM_17,
+            NUM_18,
+            NUM_19,
+            NUM_20,
+            NUM_21,
+            NUM_22,
+            NUM_23,
+            NUM_24,
+            NUM_25,
+            NUM_26,
+            NUM_27,
+            NUM_28,
+            NUM_29,
+            NUM_30,
+            NUM_31,
+            NUM_32,
+            NUM_33,
+            NUM_34,
+            NUM_35,
+            NUM_36,
+            NUM_37,
+            NUM_38,
+            NUM_39,
+        ).asSequence()
+            .map { it.number to it }
+            .toMap()
 
         /**
          * This emulates the Enum.values() method, in that it returns an unmodifiable collection of all the static instances declared in this class, in the order they were declared.

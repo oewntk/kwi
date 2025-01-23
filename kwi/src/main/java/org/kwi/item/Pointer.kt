@@ -91,54 +91,44 @@ class Pointer(
             return str
         }
 
-        private val pointerMap: Map<String, Pointer>
+        private val pointerSet: Set<Pointer> = setOf(
+            ALSO_SEE,
+            ANTONYM,
+            ATTRIBUTE,
+            CAUSE,
+            DERIVATIONALLY_RELATED,
+            DERIVED_FROM_ADJ,
+            DOMAIN,
+            ENTAILMENT,
+            HYPERNYM,
+            HYPERNYM_INSTANCE,
+            HYPONYM,
+            HYPONYM_INSTANCE,
+            HOLONYM_MEMBER,
+            HOLONYM_SUBSTANCE,
+            HOLONYM_PART,
+            MEMBER,
+            MERONYM_MEMBER,
+            MERONYM_SUBSTANCE,
+            MERONYM_PART,
+            PARTICIPLE,
+            PERTAINYM,
+            REGION,
+            REGION_MEMBER,
+            SIMILAR_TO,
+            TOPIC,
+            TOPIC_MEMBER,
+            USAGE,
+            USAGE_MEMBER,
+            VERB_GROUP,
+            IS_CAUSED,
+            IS_ENTAILED,
+            COLLOCATION,
+        )
 
-        private val pointerSet: Set<Pointer>
-
-        init {
-            val s = setOf(
-                ALSO_SEE,
-                ANTONYM,
-                ATTRIBUTE,
-                CAUSE,
-                DERIVATIONALLY_RELATED,
-                DERIVED_FROM_ADJ,
-                DOMAIN,
-                ENTAILMENT,
-                HYPERNYM,
-                HYPERNYM_INSTANCE,
-                HYPONYM,
-                HYPONYM_INSTANCE,
-                HOLONYM_MEMBER,
-                HOLONYM_SUBSTANCE,
-                HOLONYM_PART,
-                MEMBER,
-                MERONYM_MEMBER,
-                MERONYM_SUBSTANCE,
-                MERONYM_PART,
-                PARTICIPLE,
-                PERTAINYM,
-                REGION,
-                REGION_MEMBER,
-                SIMILAR_TO,
-                TOPIC,
-                TOPIC_MEMBER,
-                USAGE,
-                USAGE_MEMBER,
-                VERB_GROUP,
-                IS_CAUSED,
-                IS_ENTAILED,
-                COLLOCATION,
-            )
-
-            val m = s
-                .asSequence()
-                .filterNot { it == DERIVED_FROM_ADJ }
-                .map { it.symbol to it }.toMap()
-
-            pointerSet = Collections.unmodifiableSet<Pointer>(s)
-            pointerMap = Collections.unmodifiableMap<String, Pointer>(m)
-        }
+        private val pointerMap: Map<String, Pointer> = pointerSet.asSequence()
+            .filterNot { it == DERIVED_FROM_ADJ }
+            .map { it.symbol to it }.toMap()
 
         /**
          * Emulates the `Enum#values()` function. Returns an unmodifiable collection of all the pointers declared in this class, in the order they are declared.

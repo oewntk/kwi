@@ -93,8 +93,7 @@ class ContentType<T>
         val SENSE = ContentType<SenseEntry>(ContentTypeKey.SENSE, SenseKeyLineComparator)
 
         // set of all content types implemented in this class
-        private val contentTypes: Set<ContentType<*>> = Collections.unmodifiableSet<ContentType<*>>(
-            setOf(
+        private val contentTypes: Set<ContentType<*>> = setOf(
                 INDEX_NOUN,
                 INDEX_VERB,
                 INDEX_ADVERB,
@@ -109,7 +108,6 @@ class ContentType<T>
                 EXCEPTION_ADJECTIVE,
                 SENSE,
             )
-        )
 
         /**
          * Emulates the Enum.values() function.
