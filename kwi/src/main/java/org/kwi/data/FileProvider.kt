@@ -62,6 +62,16 @@ class FileProvider @JvmOverloads constructor(
     @Transient
     private var loader: KWIBackgroundLoader? = null
 
+    var loadPolicy: Int = loadPolicy
+        set(policy) {
+            try {
+                loadingLock.lock()
+                field = policy
+            } finally {
+                loadingLock.unlock()
+            }
+        }
+
     private val defaultContentTypes: Collection<ContentType<*>>
 
     private val sourceMatcher: MutableMap<ContentTypeKey, String> = HashMap<ContentTypeKey, String>()
@@ -99,26 +109,6 @@ class FileProvider @JvmOverloads constructor(
         @Suppress("UNCHECKED_CAST")
         return fileMap!![actualType] as ILoadableDataSource<T>
     }
-
-    val types: Set<ContentType<*>>
-        get() {
-            try {
-                lifecycleLock.lock()
-                return LinkedHashSet<ContentType<*>>(prototypeMap.values)
-            } finally {
-                lifecycleLock.unlock()
-            }
-        }
-
-    var loadPolicy: Int = 0
-        set(policy) {
-            try {
-                loadingLock.lock()
-                field = policy
-            } finally {
-                loadingLock.unlock()
-            }
-        }
 
     /**
      * Sets the character set associated with this dictionary.
@@ -159,24 +149,6 @@ class FileProvider @JvmOverloads constructor(
      * @param file A file pointing to the Wordnet directory
      */
     constructor(file: File) : this(toURL(file))
-
-    /**
-     * Constructs the file provider pointing to the resource indicated by the path, with the specified load policy.
-     *
-     * @param file A file pointing to the Wordnet directory
-     * @param loadPolicy the load policy for this provider; this provider supports the three values defined in ILoadPolicy.
-     */
-    constructor(file: File, loadPolicy: Int) : this(toURL(file), loadPolicy, ContentType.Companion.values())
-
-    /**
-     * Constructs the file provider pointing to the resource indicated by the path, with the specified load policy, looking for the specified content type.
-     *
-     * @param file A file pointing to the Wordnet directory
-     * @param loadPolicy the load policy for this provider; this provider supports the three values defined in ILoadPolicy.
-     * @param types the content types this provider will look for when it loads its data; may not be empty
-     * @throws IllegalArgumentException if the set of types is empty
-     */
-    constructor(file: File, loadPolicy: Int, types: MutableCollection<out ContentType<*>>) : this(toURL(file), loadPolicy, types)
 
     init {
         require(!contentTypes.isEmpty())
@@ -407,7 +379,7 @@ class FileProvider @JvmOverloads constructor(
                 }
             }
             .associate { (contentType, file) -> contentType to createDataSource(file!!, contentType, policy) }
-   }
+    }
 
     private fun match(pattern: String, files: MutableList<File>): File? {
         for (file in files) {
@@ -431,44 +403,25 @@ class FileProvider @JvmOverloads constructor(
      */
     @Throws(IOException::class)
     private fun <T> createDataSource(file: File, contentType: ContentType<T>, policy: Int): ILoadableDataSource<T> {
-        var src: ILoadableDataSource<T>
+
         if (contentType.dataType === DataType.DATA) {
-            src = createDirectAccess<T>(file, contentType)
-            src.open()
-            if (policy == LoadPolicy.IMMEDIATE_LOAD) {
-                try {
-                    src.load(true)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-            }
+
+            val daSrc: DirectAccessWordnetFile<T> = prepareSource(createDirectAccess<T>(file, contentType), policy) as DirectAccessWordnetFile<T>
 
             // check to see if direct access works with the file
             // often people will extract the files incorrectly on Windows machines and the binary files will be corrupted with extra CRs
-
-            // get first line
-            val itr: Iterator<String?> = src.iterator()
-            val firstLine = itr.next()
-            if (firstLine == null) {
-                return src
+            if (testDirectAccess(daSrc, contentType)) {
+                return daSrc
             }
 
-            // extract key
-            val parser = contentType.dataType.parser
-            val s = parser.parseLine(firstLine) as Synset
-            val key = zeroFillOffset(s.offset)
-
-            // try to find line by direct access
-            val soughtLine = src.getLine(key)
-            if (soughtLine != null) {
-                return src
-            }
-
-            val pos: POS? = contentType.pOS
-            System.err.println("${System.currentTimeMillis()} - Error on direct access in $pos data file: check CR/LF endings")
+            System.err.println("Error on direct access in ${contentType.pOS} data file: check CR/LF endings")
+            // fallback
         }
 
-        src = createBinarySearch<T>(file, contentType)
+        return prepareSource(createBinarySearch<T>(file, contentType), policy)
+    }
+
+    private fun <T> prepareSource(src: ILoadableDataSource<T>, policy: Int): ILoadableDataSource<T> {
         src.open()
         if (policy == LoadPolicy.IMMEDIATE_LOAD) {
             try {
@@ -480,6 +433,20 @@ class FileProvider @JvmOverloads constructor(
         return src
     }
 
+    private fun <T> testDirectAccess(daSrc: DirectAccessWordnetFile<T>, contentType: ContentType<*>): Boolean {
+        // get first line and try to find line by direct access
+        // get first line
+        val firstLine = daSrc.iterator().next()
+
+        // extract key
+        val synset = contentType.dataType.parser.parseLine(firstLine) as Synset
+        val key = zeroFillOffset(synset.offset)
+
+        // try to find line by direct access
+        val soughtLine = daSrc.getLine(key)
+        return soughtLine != null
+    }
+
     /**
      * Creates a direct access data source for the specified type, using the specified file.
      *
@@ -488,7 +455,7 @@ class FileProvider @JvmOverloads constructor(
      * @param contentType the data type for the data source
      * @return the data source
      */
-    private fun <T> createDirectAccess(file: File, contentType: ContentType<T>): ILoadableDataSource<T> {
+    private fun <T> createDirectAccess(file: File, contentType: ContentType<T>): DirectAccessWordnetFile<T> {
         return DirectAccessWordnetFile<T>(file, contentType)
     }
 
