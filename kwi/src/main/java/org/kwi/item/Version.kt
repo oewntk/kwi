@@ -336,16 +336,15 @@ open class Version(
          */
 
         fun extractVersion(contentType: ContentType<*>, buffer: ByteBuffer): Version? {
-            val dataType: DataType<*> = contentType.dataType
-            if (!dataType.hasVersion()) {
+            val dataType = contentType.dataType
+            if (!dataType.hasVersion) {
                 return null
             }
 
             // first try direct access
-            var c: Char
             val sb = StringBuilder()
             for (i in VERSION_OFFSET..<buffer.limit()) {
-                c = Char(buffer.get(i).toUShort())
+                val c = Char(buffer.get(i).toUShort())
                 if (Character.isWhitespace(c)) {
                     break
                 }
@@ -366,14 +365,13 @@ open class Version(
             val origPos = buffer.position()
 
             var line: String? = null
-            var m: Matcher?
             while (buffer.position() < buffer.limit()) {
                 line = getLine(buffer)
                 if (line == null || !cd.isCommentLine(line)) {
                     line = null
                     break
                 }
-                m = versionPattern.matcher(line)
+                var m = versionPattern.matcher(line)
                 if (m.find()) {
                     line = m.group()
                     val start: Int = WORDNET_STR.length

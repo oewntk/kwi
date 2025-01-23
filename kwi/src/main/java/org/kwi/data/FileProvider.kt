@@ -398,7 +398,7 @@ class FileProvider @JvmOverloads constructor(
             // if it failed fall back on data types
             if (file == null) {
                 val dataType: DataType<*> = contentType.dataType
-                file = DataType.Companion.find(dataType, contentType.pOS, files)
+                file = dataType.find(contentType.pOS, files)
             }
 
             // if it failed continue

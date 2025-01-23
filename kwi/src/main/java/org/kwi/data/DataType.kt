@@ -35,7 +35,7 @@ import java.util.*
  */
 class DataType<T>(
     private val name: String,
-    private val hasVersion: Boolean,
+    internal val hasVersion: Boolean,
     val parser: ILineParser<T>,
     val resourceNameHints: Array<String>,
 ) {
