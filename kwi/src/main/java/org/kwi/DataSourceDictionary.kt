@@ -51,7 +51,7 @@ class DataSourceDictionary(
      * @param config config parameters
      */
     @JvmOverloads
-    constructor(wordnetDir: URL, config: Config? = null) : this(FileProvider(wordnetDir)) 
+    constructor(wordnetDir: URL, config: Config? = null) : this(FileProvider(wordnetDir))
 
     init {
         configure(config)
