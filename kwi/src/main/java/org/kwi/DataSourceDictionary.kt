@@ -1,12 +1,10 @@
 package org.kwi
 
 import org.kwi.data.ContentType
-import org.kwi.data.ContentTypeKey
 import org.kwi.data.DataType
 import org.kwi.data.FileProvider
 import org.kwi.data.IHasCharset
 import org.kwi.data.IHasLifecycle.ObjectClosedException
-import org.kwi.data.compare.ILineComparator
 import org.kwi.data.parse.ILineParser
 import org.kwi.item.ExceptionEntry
 import org.kwi.item.ExceptionEntryProxy
@@ -24,7 +22,6 @@ import org.kwi.item.SenseKey
 import org.kwi.item.Synset
 import org.kwi.item.SynsetID
 import org.kwi.item.Version
-import java.io.File
 import java.io.IOException
 import java.net.URL
 import java.nio.charset.Charset
@@ -54,20 +51,7 @@ class DataSourceDictionary(
      * @param config config parameters
      */
     @JvmOverloads
-    constructor(wordnetDir: URL, config: Config? = null) : this(FileProvider(wordnetDir)) {
-        configure(config)
-    }
-
-    /**
-     * Constructs a new dictionary that uses the Wordnet files located in the specified directory
-     *
-     * @param wordnetDir a directory containing the Wordnet data files on the filesystem
-     * @param config config parameters
-     */
-    @JvmOverloads
-    constructor(wordnetDir: File, config: Config? = null) : this(FileProvider(wordnetDir)) {
-        configure(config)
-    }
+    constructor(wordnetDir: URL, config: Config? = null) : this(FileProvider(wordnetDir)) 
 
     init {
         configure(config)
@@ -91,29 +75,6 @@ class DataSourceDictionary(
         set(charset) {
             dataProvider.charset = charset
         }
-
-    /**
-     * Sets the comparator associated with this content type in this dictionary.
-     * The comparator may be null in which case it is reset to defaults.
-     *
-     * @param contentTypeKey the content type for which the comparator is to be set.
-     * @param comparator the possibly null comparator set to use when decoding files.
-     * @throws IllegalStateException if the provider is currently open
-     */
-    private fun setComparator(contentTypeKey: ContentTypeKey, comparator: ILineComparator?) {
-        dataProvider.setComparator(contentTypeKey, comparator)
-    }
-
-    /**
-     * Sets pattern attached to content type key, that source files have to match to be selected.
-     * This gives selection a first opportunity before falling back on standard data type selection.
-     *
-     * @param contentTypeKey the content type key for which the matcher is to be set.
-     * @param pattern regexp pattern
-     */
-    private fun setSourceMatcher(contentTypeKey: ContentTypeKey, pattern: String?) {
-        dataProvider.setSourceMatcher(contentTypeKey, pattern)
-    }
 
     /**
      * Configure from config bundle

@@ -43,7 +43,13 @@ class FileProvider @JvmOverloads constructor(
 
     private val loadingLock: Lock = ReentrantLock()
 
-    private val prototypeMap: MutableMap<ContentTypeKey, ContentType<*>>
+    private val defaultContentTypes: Collection<ContentType<*>> = contentTypes
+
+    private val prototypeMap: Map<ContentTypeKey, ContentType<*>> = contentTypes
+        .asSequence()
+        .map { it.key to it }
+        .toMap()
+        .toMap()
 
     override var version: Version? = null
         get() {
@@ -71,8 +77,6 @@ class FileProvider @JvmOverloads constructor(
                 loadingLock.unlock()
             }
         }
-
-    private val defaultContentTypes: Collection<ContentType<*>>
 
     private val sourceMatcher: MutableMap<ContentTypeKey, String> = HashMap<ContentTypeKey, String>()
 
@@ -118,25 +122,10 @@ class FileProvider @JvmOverloads constructor(
      */
     override var charset: Charset? = null
         set(charset) {
-            if (verbose) {
-                println("Charset: $charset")
-            }
             try {
                 lifecycleLock.lock()
                 check(!isOpen) { "provider currently open" }
-                for (e in prototypeMap.entries) {
-                    val key: ContentTypeKey = e.key
-                    val value = e.value
-                    if (charset == null) {
-                        // if we get a null charset, reset to the prototype value but preserve line comparator
-                        val defaultContentType: ContentType<*> = getDefault(key)!!
-                        e.setValue(ContentType<Any?>(key, value.lineComparator, defaultContentType.charset))
-                    } else {
-                        // if we get a non-null charset, generate new  type using the new charset but preserve line comparator
-                        e.setValue(ContentType<Any?>(key, value.lineComparator, charset))
-                    }
-                }
-                field = charset
+                 field = charset?: null
             } finally {
                 lifecycleLock.unlock()
             }
@@ -152,12 +141,6 @@ class FileProvider @JvmOverloads constructor(
 
     init {
         require(!contentTypes.isEmpty())
-        this.defaultContentTypes = contentTypes
-        this.prototypeMap = contentTypes
-            .asSequence()
-            .map { it.key to it }
-            .toMap()
-            .toMutableMap()
     }
 
     private fun getDefault(key: ContentTypeKey?): ContentType<*>? {
@@ -168,59 +151,6 @@ class FileProvider @JvmOverloads constructor(
         }
         // this should not happen
         return null
-    }
-
-    /**
-     * Sets the comparator associated with this content type in this dictionary.
-     * The comparator may be null in which case it is reset.
-     *
-     * @param contentTypeKey the content type key for which the comparator is to be set.
-     * @param comparator the possibly null comparator to use when decoding files.
-     * @throws IllegalStateException if the provider is currently open
-     */
-    fun setComparator(contentTypeKey: ContentTypeKey, comparator: ILineComparator?) {
-        if (verbose) {
-            println("Comparator for $contentTypeKey ${comparator?.javaClass?.name}")
-        }
-        try {
-            lifecycleLock.lock()
-            check(!isOpen) { "Provider currently open" }
-            val value: ContentType<*> = prototypeMap[contentTypeKey]!!
-            if (comparator == null) {
-                // if we get a null comparator, reset to the prototype but preserve charset
-                val defaultContentType: ContentType<*>? = getDefault(contentTypeKey)
-                prototypeMap.put(contentTypeKey, ContentType<Any?>(contentTypeKey, defaultContentType!!.lineComparator, value.charset))
-            } else {
-                // if we get a non-null comparator, generate a new type using the new comparator but preserve charset
-                prototypeMap.put(contentTypeKey, ContentType<Any?>(contentTypeKey, comparator, value.charset))
-            }
-        } finally {
-            lifecycleLock.unlock()
-        }
-    }
-
-    /**
-     * Sets pattern attached to content type key, that source files have to match to be selected.
-     * This gives selection a first opportunity before falling back on standard data type selection.
-     *
-     * @param contentTypeKey the content type key for which the matcher is to be set.
-     * @param pattern regexp pattern
-     */
-    fun setSourceMatcher(contentTypeKey: ContentTypeKey, pattern: String?) {
-        if (verbose) {
-            println("Matcher for $contentTypeKey: '$pattern'")
-        }
-        try {
-            lifecycleLock.lock()
-            check(!isOpen) { "provider currently open" }
-            if (pattern == null) {
-                sourceMatcher.remove(contentTypeKey)
-            } else {
-                sourceMatcher.put(contentTypeKey, pattern)
-            }
-        } finally {
-            lifecycleLock.unlock()
-        }
     }
 
     /**
@@ -585,8 +515,6 @@ class FileProvider @JvmOverloads constructor(
     }
 
     companion object {
-
-        var verbose: Boolean = false
 
         /**
          * Transforms a URL into a File. The URL must use the 'file' protocol and must be in a UTF-8 compatible format as specified in URLDecoder.
