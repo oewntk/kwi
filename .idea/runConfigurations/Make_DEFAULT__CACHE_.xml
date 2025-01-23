@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Make DEFAULT (CACHE)" type="JUnit" factoryName="JUnit" folderName="make">
+    <module name="kwi" />
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <option name="PACKAGE_NAME" value="org.kwi" />
+    <option name="MAIN_CLASS_NAME" value="org.kwi.MakeTests" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

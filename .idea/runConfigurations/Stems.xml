@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Stems" type="JUnit" factoryName="JUnit" folderName="query">
+    <module name="kwi" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="org.jwi.use.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <option name="PACKAGE_NAME" value="org.kwi" />
+    <option name="MAIN_CLASS_NAME" value="org.kwi.StemsTests" />
+    <option name="METHOD_NAME" value="wordsToDictStemsTestNouns" />
+    <option name="TEST_OBJECT" value="class" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

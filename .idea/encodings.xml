@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/jwi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jwi/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jwiuse/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jwiuse/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jwix/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jwix/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jwixuse/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jwixuse/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/kwi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/kwi/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/kwiuse/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/kwiuse/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

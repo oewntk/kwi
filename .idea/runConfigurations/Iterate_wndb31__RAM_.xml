@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Iterate wndb31 (RAM)" type="JUnit" factoryName="JUnit" folderName="iterate">
+    <module name="kwi" />
+    <option name="PACKAGE_NAME" value="org.kwi" />
+    <option name="MAIN_CLASS_NAME" value="org.kwi.IterateTests" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-ea -DSOURCE=wndb31 -DFACTORY=RAM" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

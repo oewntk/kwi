@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Make RAM" type="JUnit" factoryName="JUnit" folderName="make">
+    <module name="kwi" />
+    <option name="PACKAGE_NAME" value="org.kwi" />
+    <option name="MAIN_CLASS_NAME" value="org.kwi.MakeTests" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-ea -DFACTORY=RAM" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
