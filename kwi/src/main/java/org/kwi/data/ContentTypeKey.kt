@@ -6,7 +6,7 @@ import org.kwi.item.POS
  * Content type keys.
  */
 enum class ContentTypeKey(
-    internal val dataType: DataType<*>,
+    val dataType: DataType<*>,
     val pOS: POS?,
 ) {
 

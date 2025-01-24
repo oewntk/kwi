@@ -1,6 +1,5 @@
 package org.kwi.data.parse
 
-import org.kwi.data.parse.SenseLineParser.keyParser
 import org.kwi.item.SenseEntry
 import org.kwi.item.SenseKey
 import java.util.*
