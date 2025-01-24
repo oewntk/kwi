@@ -54,9 +54,6 @@ constructor(
             loadPolicy = policy
         }
 
-    override val version: Version?
-        get() = backingDictionary.version
-
     /**
      * Loads data from the specified File using the specified load policy.
      *
@@ -196,16 +193,23 @@ constructor(
 
             // null out backing data
             data = null
+
         } finally {
             state = assertLifecycleState()
             lifecycleLock.unlock()
         }
     }
 
+    // V E R S I O N
+
+    override val version: Version?
+        get() = if (data != null) super.version else backingDictionary.version
+
+
     // L O O K   U P
 
     override fun getIndex(id: IndexID): Index? {
-        return if (data != null) super.getIndex(id) else return backingDictionary.getIndex(id)
+        return if (data != null) super.getIndex(id) else backingDictionary.getIndex(id)
     }
 
     override fun getSense(id: SenseID): Synset.Sense? {
@@ -221,7 +225,7 @@ constructor(
     }
 
     override fun getSynset(id: SynsetID): Synset? {
-        return if (data != null) super.getSynset(id) else return backingDictionary.getSynset(id)
+        return if (data != null) super.getSynset(id) else backingDictionary.getSynset(id)
     }
 
     override fun getSenseEntry(key: SenseKey): SenseEntry? {

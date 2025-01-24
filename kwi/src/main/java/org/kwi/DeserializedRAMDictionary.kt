@@ -41,14 +41,6 @@ constructor(
             loadPolicy = LoadPolicy.IMMEDIATE_LOAD
         }
 
-    override val version: Version?
-        get() {
-            if (data != null) {
-                return data!!.version
-            }
-            return null
-        }
-
     /**
      * Loads data from the specified File using the specified load policy.
      *
@@ -103,7 +95,7 @@ constructor(
 
         // behavior when loading from an input stream is immediate load
         try {
-            load(true)
+             load(true)
         } catch (e: InterruptedException) {
             e.printStackTrace()
             return false

@@ -1,6 +1,6 @@
 package org.kwi
 
-import org.kwi.data.IHasLifecycle
+import org.kwi.data.IHasLifecycle.LifecycleState
 import org.kwi.data.ILoadable
 import org.kwi.item.*
 import java.io.*
@@ -20,7 +20,7 @@ abstract class BaseRAMDictionary protected constructor(
     private val loadLock: Lock = ReentrantLock()
 
     @Volatile
-    internal var state: IHasLifecycle.LifecycleState = IHasLifecycle.LifecycleState.CLOSED
+    internal var state: LifecycleState = LifecycleState.CLOSED
 
     @Transient
     internal var loader: Thread? = null
@@ -52,19 +52,21 @@ abstract class BaseRAMDictionary protected constructor(
             loadLock.lock()
 
             // if we are closed or in the process of closing, do nothing
-            if (state == IHasLifecycle.LifecycleState.CLOSED || state == IHasLifecycle.LifecycleState.CLOSING) {
+            if (state == LifecycleState.CLOSED || state == LifecycleState.CLOSING) {
                 return
             }
 
             if (loader != null) {
                 return
             }
+            println("loading...")
             loader = makeThread()
             loader!!.isDaemon = true
             loader!!.start()
             if (block) {
                 loader!!.join()
             }
+            println("loaded")
         } finally {
             loadLock.unlock()
         }
@@ -80,7 +82,7 @@ abstract class BaseRAMDictionary protected constructor(
         get() {
             try {
                 lifecycleLock.lock()
-                return state == IHasLifecycle.LifecycleState.OPEN
+                return state == LifecycleState.OPEN
             } finally {
                 lifecycleLock.unlock()
             }
@@ -92,17 +94,17 @@ abstract class BaseRAMDictionary protected constructor(
             lifecycleLock.lock()
 
             // if the dictionary is already open, return true
-            if (state == IHasLifecycle.LifecycleState.OPEN) {
+            if (state == LifecycleState.OPEN) {
                 return true
             }
 
             // if the dictionary is not closed, return false
-            if (state != IHasLifecycle.LifecycleState.CLOSED) {
+            if (state != LifecycleState.CLOSED) {
                 return false
             }
 
             // indicate the start of opening
-            state = IHasLifecycle.LifecycleState.OPENING
+            state = LifecycleState.OPENING
 
             return startLoad()
 
@@ -118,16 +120,16 @@ abstract class BaseRAMDictionary protected constructor(
             lifecycleLock.lock()
 
             // if we are already closed, do nothing
-            if (state == IHasLifecycle.LifecycleState.CLOSED) {
+            if (state == LifecycleState.CLOSED) {
                 return
             }
 
             // if we are already closing, do nothing
-            if (state != IHasLifecycle.LifecycleState.CLOSING) {
+            if (state != LifecycleState.CLOSING) {
                 return
             }
 
-            state = IHasLifecycle.LifecycleState.CLOSING
+            state = LifecycleState.CLOSING
 
             // stop loading first
             if (loader != null) {
@@ -153,21 +155,29 @@ abstract class BaseRAMDictionary protected constructor(
      *
      * @return the lifecycle state object representing open if the object is open; otherwise the lifecycle state object representing closed
      */
-    private fun assertLifecycleState(): IHasLifecycle.LifecycleState {
+    private fun assertLifecycleState(): LifecycleState {
         try {
             lifecycleLock.lock()
 
             // if the data object is present, then we are open
             if (data != null) {
-                return IHasLifecycle.LifecycleState.OPEN
+                return LifecycleState.OPEN
             }
 
             // otherwise we are closed
-            return IHasLifecycle.LifecycleState.CLOSED
+            return LifecycleState.CLOSED
         } finally {
             lifecycleLock.unlock()
         }
     }
+
+    // V E R S I O N
+
+    override val version: Version?
+        get() {
+            check(data != null) { NO_DATA }
+            return data!!.version
+        }
 
     // L O O K   U P
 
@@ -301,7 +311,7 @@ abstract class BaseRAMDictionary protected constructor(
         val exceptions: Map<POS, Map<ExceptionKey, ExceptionEntry>>,
         val senses: Map<String, Synset.Sense>,
         val senseEntries: Map<String, SenseEntry>,
-        ) : Serializable
+    ) : Serializable
 
     companion object {
 

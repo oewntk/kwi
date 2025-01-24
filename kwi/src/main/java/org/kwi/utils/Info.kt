@@ -20,8 +20,6 @@ object Info {
 
     @JvmStatic
     fun countAll(dict: IDictionary): String {
-        val wasOpen = dict.isOpen
-        if (!wasOpen) dict.open()
         val l = dict.seqAllLemmas().count()
         val s = dict.seqAllSenses().count()
         val k = dict.seqAllSenseKeys().count()
@@ -40,7 +38,6 @@ object Info {
             synsets          =$y
             synset relations =$ry ($fry flat)
             """.trimIndent()
-        if (!wasOpen) dict.close()
-        return report
+         return report
     }
 }
