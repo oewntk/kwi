@@ -275,7 +275,7 @@ class Synset internal constructor(
         }
 
         /**
-         * Returns an immutable list of all sense ids related to this sense by the specified pointer type.
+         * A list of all sense ids related to this sense by the specified pointer type.
          * Note that this only returns senses related by lexical pointers (i.e., not semantic pointers).
          * To retrieve items related by semantic pointers, call getRelatedSynsetFor.
          * If this sense has no targets for the specified pointer, this method returns an empty list.

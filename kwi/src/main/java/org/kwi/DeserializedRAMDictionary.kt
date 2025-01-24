@@ -10,7 +10,7 @@ import java.util.zip.GZIPInputStream
 /**
  * Dictionary that deserializes dictionary object.
  * @property streamFactory dictionary that backs this dictionary
- * @property loadPolicy immutable IMMEDIATE_LOAD load policy
+ * @property loadPolicy load policy
  * @param config configuration bundle
  */
 class DeserializedRAMDictionary
