@@ -43,16 +43,6 @@ class VerbFrame(
         return "[$number : $template]"
     }
 
-    /**
-     * This utility method implements the appropriate deserialization for this object.
-     *
-     * @return the appropriate deserialized object.
-     * */
-    private fun readResolve(): Any {
-        val staticFrame: VerbFrame? = getFrame(number)
-        return staticFrame ?: this
-    }
-
     companion object {
 
         // standard verb frames

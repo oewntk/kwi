@@ -82,17 +82,6 @@ open class LexFile(
         }
     }
 
-    /**
-     * This utility method implements the appropriate deserialization for this
-     * object.
-     *
-     * @return the appropriate deserialized object.
-     */
-    protected fun readResolve(): Any {
-        val lexFile: LexFile = getLexicalFile(this.number)
-        return if (this == lexFile) lexFile else this
-    }
-
     companion object {
 
         val ADJ_ALL: LexFile = LexFile(0, "adj.all", "all adjective clusters", POS.ADJECTIVE)
@@ -176,24 +165,6 @@ open class LexFile(
          */
         fun isIllegalLexicalFileNumber(num: Int): Boolean {
             return num < 0 || 99 < num
-        }
-
-        private val lexFileNumStrs = arrayOf<String>("00", "01", "02", "03", "04", "05", "06", "07", "08", "09")
-
-        /**
-         * Returns a two-character string representation of a lexical file number, zero-filled if necessary.
-         * This string is suitable for inclusion in Wordnet-formatted files.
-         *
-         * @param num the number to be represented
-         * @return a two-character string representing the number
-         * @throws IllegalArgumentException if the specified integer is not a legal lexical file number
-         */
-        fun getLexicalFileNumberString(num: Int): String {
-            checkLexicalFileNumber(num)
-            if (num < 10) {
-                return lexFileNumStrs[num]
-            }
-            return num.toString()
         }
 
         private val lexFileMap: Map<Int, LexFile> = listOf(

@@ -277,7 +277,7 @@ class Synset internal constructor(
         /**
          * Returns an immutable list of all sense ids related to this sense by the specified pointer type.
          * Note that this only returns senses related by lexical pointers (i.e., not semantic pointers).
-         * To retrieve items related by semantic pointers, call getRelatedFor.
+         * To retrieve items related by semantic pointers, call getRelatedSynsetFor.
          * If this sense has no targets for the specified pointer, this method returns an empty list.
          * This method never returns null.
          *
@@ -285,7 +285,7 @@ class Synset internal constructor(
          * @return the list of senses related by the specified pointer, or an empty list if none.
          */
         fun getRelatedSenseFor(ptr: Pointer): List<SenseID> {
-            return relatedSenses[ptr] ?: emptyList<SenseID>()
+            return relatedSenses[ptr] ?: emptyList()
         }
     }
 

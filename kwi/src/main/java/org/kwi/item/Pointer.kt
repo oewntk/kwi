@@ -20,28 +20,6 @@ class Pointer(
         return name
     }
 
-    /**
-     * This utility method implements the appropriate deserialization for this object.
-     *
-     * @return the appropriate deserialized object.
-     */
-    private fun readResolve(): Any {
-        // check and see if this symbol matches DERIVED_FROM_ADJ (which is
-        // excluded from the pointer map because it is ambiguous)
-        if (DERIVED_FROM_ADJ.symbol == symbol && DERIVED_FROM_ADJ.name == name) {
-            return DERIVED_FROM_ADJ
-        }
-
-        // otherwise, try to find a match symbol
-        val pointer: Pointer? = pointerMap[symbol]
-        if (pointer != null && pointer.symbol == symbol && pointer.name == name) {
-            return pointer
-        }
-
-        // nothing matches, just return the deserialized object
-        return this
-    }
-
     companion object {
 
         val ALSO_SEE: Pointer = Pointer("^", "Also See")
