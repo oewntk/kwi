@@ -51,7 +51,7 @@ class DataSourceDictionary(
      * @param config config parameters
      */
     @JvmOverloads
-    constructor(wordnetDir: URL, config: Config? = null) : this(FileProvider(wordnetDir))
+    constructor(wordnetDir: URL, config: Config? = null) : this(FileProvider(wordnetDir, config = config), config)
 
     init {
         configure(config)
@@ -66,15 +66,12 @@ class DataSourceDictionary(
     // C O N F I G
 
     /**
-     * Sets the character set associated with this dictionary.
+     * The character set associated with this dictionary.
      *
      * @param charset the possibly null character set to use when decoding files.
      */
-    override var charset: Charset?
+    override val charset: Charset?
         get() = dataProvider.charset
-        set(charset) {
-            dataProvider.charset = charset
-        }
 
     /**
      * Configure from config bundle
@@ -89,11 +86,6 @@ class DataSourceDictionary(
         // global params
         if (config.checkLexicalId != null) {
             Synset.checkLexicalId = config.checkLexicalId == true
-        }
-
-        // dictionary params
-        if (config.charSet != null) {
-            charset = config.charSet
         }
     }
 

@@ -1,7 +1,7 @@
 package org.kwi
 
 import org.kwi.DictionaryFactory.fromFile
-import org.kwi.DictionaryFactory.makeFactory
+import org.kwi.DictionaryFactory.factory
 import org.kwi.utils.Sequences.seqAllSenseEntries
 import org.kwi.utils.Sequences.seqAllSenseKeys
 import org.junit.jupiter.api.BeforeAll
@@ -61,7 +61,7 @@ class DuplicateTests {
         @Throws(IOException::class)
         fun init() {
             PS = makePS()
-            dict = fromFile(System.getProperty("SOURCE"), factory=makeFactory(System.getProperty("FACTORY")))
+            dict = fromFile(System.getProperty("SOURCE"), factory=factory(System.getProperty("FACTORY")))
         }
     }
 }

@@ -3,7 +3,7 @@ package org.kwi
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.kwi.DictionaryFactory.fromFile
-import org.kwi.DictionaryFactory.makeFactory
+import org.kwi.DictionaryFactory.factory
 import org.kwi.utils.Walker
 import java.io.IOException
 
@@ -33,7 +33,7 @@ class WalkTests {
         fun init() {
             words = System.getProperty("WORD")
             val ps = makePS()
-            val dict = fromFile(System.getProperty("SOURCE"), factory = makeFactory(System.getProperty("FACTORY")))
+            val dict = fromFile(System.getProperty("SOURCE"), factory = factory(System.getProperty("FACTORY")))
             walker = PrintWalker(dict, ColorStringifier, ps)
         }
     }

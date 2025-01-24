@@ -11,11 +11,15 @@ object DictionaryFactory {
     val nonCachingFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> DataSourceDictionary(FileProvider(url), config) }
     val ramFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> RAMDictionary(url, IMMEDIATE_LOAD, config) }
 
+    /**
+     * Make dictionary from files in directory
+     *
+     * @param wnHome WordNet dictionary directory
+     * @param config config
+     * @param factory dictionary factory, which determines the type of dictionary to create (source, cached, ram)
+     */
     @JvmStatic
     fun fromFile(
-        /**
-         * the WordNet dictionary directory
-         */
         wnHome: String,
         config: Config? = null,
         factory: (url: URL, config: Config?) -> IDictionary = defaultFactory,
@@ -25,11 +29,15 @@ object DictionaryFactory {
         return fromURL(url, config, factory)
     }
 
+    /**
+     * Make dictionary from files in directory
+     *
+     * @param url WordNet dictionary URL
+     * @param config config
+     * @param factory dictionary factory, which determines the type of dictionary to create (source, cached, ram)
+     */
     @JvmStatic
     fun fromURL(
-        /**
-         * the URL to the WordNet dictionary directory
-         */
         url: URL,
         config: Config? = null,
         factory: (url: URL, config: Config?) -> IDictionary = defaultFactory,
@@ -56,8 +64,8 @@ object DictionaryFactory {
     }
 
     @JvmStatic
-    fun makeFactory(tag: String?): (url: URL, config: Config?) -> IDictionary {
-        println("URL dictionary factory: $tag")
+    fun factory(tag: String?): (url: URL, config: Config?) -> IDictionary {
+        println("Factory: $tag")
         return when (tag) {
             "SOURCE" -> { url: URL, config: Config? -> DataSourceDictionary(url, config) }
             "RAM"    -> { url: URL, config: Config? -> RAMDictionary(url, IMMEDIATE_LOAD, config) }

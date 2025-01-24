@@ -1,7 +1,7 @@
 package org.kwi
 
 import org.kwi.DictionaryFactory.fromFile
-import org.kwi.DictionaryFactory.makeFactory
+import org.kwi.DictionaryFactory.factory
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.FileOutputStream
@@ -33,7 +33,7 @@ class ExportTests {
             PS = makePS()
             source = System.getProperty("SOURCE")
             dest = System.getProperty("SER") ?: "$source.ser"
-            dict = fromFile(source, factory = makeFactory("RAM"))
+            dict = fromFile(source, factory = factory("RAM"))
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.kwi
 
 import org.kwi.DictionaryFactory.fromFile
-import org.kwi.DictionaryFactory.makeFactory
+import org.kwi.DictionaryFactory.factory
 import org.kwi.utils.Sequences.seqAllFlatSenseRelations
 import org.kwi.utils.Sequences.seqAllFlatSynsetRelations
 import org.kwi.utils.Sequences.seqAllLemmas
@@ -119,7 +119,7 @@ class IterateTests {
         @Throws(IOException::class)
         fun init() {
             PS = makePS()
-            dict = fromFile(System.getProperty("SOURCE"), factory=makeFactory(System.getProperty("FACTORY")))
+            dict = fromFile(System.getProperty("SOURCE"), factory=factory(System.getProperty("FACTORY")))
         }
     }
 }

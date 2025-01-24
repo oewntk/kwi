@@ -1,5 +1,6 @@
 package org.kwi.data
 
+import org.kwi.Config
 import org.kwi.data.IHasLifecycle.ObjectClosedException
 import org.kwi.item.IHasVersion
 import org.kwi.item.POS
@@ -34,6 +35,7 @@ import java.util.concurrent.locks.ReentrantLock
  */
 class FileProvider @JvmOverloads constructor(
     url: URL,
+    config: Config? = null,
     loadPolicy: Int = LoadPolicy.NO_LOAD,
     contentTypes: Collection<ContentType<*>> = ContentType.values(),
 ) : IHasVersion, IHasLifecycle, IHasCharset, ILoadable {
@@ -119,16 +121,7 @@ class FileProvider @JvmOverloads constructor(
      * @param charset the possibly null character set to use when decoding files.
      * @throws IllegalStateException if the provider is currently open
      */
-    override var charset: Charset? = Charset.defaultCharset()
-        set(charset) {
-            try {
-                lifecycleLock.lock()
-                check(!isOpen) { "provider currently open" }
-                field = charset
-            } finally {
-                lifecycleLock.unlock()
-            }
-        }
+    override var charset: Charset? = config?.charSet ?: Charsets.UTF_8
 
     /**
      * Constructs the file provider pointing to the resource indicated by the path.
