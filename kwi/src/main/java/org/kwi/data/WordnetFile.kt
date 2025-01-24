@@ -2,7 +2,6 @@ package org.kwi.data
 
 import org.kwi.data.compare.ICommentDetector
 import org.kwi.item.Version
-import org.kwi.item.Version.Companion.NO_VERSION
 import org.kwi.item.Version.Companion.extractVersion
 import java.io.File
 import java.io.IOException
@@ -86,12 +85,9 @@ abstract class WordnetFile<T>(
                 throw IHasLifecycle.ObjectClosedException()
             }
             if (field == null) {
-                val v = extractVersion(contentType, buffer!!.asReadOnlyBuffer())
-                if (v == null) {
-                    field = NO_VERSION
-                }
+                field = extractVersion(contentType, buffer!!.asReadOnlyBuffer())
             }
-            return if (field === NO_VERSION) null else field
+            return field
         }
 
     // H A S H   +   E Q U A L S

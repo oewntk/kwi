@@ -7,7 +7,6 @@ import org.kwi.item.POS
 import org.kwi.item.Synset
 import org.kwi.item.Synset.Companion.zeroFillOffset
 import org.kwi.item.Version
-import org.kwi.item.Version.Companion.NO_VERSION
 import java.io.File
 import java.io.FileFilter
 import java.io.IOException
@@ -87,10 +86,7 @@ class FileProvider @JvmOverloads constructor(
         get() {
             checkOpen()
             if (field == null) {
-                field = determineVersion(fileMap!!.values)
-            }
-            if (field === NO_VERSION) {
-                return null
+                field = mergeVersions(fileMap!!.values)
             }
             return field
         }
@@ -451,7 +447,7 @@ class FileProvider @JvmOverloads constructor(
      * @param srcs the data sources to be used to determine the version
      * @return the single version that describes these data sources, or NO_VERSION if there is none
      */
-    private fun determineVersion(srcs: Collection<IDataSource<*>>): Version? {
+    private fun mergeVersions(srcs: Collection<IDataSource<*>>): Version? {
 
         val versionedSources = srcs.filter { it.version != null }
         val version1 = versionedSources.firstOrNull()?.version

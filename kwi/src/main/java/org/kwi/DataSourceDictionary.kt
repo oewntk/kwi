@@ -379,7 +379,7 @@ class DataSourceDictionary(
 
         // version 1.6 of Wordnet adds the adjective marker symbol on the end of the head word lemma
         var headLemma = headSense.lemma
-        val isVer16 = version != null && version!!.majorVersion == 1 && version!!.minorVersion == 6
+        val isVer16 = version != null && version!!.version == "1.6"
         if (isVer16 && headSense.adjectiveMarker != null) {
             headLemma += headSense.adjectiveMarker!!.symbol
         }
