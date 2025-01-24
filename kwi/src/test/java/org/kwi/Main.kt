@@ -17,12 +17,13 @@ class Main {
 
     companion object {
 
+        val defaultFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> Dictionary(url, config) }
         val nonCachingFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> DataSourceDictionary(FileProvider(url), config) }
         val ramFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> RAMDictionary(url, IMMEDIATE_LOAD, config) }
 
         private lateinit var walker: Walker
 
-        private lateinit var factory: (url: URL, config: Config?) -> IDictionary
+        private var factory: (url: URL, config: Config?) -> IDictionary = defaultFactory
 
         fun walkWords(vararg words: String) {
             words.forEach {
