@@ -12,10 +12,10 @@ import java.nio.ByteBuffer
  *
  * @throws IllegalArgumentException if any of the version numbers are negative, or the qualifier is not a legal qualifier
  */
-class Version(val version: String) : Serializable {
+class Version(val value: String) : Serializable {
 
     override fun toString(): String {
-        return version
+        return value
     }
 
     companion object {

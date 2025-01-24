@@ -22,3 +22,10 @@ fun makePS(): PrintStream {
     val verbose = true // TODO !props.containsKey("SILENT")
     return if (verbose) System.out else NULLPS
 }
+
+fun <T> measureTimeMillis1(block: () -> T): Pair<Long, T> {
+    val startTime = System.currentTimeMillis()
+    val result = block()
+    val endTime = System.currentTimeMillis()
+    return Pair(endTime - startTime, result)
+}

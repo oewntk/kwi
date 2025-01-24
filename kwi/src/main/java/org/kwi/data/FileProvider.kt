@@ -449,10 +449,11 @@ class FileProvider @JvmOverloads constructor(
      */
     private fun mergeVersions(srcs: Collection<IDataSource<*>>): Version? {
 
-        val versionedSources = srcs.filter { it.version != null }
-        val version1 = versionedSources.firstOrNull()?.version
-        return if (version1 != null && versionedSources.all { version1 == it.version })
-            version1 else null
+        val versionedSources = srcs.filter { it.version != null }.toList()
+        val version = versionedSources.firstOrNull()?.version
+        return if (version != null && versionedSources.all { version.value == it.version?.value })
+            version
+        else null
     }
 
     companion object {

@@ -14,7 +14,8 @@ import org.kwi.utils.Sequences.seqAllSynsets
 object Info {
 
     fun info(dict: IDictionary): String {
-        return "${dict.javaClass}\n${countAll(dict)}"
+        val v = dict.version
+        return "${dict.javaClass}\nversion=$v\n${countAll(dict)}"
     }
 
     @JvmStatic
