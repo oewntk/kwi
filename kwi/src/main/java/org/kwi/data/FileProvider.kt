@@ -40,6 +40,20 @@ class FileProvider @JvmOverloads constructor(
     contentTypes: Collection<ContentType<*>> = ContentType.values(),
 ) : IHasVersion, IHasLifecycle, IHasCharset, ILoadable {
 
+    // D A T A   L O C A T I O N
+
+    /**
+     * The location of the data.
+     * The source URL from which the provider accesses the data from which it instantiates data sources.
+     * The data at the specified location may be in an implementation-specific format.
+     * If the provider is currently open, this method throws an `IllegalStateException`.
+     */
+    var url: URL = url
+        set(url) {
+            check(!isOpen) { "provider currently open" }
+            field = url
+        }
+
     // S Y N C   L O C K S
 
     private val lifecycleLock: Lock = ReentrantLock()
@@ -97,20 +111,6 @@ class FileProvider @JvmOverloads constructor(
             }
         }
 
-    private val sourceMatcher: MutableMap<ContentTypeKey, String> = HashMap<ContentTypeKey, String>()
-
-    /**
-     * The location of the data.
-     * The source URL from which the provider accesses the data from which it instantiates data sources.
-     * The data at the specified location may be in an implementation-specific format.
-     * If the provider is currently open, this method throws an `IllegalStateException`.
-     */
-    var url: URL = url
-        set(url) {
-            check(!isOpen) { "provider currently open" }
-            field = url
-        }
-
     /**
      * Constructs the file provider pointing to the resource indicated by the path.
      * This file provider has an initial NO_LOAD load policy.
@@ -143,8 +143,6 @@ class FileProvider @JvmOverloads constructor(
             lifecycleLock.lock()
             loadingLock.lock()
 
-            val policy = loadPolicy
-
             // make sure directory exists
             val directory: File = toFile(url)
             if (!directory.exists()) {
@@ -158,7 +156,7 @@ class FileProvider @JvmOverloads constructor(
             }
 
             // make the source map
-            fileMap = createSourceMap(files, policy)
+            fileMap = createSourceMap(files, loadPolicy)
 
             // do load
             try {
@@ -263,18 +261,7 @@ class FileProvider @JvmOverloads constructor(
 
         return contentTypesByKey.values
             .map { contentType: ContentType<*> ->
-                var file: File? = null
-
-                // give first chance to matcher
-                if (sourceMatcher.containsKey(contentType.key)) {
-                    val regex = sourceMatcher[contentType.key]!!
-                    file = match(regex, files)
-                }
-
-                // if it failed fall back on data types
-                if (file == null) {
-                    file = contentType.dataType.find(contentType.pOS, files)
-                }
+                var file = contentType.dataType.find(contentType.pOS, files)
                 contentType to file
             }
             .filter { (_, file) -> file != null }
