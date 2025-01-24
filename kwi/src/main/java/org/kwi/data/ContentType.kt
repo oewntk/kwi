@@ -27,8 +27,8 @@ import org.kwi.item.Synset
  * It is not implemented as an `Enum` so that clients may add their own content types by instantiating this class.
  *
  * @param <T> the type of object for the content type
- * @param key content type key
- * @param lineComparator the line comparator for this content type; may be null if the lines are not ordered
+ * @property key content type key
+ * @property lineComparator the line comparator for this content type; may be null if the lines are not ordered
  * @param charset the character set for this content type
  */
 class ContentType<T>(
