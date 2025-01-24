@@ -452,25 +452,11 @@ class FileProvider @JvmOverloads constructor(
      * @return the single version that describes these data sources, or NO_VERSION if there is none
      */
     private fun determineVersion(srcs: Collection<IDataSource<*>>): Version? {
-        var ver: Version? = NO_VERSION
-        for (dataSrc in srcs) {
-            // if no version to set, ignore
-            if (dataSrc.version == null) {
-                continue
-            }
 
-            // init version
-            if (ver === NO_VERSION) {
-                ver = dataSrc.version
-                continue
-            }
-
-            // if version different from current
-            if (ver != dataSrc.version) {
-                return NO_VERSION
-            }
-        }
-        return ver
+        val versionedSources = srcs.filter { it.version != null }
+        val version1 = versionedSources.firstOrNull()?.version
+        return if (version1 != null && versionedSources.all { version1 == it.version })
+            version1 else null
     }
 
     companion object {
