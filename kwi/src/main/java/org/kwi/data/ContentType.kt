@@ -1,16 +1,7 @@
 package org.kwi.data
 
-import org.kwi.data.compare.DataLineComparator
-import org.kwi.data.compare.ExceptionLineComparator
-import org.kwi.data.compare.ILineComparator
-import org.kwi.data.compare.IndexLineComparator
-import org.kwi.data.compare.SenseKeyLineComparator
-import org.kwi.item.ExceptionEntryProxy
-import org.kwi.item.IHasPOS
-import org.kwi.item.Index
-import org.kwi.item.POS
-import org.kwi.item.SenseEntry
-import org.kwi.item.Synset
+import org.kwi.data.compare.*
+import org.kwi.item.*
 
 /**
  * Objects that represent all possible types of content
@@ -87,20 +78,20 @@ class ContentType<T>(
 
         // set of all content types implemented in this class
         private val contentTypes: Set<ContentType<*>> = setOf(
-                INDEX_NOUN,
-                INDEX_VERB,
-                INDEX_ADVERB,
-                INDEX_ADJECTIVE,
-                DATA_NOUN,
-                DATA_VERB,
-                DATA_ADVERB,
-                DATA_ADJECTIVE,
-                EXCEPTION_NOUN,
-                EXCEPTION_VERB,
-                EXCEPTION_ADVERB,
-                EXCEPTION_ADJECTIVE,
-                SENSE,
-            )
+            INDEX_NOUN,
+            INDEX_VERB,
+            INDEX_ADVERB,
+            INDEX_ADJECTIVE,
+            DATA_NOUN,
+            DATA_VERB,
+            DATA_ADVERB,
+            DATA_ADJECTIVE,
+            EXCEPTION_NOUN,
+            EXCEPTION_VERB,
+            EXCEPTION_ADVERB,
+            EXCEPTION_ADJECTIVE,
+            SENSE,
+        )
 
         /**
          * Emulates the Enum.values() function.

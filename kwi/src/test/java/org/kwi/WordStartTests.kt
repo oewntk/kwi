@@ -1,10 +1,10 @@
 package org.kwi
 
-import org.kwi.DictionaryFactory.fromFile
-import org.kwi.DictionaryFactory.factory
-import org.kwi.item.POS
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.kwi.DictionaryFactory.factory
+import org.kwi.DictionaryFactory.fromFile
+import org.kwi.item.POS
 import java.io.IOException
 import java.io.PrintStream
 
@@ -44,7 +44,7 @@ class WordStartTests {
         @Throws(IOException::class)
         fun init() {
             PS = makePS()
-            dict = fromFile(System.getProperty("SOURCE"), factory=factory(System.getProperty("FACTORY")))
+            dict = fromFile(System.getProperty("SOURCE"), factory = factory(System.getProperty("FACTORY")))
             start = System.getProperty("TARGET")
             val scope = System.getProperty("TARGETSCOPE")
             pos = if (scope != null) POS.valueOf(scope) else null

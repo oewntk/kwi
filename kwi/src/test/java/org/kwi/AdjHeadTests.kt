@@ -1,10 +1,10 @@
 package org.kwi
 
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.kwi.item.POS
 import org.kwi.item.SenseIDWithLemma
 import org.kwi.item.SynsetID
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 import java.io.IOException
 import java.io.PrintStream
 

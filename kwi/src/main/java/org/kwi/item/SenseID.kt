@@ -2,7 +2,6 @@ package org.kwi.item
 
 import java.util.*
 
-
 /**
  * Base abstract class containing only reference to synset
  * The other component (the word) is implemented in the derived classes

@@ -1,15 +1,8 @@
 package org.kwi.utils
 
 import org.kwi.IDictionary
-import org.kwi.item.Index
-import org.kwi.item.POS
-import org.kwi.item.Pointer
-import org.kwi.item.SenseEntry
-import org.kwi.item.SenseID
-import org.kwi.item.Synset
+import org.kwi.item.*
 import org.kwi.item.Synset.Sense
-import org.kwi.item.SynsetID
-import org.kwi.item.VerbFrame
 
 /**
  * Tree exploration

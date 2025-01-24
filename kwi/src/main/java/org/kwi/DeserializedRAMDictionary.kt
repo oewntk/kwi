@@ -3,13 +3,7 @@ package org.kwi
 import org.kwi.data.FileProvider.Companion.isLocalFile
 import org.kwi.data.IHasLifecycle
 import org.kwi.data.LoadPolicy
-import org.kwi.item.Version
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.ObjectInputStream
+import java.io.*
 import java.net.URL
 import java.util.zip.GZIPInputStream
 
@@ -95,7 +89,7 @@ constructor(
 
         // behavior when loading from an input stream is immediate load
         try {
-             load(true)
+            load(true)
         } catch (e: InterruptedException) {
             e.printStackTrace()
             return false

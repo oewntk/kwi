@@ -38,6 +38,6 @@ object Info {
             synsets          =$y
             synset relations =$ry ($fry flat)
             """.trimIndent()
-         return report
+        return report
     }
 }

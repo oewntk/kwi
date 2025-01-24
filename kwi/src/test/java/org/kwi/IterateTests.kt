@@ -1,7 +1,9 @@
 package org.kwi
 
-import org.kwi.DictionaryFactory.fromFile
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.kwi.DictionaryFactory.factory
+import org.kwi.DictionaryFactory.fromFile
 import org.kwi.utils.Sequences.seqAllFlatSenseRelations
 import org.kwi.utils.Sequences.seqAllFlatSynsetRelations
 import org.kwi.utils.Sequences.seqAllLemmas
@@ -11,8 +13,6 @@ import org.kwi.utils.Sequences.seqAllSenseRelations
 import org.kwi.utils.Sequences.seqAllSenses
 import org.kwi.utils.Sequences.seqAllSynsetRelations
 import org.kwi.utils.Sequences.seqAllSynsets
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 import java.io.IOException
 import java.io.PrintStream
 
@@ -103,7 +103,7 @@ class IterateTests {
         dict.seqAllSynsets().forEach {}
         dict.seqAllSenseEntries().forEach {}
         dict.seqAllSenseRelations().forEach {}
-        dict.seqAllFlatSenseRelations().forEach{}
+        dict.seqAllFlatSenseRelations().forEach {}
         dict.seqAllSynsetRelations().forEach {}
         dict.seqAllFlatSynsetRelations().forEach {}
     }
@@ -119,7 +119,7 @@ class IterateTests {
         @Throws(IOException::class)
         fun init() {
             PS = makePS()
-            dict = fromFile(System.getProperty("SOURCE"), factory=factory(System.getProperty("FACTORY")))
+            dict = fromFile(System.getProperty("SOURCE"), factory = factory(System.getProperty("FACTORY")))
         }
     }
 }

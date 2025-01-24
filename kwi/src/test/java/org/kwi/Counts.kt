@@ -1,14 +1,5 @@
 package org.kwi
 
-import org.kwi.utils.Sequences.seqAllFlatSenseRelations
-import org.kwi.utils.Sequences.seqAllFlatSynsetRelations
-import org.kwi.utils.Sequences.seqAllLemmas
-import org.kwi.utils.Sequences.seqAllSenseEntries
-import org.kwi.utils.Sequences.seqAllSenseKeys
-import org.kwi.utils.Sequences.seqAllSenseRelations
-import org.kwi.utils.Sequences.seqAllSenses
-import org.kwi.utils.Sequences.seqAllSynsetRelations
-import org.kwi.utils.Sequences.seqAllSynsets
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.kwi.utils.Info.countAll

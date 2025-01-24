@@ -1,5 +1,6 @@
 package org.kwi.data.parse
 
+import org.kwi.item.*
 import org.kwi.item.LexFile.Companion.getLexicalFile
 import org.kwi.item.POS.Companion.getPartOfSpeech
 import org.kwi.item.Pointer.Companion.getPointerType
@@ -7,14 +8,6 @@ import org.kwi.item.Synset.Companion.normalizeRelatedSense
 import org.kwi.item.Synset.Companion.normalizeRelatedSynset
 import org.kwi.item.Synset.Member
 import org.kwi.item.VerbFrame.Companion.getFrame
-import org.kwi.item.AdjMarker
-import org.kwi.item.LexFile
-import org.kwi.item.POS
-import org.kwi.item.Pointer
-import org.kwi.item.SenseIDWithNum
-import org.kwi.item.Synset
-import org.kwi.item.SynsetID
-import org.kwi.item.VerbFrame
 import java.util.*
 
 data class RelationData(val pointer: Pointer, val targetSynsetID: SynsetID, var sourceTargetNum: Int)

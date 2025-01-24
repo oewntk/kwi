@@ -1,14 +1,7 @@
 package org.kwi.utils
 
 import org.kwi.IDictionary
-import org.kwi.item.ExceptionEntry
-import org.kwi.item.Index
-import org.kwi.item.POS
-import org.kwi.item.Relation
-import org.kwi.item.SenseEntry
-import org.kwi.item.SenseID
-import org.kwi.item.SenseKey
-import org.kwi.item.Synset
+import org.kwi.item.*
 
 object Sequences {
 

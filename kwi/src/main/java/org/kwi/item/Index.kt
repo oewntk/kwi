@@ -56,7 +56,7 @@ class Index(
      */
     val pointers: Set<Pointer> = pointers?.toSet() ?: emptySet()
 
-   /**
+    /**
      * The number of senses of lemma that are ranked according to their frequency of occurrence in semantic concordance texts.
      * This will be a non-negative number.
      */

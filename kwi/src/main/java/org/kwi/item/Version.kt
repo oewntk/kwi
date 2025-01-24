@@ -21,7 +21,7 @@ class Version(val value: String) : Serializable {
     companion object {
 
         // fields for version parsing
-         private val versionPattern = "Word[Nn]et (.*) Copyright".toRegex()
+        private val versionPattern = "Word[Nn]et (.*) Copyright".toRegex()
 
         /**
          * Extracts a version object from a byte buffer that contains data with the specified content type.

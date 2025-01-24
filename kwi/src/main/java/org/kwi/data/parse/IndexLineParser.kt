@@ -1,13 +1,8 @@
 package org.kwi.data.parse
 
+import org.kwi.item.*
 import org.kwi.item.POS.Companion.getPartOfSpeech
 import org.kwi.item.Pointer.Companion.getPointerType
-import org.kwi.item.Index
-import org.kwi.item.POS
-import org.kwi.item.Pointer
-import org.kwi.item.SenseID
-import org.kwi.item.SenseIDWithLemma
-import org.kwi.item.SynsetID
 import java.util.*
 
 /**

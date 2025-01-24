@@ -59,13 +59,13 @@ object DictionaryFactory {
     ): IDictionary {
         println("FROM SER $serPath")
 
-         // deserialize from file
-         val dict = DeserializedRAMDictionary(serPath)
+        // deserialize from file
+        val dict = DeserializedRAMDictionary(serPath)
 
         // open it
         dict.open()
         return dict
-   }
+    }
 
     @JvmStatic
     fun factory(tag: String?): (url: URL, config: Config?) -> IDictionary {

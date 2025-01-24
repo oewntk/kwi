@@ -1,5 +1,6 @@
 package org.kwi.data
 
+import org.kwi.data.IHasLifecycle.ObjectClosedException
 import org.kwi.data.compare.ICommentDetector
 import org.kwi.item.Version
 import org.kwi.item.Version.Companion.extractVersion

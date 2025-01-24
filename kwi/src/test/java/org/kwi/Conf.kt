@@ -1,7 +1,7 @@
 package org.kwi
 
-import org.kwi.DictionaryFactory.fromFile
 import org.kwi.DictionaryFactory.factory
+import org.kwi.DictionaryFactory.fromFile
 import java.io.OutputStream
 import java.io.PrintStream
 

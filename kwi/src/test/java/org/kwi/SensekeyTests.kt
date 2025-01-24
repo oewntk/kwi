@@ -1,12 +1,12 @@
 package org.kwi
 
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.kwi.data.parse.SenseKeyParser
 import org.kwi.item.LexFile.Companion.NOUN_LOCATION
 import org.kwi.item.LexFile.Companion.NOUN_TOPS
 import org.kwi.item.POS
 import org.kwi.item.SenseKey
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 import java.io.IOException
 import java.io.PrintStream
 import kotlin.test.assertEquals

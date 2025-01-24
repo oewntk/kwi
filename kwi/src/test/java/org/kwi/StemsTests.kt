@@ -1,11 +1,11 @@
 package org.kwi
 
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.kwi.item.POS
 import org.kwi.morph.SimpleStemmer
 import org.kwi.morph.SimpleStemmer.Companion.cartesianProduct
 import org.kwi.morph.WordnetStemmer
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 import java.io.IOException
 import java.io.PrintStream
 
@@ -19,7 +19,7 @@ class StemsTests {
     }
 
     val verbs = arrayOf("works", "does", "finished", "dies")
-    val nouns = arrayOf("works", "vertices", "suffixes",  "does", "boatsful", "hearts breakers", "mice", "dice", "dies")
+    val nouns = arrayOf("works", "vertices", "suffixes", "does", "boatsful", "hearts breakers", "mice", "dice", "dies")
     val both = nouns + verbs
 
     @Test
@@ -58,14 +58,14 @@ class StemsTests {
         private fun stems(pos: POS? = null, vararg words: String) {
             words.forEach {
                 val lemmas = stemmer.findStems(it, null)
-                PS.println("stems of '$it' for ${pos ?: "any"} are ${lemmas.joinToString(separator = ",", transform = {"'$it'"})}")
+                PS.println("stems of '$it' for ${pos ?: "any"} are ${lemmas.joinToString(separator = ",", transform = { "'$it'" })}")
             }
         }
 
         private fun dictStems(pos: POS? = null, vararg words: String) {
             words.forEach {
                 val lemmas = dictStemmer.findStems(it, pos)
-                PS.println("dict stems of '$it' for ${pos ?: "any"} are ${lemmas.joinToString(separator = ",", transform = {"'$it'"})}")
+                PS.println("dict stems of '$it' for ${pos ?: "any"} are ${lemmas.joinToString(separator = ",", transform = { "'$it'" })}")
             }
         }
 

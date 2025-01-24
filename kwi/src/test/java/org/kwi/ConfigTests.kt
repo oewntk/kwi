@@ -28,7 +28,7 @@ class ConfigTests {
 
         private lateinit var words: String
 
-        private var charset1 =  Charsets.ISO_8859_1
+        private var charset1 = Charsets.ISO_8859_1
 
         private val charset2 = Charsets.UTF_8
 

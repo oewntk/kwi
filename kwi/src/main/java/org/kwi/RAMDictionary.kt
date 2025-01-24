@@ -5,17 +5,7 @@ import org.kwi.data.IHasLifecycle.LifecycleState
 import org.kwi.data.IHasLifecycle.ObjectOpenException
 import org.kwi.data.LoadPolicy.BACKGROUND_LOAD
 import org.kwi.data.LoadPolicy.IMMEDIATE_LOAD
-import org.kwi.item.ExceptionEntry
-import org.kwi.item.ExceptionKey
-import org.kwi.item.Index
-import org.kwi.item.IndexID
-import org.kwi.item.POS
-import org.kwi.item.SenseEntry
-import org.kwi.item.SenseID
-import org.kwi.item.SenseKey
-import org.kwi.item.Synset
-import org.kwi.item.SynsetID
-import org.kwi.item.Version
+import org.kwi.item.*
 import java.io.File
 import java.net.URL
 import java.util.concurrent.Callable
@@ -204,7 +194,6 @@ constructor(
 
     override val version: Version?
         get() = if (data != null) super.version else backingDictionary.version
-
 
     // L O O K   U P
 

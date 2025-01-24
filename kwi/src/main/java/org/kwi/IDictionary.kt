@@ -1,17 +1,7 @@
 package org.kwi
 
 import org.kwi.data.IHasLifecycle
-import org.kwi.item.ExceptionEntry
-import org.kwi.item.ExceptionKey
-import org.kwi.item.IHasVersion
-import org.kwi.item.Index
-import org.kwi.item.IndexID
-import org.kwi.item.POS
-import org.kwi.item.SenseEntry
-import org.kwi.item.SenseID
-import org.kwi.item.SenseKey
-import org.kwi.item.Synset
-import org.kwi.item.SynsetID
+import org.kwi.item.*
 import java.nio.charset.Charset
 
 /**

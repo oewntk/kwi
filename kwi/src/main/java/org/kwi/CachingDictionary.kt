@@ -1,19 +1,8 @@
 package org.kwi
 
 import org.kwi.data.IHasLifecycle
-import org.kwi.item.ExceptionEntry
-import org.kwi.item.ExceptionKey
-import org.kwi.item.IItem
-import org.kwi.item.IItemID
-import org.kwi.item.Index
-import org.kwi.item.IndexID
-import org.kwi.item.POS
-import org.kwi.item.SenseEntry
-import org.kwi.item.SenseID
-import org.kwi.item.SenseKey
-import org.kwi.item.Synset
-import org.kwi.item.SynsetID
-import org.kwi.item.Version
+import org.kwi.data.IHasLifecycle.ObjectClosedException
+import org.kwi.item.*
 import java.io.IOException
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock

@@ -1,13 +1,8 @@
 package org.kwi
 
-import org.kwi.utils.Sequences.seqMembers
+import org.kwi.item.*
 import org.kwi.item.Synset.Sense
-import org.kwi.item.POS
-import org.kwi.item.Pointer
-import org.kwi.item.SenseEntry
-import org.kwi.item.SenseID
-import org.kwi.item.Synset
-import org.kwi.item.VerbFrame
+import org.kwi.utils.Sequences.seqMembers
 
 /**
  * Stringify
@@ -16,19 +11,19 @@ import org.kwi.item.VerbFrame
  */
 open class Stringifier {
 
-    open fun lemmaSep(): String{
+    open fun lemmaSep(): String {
         return "@".repeat(80)
     }
 
-    open fun posSep(): String{
+    open fun posSep(): String {
         return "#".repeat(80)
     }
 
-    open fun senseSep(): String{
+    open fun senseSep(): String {
         return "-".repeat(80)
     }
 
-    open fun synsetSep(): String{
+    open fun synsetSep(): String {
         return ""
     }
 
@@ -37,7 +32,7 @@ open class Stringifier {
     }
 
     open fun toString(pos: POS): String {
-        return  "■ pos: ${pos.name}"
+        return "■ pos: ${pos.name}"
     }
 
     open fun toString(ptr: Pointer): String {

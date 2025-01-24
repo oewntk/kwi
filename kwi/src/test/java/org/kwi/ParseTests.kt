@@ -1,9 +1,9 @@
 package org.kwi
 
-import org.kwi.data.parse.DataLineParser
-import org.kwi.item.Synset
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.kwi.data.parse.DataLineParser
+import org.kwi.item.Synset
 import java.io.IOException
 import java.io.PrintStream
 import kotlin.test.assertIs

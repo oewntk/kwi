@@ -6,26 +6,11 @@ import org.kwi.data.FileProvider
 import org.kwi.data.IHasCharset
 import org.kwi.data.IHasLifecycle.ObjectClosedException
 import org.kwi.data.parse.ILineParser
-import org.kwi.item.ExceptionEntry
-import org.kwi.item.ExceptionEntryProxy
-import org.kwi.item.ExceptionKey
-import org.kwi.item.IHasPOS
-import org.kwi.item.Index
-import org.kwi.item.IndexID
-import org.kwi.item.POS
-import org.kwi.item.Pointer
-import org.kwi.item.SenseEntry
-import org.kwi.item.SenseID
-import org.kwi.item.SenseIDWithLemma
-import org.kwi.item.SenseIDWithNum
-import org.kwi.item.SenseKey
-import org.kwi.item.Synset
-import org.kwi.item.SynsetID
-import org.kwi.item.Version
+import org.kwi.item.*
 import java.io.IOException
 import java.net.URL
 import java.nio.charset.Charset
-import java.util.Collections
+import java.util.*
 
 /**
  * A type of `IDictionary` which uses an instance of a `DataProvider` to obtain its data.
