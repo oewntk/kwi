@@ -1,7 +1,6 @@
 package org.kwi.item
 
 import java.io.Serializable
-import java.util.*
 
 /**
  * A verb frame as specified from the verb frames data file in the Wordnet distribution

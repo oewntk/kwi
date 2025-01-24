@@ -153,6 +153,6 @@ interface IDictionary : IHasVersion, IHasLifecycle {
 
 class Config {
 
-    var checkLexicalId: Boolean? = null
     var charSet: Charset? = null
+    var checkLexicalId: Boolean? = null
 }

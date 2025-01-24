@@ -2,10 +2,8 @@ package org.kwi
 
 import org.kwi.data.IHasLifecycle
 import org.kwi.data.ILoadable
-import org.kwi.data.LoadPolicy
 import org.kwi.item.*
 import java.io.*
-import java.net.URL
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import java.util.zip.GZIPOutputStream
@@ -308,79 +306,5 @@ abstract class BaseRAMDictionary protected constructor(
     companion object {
 
         const val NO_DATA = "Data not loaded into memory"
-
-        /**
-         * This is a convenience method that transforms a Wordnet dictionary at the
-         * specified file location into an in-memory image written to the specified
-         * output stream. The file may point to either a directory or in-memory
-         * image.
-         *
-         * @param in the file from which the Wordnet data should be loaded
-         * @param out the output stream to which the Wordnet data should be written
-         * @return true if the export was successful
-         * @throws IOException          if there is an IO problem when opening or exporting the dictionary.
-         */
-        @Throws(IOException::class)
-        fun export(`in`: File, out: OutputStream): Boolean {
-            return export(RAMDictionary(`in`, LoadPolicy.IMMEDIATE_LOAD), out)
-        }
-
-        /**
-         * This is a convenience method that transforms a Wordnet dictionary at the
-         * specified url location into an in-memory image written to the specified
-         * output stream. The url may point to either a directory or in-memory
-         * image.
-         *
-         * @param in the url from which the Wordnet data should be loaded
-         * @param out the output stream to which the Wordnet data should be written
-         * @return true if the export was successful
-         * @throws IOException          if there is an IO problem when opening or exporting the dictionary.
-         */
-        @Throws(IOException::class)
-        fun export(`in`: URL, out: OutputStream): Boolean {
-            return export(RAMDictionary(`in`, LoadPolicy.IMMEDIATE_LOAD), out)
-        }
-
-        /**
-         * This is a convenience method that transforms a Wordnet dictionary drawn
-         * from the specified input stream factory into an in-memory image written to
-         * the specified output stream.
-         *
-         * @param in the file from which the Wordnet data should be loaded
-         * @param out the output stream to which the Wordnet data should be written
-         * @return true if the export was successful
-         * @throws IOException          if there is an IO problem when opening or exporting the dictionary.
-         */
-        @Throws(IOException::class)
-        fun export(`in`: DeserializedRAMDictionary.IInputStreamFactory, out: OutputStream): Boolean {
-            return export(DeserializedRAMDictionary(`in`), out)
-        }
-
-        /**
-         * Exports a specified RAM Dictionary object to the specified output stream.
-         * This is convenience method.
-         *
-         * @param dict the dictionary to be exported; the dictionary will be closed at the end of the method.
-         * @param out the output stream to which the data will be written.
-         * @return true if the export was successful
-         * @throws IOException if there was a IO problem during export
-         */
-        @Throws(IOException::class)
-        private fun export(dict: BaseRAMDictionary, out: OutputStream): Boolean {
-            // load initial data into memory
-            var dict = dict
-            print("Performing load...")
-            dict.open()
-            println("(done)")
-
-            // export to intermediate file
-            print("Performing export...")
-            dict.export(out)
-            dict.close()
-            //dict = null
-            System.gc()
-            println("(done)")
-            return true
-        }
     }
 }

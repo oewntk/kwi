@@ -1,12 +1,9 @@
 package org.kwi.item
 
 import org.kwi.data.ContentType
-import org.kwi.data.DataType
 import org.kwi.data.WordnetFile.Companion.getLine
 import java.io.Serializable
 import java.nio.ByteBuffer
-import java.util.*
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 /**

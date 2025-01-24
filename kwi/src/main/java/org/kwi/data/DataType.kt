@@ -1,17 +1,8 @@
 package org.kwi.data
 
-import org.kwi.data.parse.DataLineParser
-import org.kwi.data.parse.ExceptionLineParser
-import org.kwi.data.parse.ILineParser
-import org.kwi.data.parse.IndexLineParser
-import org.kwi.data.parse.SenseLineParser
-import org.kwi.item.ExceptionEntryProxy
-import org.kwi.item.Index
-import org.kwi.item.POS
-import org.kwi.item.SenseEntry
-import org.kwi.item.Synset
+import org.kwi.data.parse.*
+import org.kwi.item.*
 import java.io.File
-import java.util.*
 
 /**
  * Objects that represent possible types of data that occur in the dictionary data directory.

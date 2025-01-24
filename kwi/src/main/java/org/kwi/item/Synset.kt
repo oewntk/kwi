@@ -324,7 +324,7 @@ class Synset internal constructor(
      * @property headWord head_word is the lemma of the first word of the satellite's head synset.
      * @property headID  head_id is a two digit decimal integer that, when appended onto head_word , uniquely identifies the sense of head_word within a lexicographer file, as described for lex_id .
      */
-    data class Head(val headWord: String, val headID: Int)
+    data class Head(val headWord: String, val headID: Int) : Serializable
 
     companion object {
 

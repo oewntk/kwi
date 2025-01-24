@@ -3,6 +3,7 @@ package org.kwi
 import org.kwi.DictionaryFactory.fromSer
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.kwi.utils.Info.info
 import java.io.IOException
 import java.io.PrintStream
 import kotlin.test.assertNotNull
@@ -13,7 +14,8 @@ class ImportTests {
     fun import() {
         val dict = fromSer(source)
         assertNotNull(dict)
-    }
+        PS.println(info(dict))
+     }
 
     companion object {
 

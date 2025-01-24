@@ -1,7 +1,6 @@
 package org.kwi.item
 
 import java.io.Serializable
-import java.util.*
 
 /**
  * This class includes, as public fields, all pointers, lexical and semantic, defined in the standard WordNet distribution.
