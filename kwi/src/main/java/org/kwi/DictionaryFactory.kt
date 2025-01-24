@@ -44,7 +44,7 @@ object DictionaryFactory {
     ): IDictionary {
         println("FROM URL $url")
 
-        // construct the dictionary object and open it
+        // construct the dictionary object
         val dict = factory.invoke(url, config)
 
         // open it
@@ -54,14 +54,18 @@ object DictionaryFactory {
 
     @JvmStatic
     fun fromSer(
-        /**
-         * The serialized dictionary file
-         */
+        /** The serialized dictionary file */
         serPath: String,
     ): IDictionary {
         println("FROM SER $serPath")
-        return DeserializedRAMDictionary(serPath)
-    }
+
+         // deserialize from file
+         val dict = DeserializedRAMDictionary(serPath)
+
+        // open it
+        dict.open()
+        return dict
+   }
 
     @JvmStatic
     fun factory(tag: String?): (url: URL, config: Config?) -> IDictionary {
