@@ -16,7 +16,6 @@ import java.net.URI
 import java.net.URL
 import java.net.URLDecoder
 import java.nio.charset.Charset
-import java.util.*
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 
@@ -277,16 +276,6 @@ class FileProvider @JvmOverloads constructor(
                 }
             }
             .associate { (contentType, file) -> contentType to createDataSource(file!!, contentType, policy) }
-    }
-
-    private fun match(pattern: String, files: MutableList<File>): File? {
-        for (file in files) {
-            val name = file.name
-            if (name.matches(pattern.toRegex())) {
-                return file
-            }
-        }
-        return null
     }
 
     /**
