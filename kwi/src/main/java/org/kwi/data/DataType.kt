@@ -64,7 +64,7 @@ class DataType<T>(
         val DATA: DataType<Synset> = DataType<Synset>("Data", true, DataLineParser, arrayOf("data", "dat"))
 
         @JvmField
-        val EXCEPTION: DataType<ExceptionEntryProxy> = DataType<ExceptionEntryProxy>("Exception", false, ExceptionLineParser, arrayOf("exception", "exc"))
+        val EXCEPTION: DataType<ExceptionProtoEntry> = DataType<ExceptionProtoEntry>("Exception", false, ExceptionLineParser, arrayOf("exception", "exc"))
 
         @JvmField
         val SENSE: DataType<SenseEntry> = DataType<SenseEntry>("Sense", false, SenseLineParser, arrayOf("sense"))

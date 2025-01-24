@@ -69,10 +69,10 @@ class ContentType<T>(
         val DATA_ADVERB = ContentType<Synset>(ContentTypeKey.DATA_ADVERB, DataLineComparator)
         val DATA_ADJECTIVE = ContentType<Synset>(ContentTypeKey.DATA_ADJECTIVE, DataLineComparator)
 
-        val EXCEPTION_NOUN = ContentType<ExceptionEntryProxy>(ContentTypeKey.EXCEPTION_NOUN, ExceptionLineComparator)
-        val EXCEPTION_VERB = ContentType<ExceptionEntryProxy>(ContentTypeKey.EXCEPTION_VERB, ExceptionLineComparator)
-        val EXCEPTION_ADVERB = ContentType<ExceptionEntryProxy>(ContentTypeKey.EXCEPTION_ADVERB, ExceptionLineComparator)
-        val EXCEPTION_ADJECTIVE = ContentType<ExceptionEntryProxy>(ContentTypeKey.EXCEPTION_ADJECTIVE, ExceptionLineComparator)
+        val EXCEPTION_NOUN = ContentType<ExceptionProtoEntry>(ContentTypeKey.EXCEPTION_NOUN, ExceptionLineComparator)
+        val EXCEPTION_VERB = ContentType<ExceptionProtoEntry>(ContentTypeKey.EXCEPTION_VERB, ExceptionLineComparator)
+        val EXCEPTION_ADVERB = ContentType<ExceptionProtoEntry>(ContentTypeKey.EXCEPTION_ADVERB, ExceptionLineComparator)
+        val EXCEPTION_ADJECTIVE = ContentType<ExceptionProtoEntry>(ContentTypeKey.EXCEPTION_ADJECTIVE, ExceptionLineComparator)
 
         val SENSE = ContentType<SenseEntry>(ContentTypeKey.SENSE, SenseKeyLineComparator)
 

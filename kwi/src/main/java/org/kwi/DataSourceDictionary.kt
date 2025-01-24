@@ -177,8 +177,8 @@ class DataSourceDictionary(
         val content = dataProvider.resolveContentType(DataType.EXCEPTION, id.pOS)!!
         val file = dataProvider.getSource(content)!!
         val line = file.getLine(id.surfaceForm) ?: return null
-        val proxy = content.dataType.parser.parseLine(line)
-        return ExceptionEntry(proxy, id.pOS)
+        val proto = content.dataType.parser.parseLine(line)
+        return ExceptionEntry(proto, id.pOS)
     }
 
     override fun getLemmasStartingWith(start: String, pos: POS?, limit: Int): Set<String> {
@@ -331,13 +331,13 @@ class DataSourceDictionary(
     /**
      * Iterates over exception files.
      */
-    inner class ExceptionFileIterator(pos: POS?) : FileIterator<ExceptionEntryProxy, ExceptionEntry>(
-        dataProvider.resolveContentType<ExceptionEntryProxy>(DataType.EXCEPTION, pos)!!
+    inner class ExceptionFileIterator(pos: POS?) : FileIterator<ExceptionProtoEntry, ExceptionEntry>(
+        dataProvider.resolveContentType<ExceptionProtoEntry>(DataType.EXCEPTION, pos)!!
     ) {
 
         override fun parseLine(line: String): ExceptionEntry {
-            val proxy = parser.parseLine(line)
-            return ExceptionEntry(proxy, pOS)
+            val proto = parser.parseLine(line)
+            return ExceptionEntry(proto, pOS)
         }
     }
 
