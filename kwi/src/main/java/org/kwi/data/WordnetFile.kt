@@ -69,7 +69,7 @@ abstract class WordnetFile<T>(
      */
     fun getBuffer(): ByteBuffer {
         if (!isOpen) {
-            throw IHasLifecycle.ObjectClosedException()
+            throw ObjectClosedException()
         }
         return buffer!!
     }
@@ -83,7 +83,7 @@ abstract class WordnetFile<T>(
     override var version: Version? = null
         get() {
             if (!isOpen) {
-                throw IHasLifecycle.ObjectClosedException()
+                throw ObjectClosedException()
             }
             if (field == null) {
                 field = extractVersion(contentType, buffer!!.asReadOnlyBuffer())
@@ -204,14 +204,14 @@ abstract class WordnetFile<T>(
 
     override fun iterator(): LineIterator {
         if (!isOpen) {
-            throw IHasLifecycle.ObjectClosedException()
+            throw ObjectClosedException()
         }
         return makeIterator(getBuffer(), null)
     }
 
     override fun iterator(key: String?): LineIterator {
         if (!isOpen) {
-            throw IHasLifecycle.ObjectClosedException()
+            throw ObjectClosedException()
         }
         return makeIterator(getBuffer(), key)
     }

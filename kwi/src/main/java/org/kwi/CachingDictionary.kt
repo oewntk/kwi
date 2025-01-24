@@ -43,14 +43,14 @@ open class CachingDictionary(
                 try {
                     cache.open()
                 } catch (e: IOException) {
-                    throw IHasLifecycle.ObjectClosedException(e)
+                    throw ObjectClosedException(e)
                 }
             }
         } else {
             if (cache.isOpen) {
                 cache.close()
             }
-            throw IHasLifecycle.ObjectClosedException()
+            throw ObjectClosedException()
         }
     }
 
@@ -333,7 +333,7 @@ open class CachingDictionary(
          */
         private fun checkOpen() {
             if (!isOpen) {
-                throw IHasLifecycle.ObjectClosedException()
+                throw ObjectClosedException()
             }
         }
 

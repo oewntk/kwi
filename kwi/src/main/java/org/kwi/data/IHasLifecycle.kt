@@ -48,14 +48,6 @@ interface IHasLifecycle : IClosable {
         constructor() : super()
 
         /**
-         * Constructs a new exception with the specified detail message.
-         * The cause is not initialized, and may subsequently be initialized by a call to initCause.
-         *
-         * @param message the detail message. The detail message is saved for later retrieval by the getMessage method.
-         */
-        constructor(message: String?) : super(message)
-
-        /**
          * Constructs a new exception with the specified cause and a detail message of `(cause==null ? null : cause.toString())` (which typically contains the class and detail message of `cause`).
          * This constructor is useful for runtime exceptions that are little more than wrappers for other throwables.
          *

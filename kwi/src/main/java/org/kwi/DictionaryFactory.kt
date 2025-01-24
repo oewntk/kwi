@@ -1,6 +1,5 @@
 package org.kwi
 
-import org.kwi.data.FileProvider
 import org.kwi.data.LoadPolicy.IMMEDIATE_LOAD
 import java.io.File
 import java.net.URL
@@ -8,7 +7,7 @@ import java.net.URL
 object DictionaryFactory {
 
     val defaultFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> Dictionary(url, config) }
-    val nonCachingFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> DataSourceDictionary(FileProvider(url), config) }
+    val nonCachingFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> DataSourceDictionary(url, config) }
     val ramFactory: (url: URL, config: Config?) -> IDictionary = { url: URL, config: Config? -> RAMDictionary(url, IMMEDIATE_LOAD, config) }
 
     /**
@@ -71,9 +70,9 @@ object DictionaryFactory {
     fun factory(tag: String?): (url: URL, config: Config?) -> IDictionary {
         println("Factory: $tag")
         return when (tag) {
-            "SOURCE" -> { url: URL, config: Config? -> DataSourceDictionary(url, config) }
-            "RAM"    -> { url: URL, config: Config? -> RAMDictionary(url, IMMEDIATE_LOAD, config) }
-            else     -> { url: URL, config: Config? -> Dictionary(url, config) }
+            "SOURCE" -> nonCachingFactory
+            "RAM"    -> ramFactory
+            else     -> defaultFactory
         }
     }
 }
