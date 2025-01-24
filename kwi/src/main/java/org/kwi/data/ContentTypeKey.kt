@@ -6,7 +6,7 @@ import org.kwi.item.POS
  * Content type keys.
  */
 enum class ContentTypeKey(
-    private val dataType: DataType<*>,
+    internal val dataType: DataType<*>,
     val pOS: POS?,
 ) {
 
@@ -23,9 +23,4 @@ enum class ContentTypeKey(
     EXCEPTION_ADVERB(DataType.EXCEPTION, POS.ADVERB),
     EXCEPTION_ADJECTIVE(DataType.EXCEPTION, POS.ADJECTIVE),
     SENSE(DataType.SENSE, null);
-
-    fun <T> getDataType(): DataType<T> {
-        @Suppress("UNCHECKED_CAST")
-        return dataType as DataType<T>
-    }
 }

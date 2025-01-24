@@ -11,8 +11,6 @@ import org.kwi.item.Index
 import org.kwi.item.POS
 import org.kwi.item.SenseEntry
 import org.kwi.item.Synset
-import java.nio.charset.Charset
-import java.util.*
 
 /**
  * Objects that represent all possible types of content
@@ -51,7 +49,8 @@ class ContentType<T>(
 
     val dataType: DataType<T>
         get() {
-            return key.getDataType<T>()
+            @Suppress("UNCHECKED_CAST")
+            return key.dataType as DataType<T>
         }
 
     override val pOS: POS?
@@ -61,9 +60,9 @@ class ContentType<T>(
 
     override fun toString(): String {
         return if (key.pOS != null) {
-            "[ContentType: " + key.getDataType<Any?>().toString() + "/" + key.pOS + "]"
+            "[ContentType: ${key.dataType}/${key.pOS}]"
         } else {
-            "[ContentType: " + key.getDataType<Any?>().toString() + "]"
+            "[ContentType: ${key.dataType}]"
         }
     }
 
@@ -111,51 +110,6 @@ class ContentType<T>(
         @JvmStatic
         fun values(): Collection<ContentType<*>> {
             return contentTypes
-        }
-
-        /**
-         * Use this convenience method to retrieve the appropriate IndexWord content type for the specified POS.
-         *
-         * @param pos the part-of-speech for the content type
-         * @return the index content type for the specified part-of-speech
-         */
-        fun getIndexContentType(pos: POS): ContentType<Index> {
-            return when (pos) {
-                POS.NOUN      -> INDEX_NOUN
-                POS.VERB      -> INDEX_VERB
-                POS.ADVERB    -> INDEX_ADVERB
-                POS.ADJECTIVE -> INDEX_ADJECTIVE
-            }
-        }
-
-        /**
-         * Use this convenience method to retrieve the appropriate Synset content type for the specified POS.
-         *
-         * @param pos the part-of-speech for the content type
-         * @return the index content type for the specified part-of-speech
-         */
-        fun getDataContentType(pos: POS): ContentType<Synset> {
-            return when (pos) {
-                POS.NOUN      -> DATA_NOUN
-                POS.VERB      -> DATA_VERB
-                POS.ADVERB    -> DATA_ADVERB
-                POS.ADJECTIVE -> DATA_ADJECTIVE
-            }
-        }
-
-        /**
-         * Use this convenience method to retrieve the appropriate ExceptionEntryProxy content type for the specified POS.
-         *
-         * @param pos the part-of-speech for the content type
-         * @return the index content type for the specified part-of-speech
-         */
-        fun getExceptionContentType(pos: POS): ContentType<ExceptionEntryProxy> {
-            return when (pos) {
-                POS.NOUN      -> EXCEPTION_NOUN
-                POS.VERB      -> EXCEPTION_VERB
-                POS.ADVERB    -> EXCEPTION_ADVERB
-                POS.ADJECTIVE -> EXCEPTION_ADJECTIVE
-            }
         }
     }
 }

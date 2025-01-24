@@ -127,15 +127,15 @@ class FileProvider @JvmOverloads constructor(
      * Returns the first content type, if any, that matches the specified data type and pos object.
      *
      * @param <T> type
-     * @param dt the data type, possibly null, of the desired content type
+     * @param dataTyoe the data type, possibly null, of the desired content type
      * @param pos the part-of-speech, possibly null, of the desired content type
      * @return the first content type that matches the specified data type and part-of-speech.
      */
-    fun <T> resolveContentType(dt: DataType<T>, pos: POS?): ContentType<T> {
+    fun <T> resolveContentType(dataType: DataType<T>, pos: POS?): ContentType<T> {
 
         @Suppress("UNCHECKED_CAST")
         return contentTypesByKey.entries
-            .first { (k, _) -> k.getDataType<Any?>() == dt && k.pOS == pos }.value as ContentType<T>
+            .first { (k, _) -> k.dataType == dataType && k.pOS == pos }.value as ContentType<T>
     }
 
     @Throws(IOException::class)
