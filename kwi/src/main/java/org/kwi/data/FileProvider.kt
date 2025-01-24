@@ -40,18 +40,36 @@ class FileProvider @JvmOverloads constructor(
     contentTypes: Collection<ContentType<*>> = ContentType.values(),
 ) : IHasVersion, IHasLifecycle, IHasCharset, ILoadable {
 
+    // S Y N C   L O C K S
+
     private val lifecycleLock: Lock = ReentrantLock()
 
     private val loadingLock: Lock = ReentrantLock()
 
-    private val defaultContentTypes: Collection<ContentType<*>> = contentTypes
+    // C O N T E N T   T Y P E S
 
-    private val prototypeMap: Map<ContentTypeKey, ContentType<*>> = contentTypes
+    private val contentTypesByKey: Map<ContentTypeKey, ContentType<*>> = contentTypes
         .asSequence()
         .map { it.key to it }
         .toMap()
-        .toMap()
 
+    private var fileMap: Map<ContentType<*>, ILoadableDataSource<*>>? = null
+
+    // C H A R S E T
+
+    /**
+     * The character set associated with this dictionary.
+     *
+     * @param charset the possibly-null character set to use when decoding files.
+     * @throws IllegalStateException if the provider is currently open
+     */
+    override var charset: Charset? = config?.charSet ?: Charsets.UTF_8
+
+    // V E R S I O N
+
+    /**
+     * Version
+     */
     override var version: Version? = null
         get() {
             checkOpen()
@@ -64,7 +82,7 @@ class FileProvider @JvmOverloads constructor(
             return field
         }
 
-    private var fileMap: Map<ContentType<*>, ILoadableDataSource<*>>? = null
+    // L O A D I N G
 
     @Transient
     private var loader: KWIBackgroundLoader? = null
@@ -87,41 +105,11 @@ class FileProvider @JvmOverloads constructor(
      * The data at the specified location may be in an implementation-specific format.
      * If the provider is currently open, this method throws an `IllegalStateException`.
      */
-    var source: URL = url
+    var url: URL = url
         set(url) {
             check(!isOpen) { "provider currently open" }
             field = url
         }
-
-    /**
-     * Returns a data source object for the specified content type, if one is available; otherwise returns null.
-     *
-     * @param <T> the content type of the data source
-     * @param contentType the content type of the data source to be retrieved
-     * @return the data source for the specified content type, or null if this provider has no such data source
-     * @throws ObjectClosedException if the provider is not open when this call is made
-     */
-    fun <T> getSource(contentType: ContentType<T>): ILoadableDataSource<T>? {
-        checkOpen()
-
-        // assume at first this the prototype
-        var actualType = prototypeMap[contentType.key]
-
-        // if this does not map to an adjusted type, we will check under it directly
-        if (actualType == null) {
-            actualType = contentType
-        }
-        @Suppress("UNCHECKED_CAST")
-        return fileMap!![actualType] as ILoadableDataSource<T>
-    }
-
-    /**
-     * Sets the character set associated with this dictionary.
-     *
-     * @param charset the possibly null character set to use when decoding files.
-     * @throws IllegalStateException if the provider is currently open
-     */
-    override var charset: Charset? = config?.charSet ?: Charsets.UTF_8
 
     /**
      * Constructs the file provider pointing to the resource indicated by the path.
@@ -135,16 +123,6 @@ class FileProvider @JvmOverloads constructor(
         require(!contentTypes.isEmpty())
     }
 
-    private fun getDefault(key: ContentTypeKey?): ContentType<*>? {
-        for (contentType in this.defaultContentTypes) {
-            if (contentType.key == key) {
-                return contentType
-            }
-        }
-        // this should not happen
-        return null
-    }
-
     /**
      * Returns the first content type, if any, that matches the specified data type and pos object.
      *
@@ -153,14 +131,11 @@ class FileProvider @JvmOverloads constructor(
      * @param pos the part-of-speech, possibly null, of the desired content type
      * @return the first content type that matches the specified data type and part-of-speech.
      */
-    fun <T> resolveContentType(dt: DataType<T>?, pos: POS?): ContentType<T>? {
-        for (e in prototypeMap.entries) {
-            if (e.key.getDataType<Any?>() == dt && e.key.pOS == pos) {
-                @Suppress("UNCHECKED_CAST")
-                return e.value as ContentType<*>? as ContentType<T>?
-            }
-        }
-        return null
+    fun <T> resolveContentType(dt: DataType<T>, pos: POS?): ContentType<T> {
+
+        @Suppress("UNCHECKED_CAST")
+        return contentTypesByKey.entries
+            .first { (k, _) -> k.getDataType<Any?>() == dt && k.pOS == pos }.value as ContentType<T>
     }
 
     @Throws(IOException::class)
@@ -172,7 +147,7 @@ class FileProvider @JvmOverloads constructor(
             val policy = loadPolicy
 
             // make sure directory exists
-            val directory: File = toFile(source)
+            val directory: File = toFile(url)
             if (!directory.exists()) {
                 throw IOException("Dictionary directory does not exist: $directory")
             }
@@ -249,6 +224,28 @@ class FileProvider @JvmOverloads constructor(
         }
 
     /**
+     * Returns a data source object for the specified content type, if one is available; otherwise returns null.
+     *
+     * @param <T> the content type of the data source
+     * @param contentType the content type of the data source to be retrieved
+     * @return the data source for the specified content type, or null if this provider has no such data source
+     * @throws ObjectClosedException if the provider is not open when this call is made
+     */
+    fun <T> getSource(contentType: ContentType<T>): ILoadableDataSource<T>? {
+        checkOpen()
+
+        // assume at first this the prototype
+        var actualType = contentTypesByKey[contentType.key]
+
+        // if this does not map to an adjusted type, we will check under it directly
+        if (actualType == null) {
+            actualType = contentType
+        }
+        @Suppress("UNCHECKED_CAST")
+        return fileMap!![actualType] as ILoadableDataSource<T>
+    }
+
+    /**
      * Creates the map that contains the content types mapped to the data sources.
      * The method should return a non-null result, but it may be empty if no data sources can be created.
      *
@@ -265,7 +262,7 @@ class FileProvider @JvmOverloads constructor(
             .sortedBy { it.name }
             .toMutableList()
 
-        return prototypeMap.values
+        return contentTypesByKey.values
             .map { contentType: ContentType<*> ->
                 var file: File? = null
 
