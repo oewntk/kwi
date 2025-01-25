@@ -5,7 +5,7 @@
   <groupId>io.github.oewntk</groupId>
   <artifactId>kwi</artifactId>
   <packaging>jar</packaging>
-  <version>2.4.1.1</version>
+  <version>3.0.0</version>
 
   <name>Kotlin WordNet Extended Interface</name>
   <description>Kotlin library for interfacing with WordNet and English WordNet</description>
