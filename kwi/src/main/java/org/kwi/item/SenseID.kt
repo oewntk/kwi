@@ -40,6 +40,7 @@ abstract class SenseID(
          * @return the parsed id
          * @throws IllegalArgumentException if the specified string does not represent a sense id
          */
+        @JvmStatic
         fun parseSenseID(value: String): SenseID {
             require(value.length >= 19)
             require(value.startsWith("$PREFIX-"))

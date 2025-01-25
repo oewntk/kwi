@@ -16,6 +16,7 @@ object SenseKeyParser : ILineParser<SenseKey> {
         return parseSenseKey(line)
     }
 
+    @JvmStatic
     fun parseSenseKey(key: String): SenseKey {
         try {
             var begin = 0

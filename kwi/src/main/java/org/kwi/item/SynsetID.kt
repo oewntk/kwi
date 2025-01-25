@@ -69,6 +69,7 @@ class SynsetID(
          * @return a synset id object corresponding to the specified string representation
          * @throws IllegalArgumentException if the specified string is not a properly formatted synset id
          */
+        @JvmStatic
         fun parseSynsetID(value: String): SynsetID {
             var value = value.trim { it <= ' ' }
             require(value.length == 14)
