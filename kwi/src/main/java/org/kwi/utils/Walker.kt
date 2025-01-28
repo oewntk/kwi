@@ -15,6 +15,26 @@ open class Walker(val dict: IDictionary) {
         dict.open()
     }
 
+    open fun walkTop(lemma: String) {
+        walkTop(lemma)
+    }
+
+    open fun walkTop(lemma: String, pos: POS) {
+        walk(lemma, pos)
+    }
+
+    open fun walkTop(idx: Index) {
+        walkIndex(idx)
+    }
+
+    open fun walkTop(senseid: SenseID) {
+        walkSense(senseid)
+    }
+
+    open fun walkTop(synsetid: SynsetID) {
+        walkSynset(synsetid)
+    }
+
     fun walk(lemma: String) {
         consumeLemma(lemma)
         POS.entries.forEach { pos ->

@@ -18,7 +18,7 @@ class WalkTests {
     @Test
     fun walkTest() {
         words.splitToSequence(',').forEach {
-            walker.walk(it)
+            walker.walkTop(it)
         }
     }
 

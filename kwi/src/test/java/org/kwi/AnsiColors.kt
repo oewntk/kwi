@@ -78,71 +78,71 @@ object AnsiColors {
 
     const val Z = RESET
 
-    fun white(s: String): String {
+    fun white(s: CharSequence): CharSequence {
         return "$Wl$s$Z"
     }
 
-    fun grey(s: String): String {
+    fun grey(s: CharSequence): CharSequence {
         return "$W$s$Z"
     }
 
-    fun black(s: String): String {
+    fun black(s: CharSequence): CharSequence {
         return "$K$s$Z"
     }
 
-    fun red(s: String): String {
+    fun red(s: CharSequence): CharSequence {
         return "$R$s$Z"
     }
 
-    fun green(s: String): String {
+    fun green(s: CharSequence): CharSequence {
         return "$G$s$Z"
     }
 
-    fun blue(s: String): String {
+    fun blue(s: CharSequence): CharSequence {
         return "$B$s$Z"
     }
 
-    fun magenta(s: String): String {
+    fun magenta(s: CharSequence): CharSequence {
         return "$M$s$Z"
     }
 
-    fun yellow(s: String): String {
+    fun yellow(s: CharSequence): CharSequence {
         return "$Y$s$Z"
     }
 
-    fun cyan(s: String): String {
+    fun cyan(s: CharSequence): CharSequence {
         return "$C$s$Z"
     }
 
-    fun redb(s: String): String {
+    fun redb(s: CharSequence): CharSequence {
         return "$bR$Wl$s$Z"
     }
 
-    fun greenb(s: String): String {
+    fun greenb(s: CharSequence): CharSequence {
         return "$bG$Wl$s$Z"
     }
 
-    fun blueb(s: String): String {
+    fun blueb(s: CharSequence): CharSequence {
         return "$bB$Wl$s$Z"
     }
 
-    fun color(color: String, s: String): String {
+    fun color(color: CharSequence, s: CharSequence): CharSequence {
         return "$color$s$Z"
     }
 
-    fun yellowb(s: String): String {
+    fun yellowb(s: CharSequence): CharSequence {
         return "$bY$K$s$Z"
     }
 
-    fun bold(s: String): String {
+    fun bold(s: CharSequence): CharSequence {
         return "$BOLD$s$STOP_BOLD"
     }
 
-    fun underline(s: String): String {
+    fun underline(s: CharSequence): CharSequence {
         return "$UNDERLINE$s$STOP_UNDERLINE"
     }
 
-    fun blink(s: String): String {
+    fun blink(s: CharSequence): CharSequence {
         return "$BLINK$s$Z"
     }
 }

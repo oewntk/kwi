@@ -14,76 +14,80 @@ import org.kwi.item.VerbFrame
  */
 open class Stringifier {
 
-    open fun lemmaSep(): String {
+    open fun lemmaSep(): CharSequence {
         return "@".repeat(80) + '\n'
     }
 
-    open fun posSep(): String {
+    open fun posSep(): CharSequence {
         return "#".repeat(80) + '\n'
     }
 
-    open fun senseSep(): String {
+    open fun senseSep(): CharSequence {
         return "-".repeat(80) + '\n'
     }
 
-    open fun synsetSep(): String {
+    open fun synsetSep(): CharSequence {
         return ""
     }
 
-    open fun lemmaToString(lemma: String): String {
+    open fun lemmaToCharSequence(lemma: String): CharSequence {
         return lemma
     }
 
-    open fun posToString(pos: POS): String {
-        return "■ pos: ${pos.name}"
+    open fun posToCharSequence(pos: POS): CharSequence {
+        return "$POS_BULLET pos: ${pos.name}"
     }
 
-    open fun ptrToString(ptr: Pointer): String {
+    open fun ptrToCharSequence(ptr: Pointer): CharSequence {
         return "\thas $ptr"
     }
 
-    open fun senseIDToString(senseid: SenseID): String {
+    open fun senseIDToCharSequence(senseid: SenseID): CharSequence {
         return ""
     }
 
-    open fun synsetToString(synset: Synset): String {
-        return "● synset: ${synset.toShortString()}"
+    open fun synsetToCharSequence(synset: Synset): CharSequence {
+        return "$SYNSET_BULLET synset: ${synset.toShortString()}"
     }
 
-    open fun senseToString(sense: Synset.Sense): String {
+    open fun senseToCharSequence(sense: Synset.Sense): CharSequence {
         val adjMarker = if (sense.adjectiveMarker != null) " adjmarker=$sense.adjectiveMarker" else ""
-        return "● sense: $sense synset=${sense.synset.toShortString()} lexid=${sense.lexicalID} sensekey=${sense.senseKey}$adjMarker"
+        return "$SENSE_BULLET sense: $sense synset=${sense.synset.toShortString()} lexid=${sense.lexicalID} sensekey=${sense.senseKey}$adjMarker"
     }
 
-    open fun senseEntryToString(senseEntry: SenseEntry): String {
+    open fun senseEntryToCharSequence(senseEntry: SenseEntry): CharSequence {
         return " sensenum=${senseEntry.senseNumber} tagcnt=${senseEntry.tagCount}"
     }
 
-    open fun relatedTypeToString(pointer: Pointer, isSense: Boolean, level: Int): String {
+    open fun relatedTypeToCharSequence(pointer: Pointer, isSense: Boolean, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
-        return "$indentSpace🡆 ${pointer.name}"
+        return "$indentSpace$RELATION_BULLET ${pointer.name}"
     }
 
-    open fun relatedSenseToString(sense: Synset.Sense, pointer: Pointer): String {
-        return "  \t'${sense.lemma}' in synset=${sense.synset.toShortString()}"
+    open fun relatedSenseToCharSequence(sense: Synset.Sense, pointer: Pointer): CharSequence {
+        return "\t'${sense.lemma}' in synset=${sense.synset.toShortString()}"
     }
 
-    open fun relatedSynsetToString(synset: Synset, level: Int): String {
+    open fun relatedSynsetToCharSequence(synset: Synset, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
         return "$indentSpace${membersOf(synset)} ${synset.gloss}"
     }
 
-    open fun verbFramesToString(verbFrame: VerbFrame, lemma: String): String {
-        return "  verb frame: ${verbFrame.template} : ${verbFrame.instantiateTemplate(lemma)}"
+    open fun verbFramesToCharSequence(verbFrame: VerbFrame, lemma: String): CharSequence {
+        return "\tverb frame: ${verbFrame.template} : ${verbFrame.instantiateTemplate(lemma)}"
     }
 
     companion object {
+        const val POS_BULLET = "■"
+        const val SYNSET_BULLET = "●"
+        const val SENSE_BULLET = "●"
+        const val RELATION_BULLET = "→"
 
-        fun Synset.toShortString(): String {
+        fun Synset.toShortString(): CharSequence {
             return "${this.iD}-${membersOf(this)}"
         }
 
-        fun membersOf(synset: Synset): String {
+        fun membersOf(synset: Synset): CharSequence {
             return Sequences.seqMembers(synset).joinToString(separator = ",", prefix = "{", postfix = "}")
         }
     }

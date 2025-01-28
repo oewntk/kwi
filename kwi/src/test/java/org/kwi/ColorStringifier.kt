@@ -22,61 +22,61 @@ object ColorStringifier : Stringifier() {
     private const val SENSE = AnsiColors.K + AnsiColors.bB
     private const val SENSE_RELATION = AnsiColors.B
 
-    override fun lemmaSep(): String {
+    override fun lemmaSep(): CharSequence {
         return "\n\n"
     }
 
-    override fun posSep(): String {
+    override fun posSep(): CharSequence {
         return "\n"
     }
 
-    //override fun senseSep(): String{
+    //override fun senseSep(): CharSequence{
     //    return super.senseSep()
     //}
 
-    override fun lemmaToString(lemma: String): String {
+    override fun lemmaToCharSequence(lemma: String): CharSequence {
         return yellowb(lemma)
     }
 
-    override fun posToString(pos: POS): String {
-        return yellow(super.posToString(pos))
+    override fun posToCharSequence(pos: POS): CharSequence {
+        return yellow(super.posToCharSequence(pos))
     }
 
-    override fun ptrToString(ptr: Pointer): String {
-        return black(super.ptrToString(ptr))
+    override fun ptrToCharSequence(ptr: Pointer): CharSequence {
+        return black(super.ptrToCharSequence(ptr))
     }
 
-    // override fun senseIDToString(senseid: SenseID): String {
-    //     return super.toString(senseid)
+    // override fun senseIDToCharSequence(senseid: SenseID): CharSequence {
+    //     return super.senseIDToCharSequence(senseid)
     // }
 
-    override fun synsetToString(synset: Synset): String {
-        return color(SYNSET, super.synsetToString(synset))
+    override fun synsetToCharSequence(synset: Synset): CharSequence {
+        return color(SYNSET, super.synsetToCharSequence(synset))
     }
 
-    override fun senseToString(sense: Sense): String {
-        return color(SENSE, super.senseToString(sense))
+    override fun senseToCharSequence(sense: Sense): CharSequence {
+        return color(SENSE, super.senseToCharSequence(sense))
     }
 
-    override fun senseEntryToString(senseEntry: SenseEntry): String {
-        return color(SENSE, super.senseEntryToString(senseEntry))
+    override fun senseEntryToCharSequence(senseEntry: SenseEntry): CharSequence {
+        return color(SENSE, super.senseEntryToCharSequence(senseEntry))
     }
 
-    override fun relatedTypeToString(pointer: Pointer, isSense: Boolean, level: Int): String {
+    override fun relatedTypeToCharSequence(pointer: Pointer, isSense: Boolean, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
-        val text = "$indentSpace🡆 ${bold(pointer.name)}"
+        val text = "$indentSpace$RELATION_BULLET ${bold(pointer.name)}"
         return if (isSense) color(SENSE_RELATION, text) else color(SYNSET_RELATION, text)
     }
 
-    override fun relatedSenseToString(sense: Sense, pointer: Pointer): String {
-        return color(SENSE_RELATION, super.relatedSenseToString(sense, pointer))
+    override fun relatedSenseToCharSequence(sense: Sense, pointer: Pointer): CharSequence {
+        return color(SENSE_RELATION, super.relatedSenseToCharSequence(sense, pointer))
     }
 
-    override fun relatedSynsetToString(synset: Synset, level: Int): String {
-        return magenta(super.relatedSynsetToString(synset, level))
+    override fun relatedSynsetToCharSequence(synset: Synset, level: Int): CharSequence {
+        return magenta(super.relatedSynsetToCharSequence(synset, level))
     }
 
-    override fun verbFramesToString(verbFrame: VerbFrame, lemma: String): String {
+    override fun verbFramesToCharSequence(verbFrame: VerbFrame, lemma: String): CharSequence {
         return "  verb frame: ${verbFrame.template} : ${verbFrame.instantiateTemplate(lemma)}"
     }
 }
