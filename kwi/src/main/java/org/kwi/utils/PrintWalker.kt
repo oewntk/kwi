@@ -14,7 +14,7 @@ import java.io.PrintStream
  *
  * @author Bernard Bou
  */
-class PrintWalker(
+open class PrintWalker(
     dict: IDictionary,
     val str: Stringifier,
     val ps: PrintStream,
