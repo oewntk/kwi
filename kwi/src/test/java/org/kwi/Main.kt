@@ -3,6 +3,7 @@ package org.kwi
 import org.kwi.DictionaryFactory.fromFile
 import org.kwi.data.FileProvider
 import org.kwi.data.LoadPolicy.IMMEDIATE_LOAD
+import org.kwi.utils.PrintWalker
 import org.kwi.utils.Walker
 import java.io.IOException
 import java.net.URL

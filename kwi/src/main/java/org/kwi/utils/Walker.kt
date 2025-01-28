@@ -26,83 +26,89 @@ open class Walker(val dict: IDictionary) {
         val idx = dict.getIndex(lemma, pos)
         if (idx != null) {
             consumePos(pos)
-            walk(idx)
+            walkIndex(idx)
         }
     }
 
-    fun walk(idx: Index) {
+    fun walkIndex(idx: Index) {
         idx.pointers.forEach { ptr ->
             consumePointer(ptr)
         }
         idx.senseIDs.forEach { senseid ->
             consumeSenseID(senseid)
-            walk(senseid)
+            walkSynset(senseid.synsetID, 1)
+            walkSense(senseid)
         }
     }
 
-    fun walk(senseid: SenseID) {
+    fun walkSense(senseid: SenseID) {
         val sense = dict.getSense(senseid)!!
-        val synset = dict.getSynset(senseid.synsetID)!!
-
-        walk(synset, 1)
-        walk(sense)
+        walkSense(sense)
     }
 
-    fun walk(sense: Sense) {
+    fun walkSense(sense: Sense) {
         val senseEntry = dict.getSenseEntry(sense.senseKey)!!
         consumeSense(sense, senseEntry)
 
         // lexical relations
-        walk(sense.relatedSenses)
+        walkRelatedSenses(sense.relatedSenses)
 
         // verb frames
-        walk(sense.verbFrames, sense.lemma)
+        walkVerbFrames(sense.verbFrames, sense.lemma)
     }
 
-    fun walk(relatedSenses: Map<Pointer, List<SenseID>>) {
-        relatedSenses.entries.forEach { (ptr, related) ->
+    fun walkRelatedSenses(relatedSenses: Map<Pointer, List<SenseID>>) {
+        relatedSenses.entries.forEach { (ptr, relatedSenseIDs) ->
             consumeRelatedSenseType(ptr, 1)
-            walk(related, ptr)
+            walkSenseRelationsFor(relatedSenseIDs, ptr)
         }
     }
 
-    fun walk(relatedSenseIDs: List<SenseID>, ptr: Pointer) {
+    fun walkSenseRelationsFor(relatedSenseIDs: List<SenseID>, ptr: Pointer) {
         relatedSenseIDs.forEach { relatedId ->
             val related = dict.getSense(relatedId)!!
             consumeRelatedSense(related, ptr, 2)
         }
     }
 
-    fun walk(verbFrames: List<VerbFrame>?, lemma: String) {
-        verbFrames?.forEach { verbFrame ->
-            consumeVerbFrame(verbFrame, lemma)
-        }
+    // synset
+
+    @JvmOverloads
+    fun walkSynset(synsetID: SynsetID, level: Int = 0) {
+        val synset = dict.getSynset(synsetID)!!
+        walkSynset(synset, level)
     }
 
-    fun walk(synset: Synset, level: Int) {
+    @JvmOverloads
+    fun walkSynset(synset: Synset, level: Int = 0) {
         consumeSynset(synset)
         synset.relatedSynsets.entries.forEach { (ptr, related) ->
             consumeRelatedSynsetType(ptr, level)
-            walk(related, ptr, level)
+            walkSynsetRelationsFor(related, ptr, level)
         }
     }
 
-    fun walk(relatedSynsetIDs: List<SynsetID>, ptr: Pointer, level: Int) {
-        relatedSynsetIDs.forEach { relatedID ->
-            val synset = dict.getSynset(relatedID)!!
-            consumeRelatedSynset(synset, ptr, level)
-            walk(synset, ptr, level + 1)
-        }
+    @JvmOverloads
+    fun walkSynsetRelationsFor(synset: Synset, ptr: Pointer, level: Int = 0) {
+        val relatedSynsetIDs = synset.getRelatedSynsetsFor(ptr)
+        walkSynsetRelationsFor(relatedSynsetIDs, ptr, level)
     }
 
-    fun walk(synset: Synset, ptr: Pointer, level: Int) {
-        val relatedIDs = synset.getRelatedSynsetsFor(ptr)
-        relatedIDs.forEach { synsetid2 ->
-            val synset2 = dict.getSynset(synsetid2)!!
-            consumeRelatedSynset(synset2, ptr, level)
+    @JvmOverloads
+    fun walkSynsetRelationsFor(relatedSynsetIDs: List<SynsetID>, ptr: Pointer, level: Int = 0) {
+        relatedSynsetIDs.forEach { relatedSynsetID ->
+            val relatedSynset = dict.getSynset(relatedSynsetID)!!
+            consumeRelatedSynset(relatedSynset, ptr, level)
+
             if (Pointer.canRecurse(ptr)) {
-                walk(synset2, ptr, level + 1)
+                walkSynsetRelationsFor(relatedSynset, ptr, level + 1)
             }
+        }
+    }
+
+    fun walkVerbFrames(verbFrames: List<VerbFrame>?, lemma: String) {
+        verbFrames?.forEach { verbFrame ->
+            consumeVerbFrame(verbFrame, lemma)
         }
     }
 
@@ -120,11 +126,19 @@ open class Walker(val dict: IDictionary) {
 
     open fun consumeVerbFrame(verbFrame: VerbFrame, lemma: String) {}
 
-    open fun consumeRelatedSenseType(ptr: Pointer, level: Int) {}
+    @JvmOverloads
+    open fun consumeRelatedSenseType(ptr: Pointer, level: Int = 0) {
+    }
 
-    open fun consumeRelatedSense(sense: Sense, pointer: Pointer, level: Int) {}
+    @JvmOverloads
+    open fun consumeRelatedSense(sense: Sense, pointer: Pointer, level: Int = 0) {
+    }
 
-    open fun consumeRelatedSynsetType(ptr: Pointer, level: Int) {}
+    @JvmOverloads
+    open fun consumeRelatedSynsetType(ptr: Pointer, level: Int = 0) {
+    }
 
-    open fun consumeRelatedSynset(synset: Synset, ptr: Pointer, level: Int) {}
+    @JvmOverloads
+    open fun consumeRelatedSynset(synset: Synset, ptr: Pointer, level: Int = 0) {
+    }
 }

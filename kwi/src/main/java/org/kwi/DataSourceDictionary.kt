@@ -7,6 +7,7 @@ import org.kwi.data.IHasCharset
 import org.kwi.data.IHasLifecycle.ObjectClosedException
 import org.kwi.data.parse.ILineParser
 import org.kwi.item.*
+import org.kwi.item.SynsetID.Companion.zeroFillOffset
 import java.io.IOException
 import java.net.URL
 import java.nio.charset.Charset
@@ -159,7 +160,7 @@ class DataSourceDictionary(
         checkOpen()
         val content = dataProvider.resolveContentType(DataType.DATA, id.pOS)!!
         val file = dataProvider.getSource(content)!!
-        val zeroFilledOffset = Synset.zeroFillOffset(id.offset)
+        val zeroFilledOffset = zeroFillOffset(id.offset)
         val line = file.getLine(zeroFilledOffset) ?: return null
         val synset = content.dataType.parser.parseLine(line)
         if (synset.isAdjectiveSatellite) {

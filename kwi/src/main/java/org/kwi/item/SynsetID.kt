@@ -1,5 +1,6 @@
 package org.kwi.item
 
+import org.kwi.item.Synset.Companion.checkOffset
 import java.util.*
 
 /**
@@ -48,7 +49,7 @@ class SynsetID(
     }
 
     override fun toString(): String {
-        return "$SYNSETID_PREFIX${Synset.zeroFillOffset(offset)}-${pOS.tag.uppercaseChar()}"
+        return "$PREFIX${zeroFillOffset(offset)}-${pOS.tag.uppercaseChar()}"
     }
 
     companion object {
@@ -56,7 +57,22 @@ class SynsetID(
         /**
          * String prefix for the toString method.
          */
-        const val SYNSETID_PREFIX: String = "SID-"
+        const val PREFIX = "SID-"
+
+        /**
+         * Takes an integer in the closed range [0,99999999] and converts it into an eight decimal digit zero-filled string.
+         * E.g., "1" becomes "00000001", "1234" becomes "00001234", and so on.
+         * This is used for the generation of synset and sense numbers.
+         *
+         * @param offset the offset to be converted
+         * @return the zero-filled string representation of the offset
+         * @throws IllegalArgumentException if the specified offset is not in the valid range of [0,99999999]
+         */
+        @JvmStatic
+        fun zeroFillOffset(offset: Int): String {
+            checkOffset(offset)
+            return "%08d".format(offset)
+        }
 
         /**
          * Convenience method for transforming the result of the toString method back into an ISynsetID.
@@ -72,14 +88,19 @@ class SynsetID(
         @JvmStatic
         fun parseSynsetID(value: String): SynsetID {
             var value = value.trim { it <= ' ' }
-            require(value.length == 14)
-            require(value.startsWith("SID-"))
+            require(value.startsWith(PREFIX))
+
+            val synsetFrom = PREFIX.length
+            val synsetTo = synsetFrom + 8
+            val posFrom = synsetTo + 1
+            val posTo = posFrom + 1
+            require(value.length >= posTo)
 
             // get offset
-            val offset = value.substring(4, 12).toInt()
+            val offset = value.substring(synsetFrom, synsetTo).toInt()
 
             // get pos
-            val posTag = value[13].lowercaseChar()
+            val posTag = value[posFrom].lowercaseChar()
             val pos = POS.getPartOfSpeech(posTag)
             requireNotNull(pos) { "unknown part-of-speech tag: $posTag" }
             return SynsetID(offset, pos)

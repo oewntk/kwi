@@ -7,7 +7,7 @@
   <packaging>jar</packaging>
   <version>3.0.0</version>
 
-  <name>Kotlin WordNet Extended Interface</name>
+  <name>Kotlin WordNet Interface</name>
   <description>Kotlin library for interfacing with WordNet and English WordNet</description>
   <url>https://github.com/oewntk/kwi</url>
 
@@ -126,7 +126,6 @@
             <WORD>love</WORD>
             <TARGET>arb</TARGET>
             <TARGETSCOPE>VERB</TARGETSCOPE>
-            <SILENT/>
           </systemPropertyVariables>
         </configuration>
       </plugin>
@@ -286,7 +285,6 @@
                 <SOURCE>${project.basedir}/wndb</SOURCE>
                 <SOURCE2>${project.basedir}/wndb31</SOURCE2>
                 <WORD>love,earth</WORD>
-                <SILENT/>
               </systemPropertyVariables>
               <includes>
                 <include>**/*Tests.kt</include>
@@ -313,7 +311,6 @@
                 <SOURCE>${project.basedir}/wndb30</SOURCE>
                 <SOURCE2>${project.basedir}/wndb31</SOURCE2>
                 <WORD>love,earth</WORD>
-                <SILENT/>
               </systemPropertyVariables>
               <includes>
                 <include>**/*Tests.kt</include>
@@ -340,7 +337,6 @@
                 <SOURCE>${project.basedir}/wndb31</SOURCE>
                 <SOURCE2>${project.basedir}/wndb</SOURCE2>
                 <WORD>love,earth</WORD>
-                <SILENT/>
               </systemPropertyVariables>
               <includes>
                 <include>**/*Tests.kt</include>

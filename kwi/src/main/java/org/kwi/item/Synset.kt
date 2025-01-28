@@ -144,7 +144,7 @@ class Synset internal constructor(
     }
 
     override fun toString(): String {
-        return "S-{${iD} [${senses.joinToString(separator = ", ")}]}"
+        return "$SYNSET_PREFIX-{${iD} [${senses.joinToString(separator = ", ")}]}"
     }
 
     /**
@@ -225,8 +225,8 @@ class Synset internal constructor(
         }
 
         override fun toString(): String {
-            val sid = iD.synsetID.toString().substring(4)
-            return "W-$sid-${iD.senseNumber}-${iD.lemma}"
+            val sid = iD.synsetID.toString().substring(SynsetID.PREFIX.length)
+            return "$SENSE_PREFIX-$sid-${iD.senseNumber}-${iD.lemma}"
         }
 
         override fun hashCode(): Int {
@@ -328,20 +328,9 @@ class Synset internal constructor(
 
     companion object {
 
-        /**
-         * Takes an integer in the closed range [0,99999999] and converts it into an eight decimal digit zero-filled string.
-         * E.g., "1" becomes "00000001", "1234" becomes "00001234", and so on.
-         * This is used for the generation of synset and sense numbers.
-         *
-         * @param offset the offset to be converted
-         * @return the zero-filled string representation of the offset
-         * @throws IllegalArgumentException if the specified offset is not in the valid range of [0,99999999]
-         */
-        @JvmStatic
-        fun zeroFillOffset(offset: Int): String {
-            checkOffset(offset)
-            return "%08d".format(offset)
-        }
+        const val SYNSET_PREFIX = "S"
+
+        const val SENSE_PREFIX = "W"
 
         /**
          * Throws an exception if the specified offset is not in the valid range of [0,99999999].
@@ -423,20 +412,6 @@ class Synset internal constructor(
                 return true
             }
             return num > 255
-        }
-
-        /**
-         * Returns a string representation of the specified integer as a two hex digit zero-filled string.
-         * E.g., "1" becomes "01", "10" becomes "0A", and so on.
-         * This is used for the generation of Sense ID numbers.
-         *
-         * @param num the number to be converted
-         * @return a two hex digit zero-filled string representing the specified number
-         * @throws IllegalArgumentException if the specified number is not a legal sense number
-         */
-        @JvmStatic
-        fun zeroFillSenseNumber(num: Int): String {
-            return "%02x".format(num)
         }
 
         @JvmStatic

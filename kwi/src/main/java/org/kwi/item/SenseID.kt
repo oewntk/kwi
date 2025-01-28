@@ -1,5 +1,7 @@
 package org.kwi.item
 
+import org.kwi.item.SenseIDWithLemmaAndNum.Companion.zeroFillSenseNumber
+import org.kwi.item.SynsetID.Companion.zeroFillOffset
 import java.util.*
 
 /**
@@ -19,14 +21,14 @@ abstract class SenseID(
     override val pOS: POS
         get() = synsetID.pOS
 
-    override fun toString(): String {
+    protected fun stubString(): String {
         val pos = synsetID.pOS
-        return "$PREFIX${Synset.zeroFillOffset(synsetID.offset)}-${pos.tag.uppercaseChar()}"
+        return "$PREFIX${zeroFillOffset(synsetID.offset)}-${pos.tag.uppercaseChar()}"
     }
 
     companion object {
 
-        private const val PREFIX = "WID"
+        const val PREFIX = "WID-"
 
         /**
          * Parses the result of the toString method back into an SenseID.
@@ -42,28 +44,29 @@ abstract class SenseID(
          */
         @JvmStatic
         fun parseSenseID(value: String): SenseID {
-            require(value.length >= 19)
-            require(value.startsWith("$PREFIX-"))
+            require(value.startsWith(PREFIX))
 
             // get synset id
-            val synsetFrom = PREFIX.length + 1
+            val synsetFrom = PREFIX.length
             val synsetTo = synsetFrom + 8
-            val offset = value.substring(synsetFrom, synsetTo).toInt()
-
             val posFrom = synsetTo + 1
+            val posTo = posFrom + 1
+            val numFrom = posTo + 1
+            val numTo = numFrom + 2
+            val lemmaFrom = numTo + 1
+            require(value.length >= lemmaFrom)
+
+            val offset = value.substring(synsetFrom, synsetTo).toInt()
             val pos = POS.getPartOfSpeech(value[posFrom])
             val id = SynsetID(offset, pos)
 
             // get sense number
-            val numFrom = posFrom + 2
-            val numTo = numFrom + 2
             val num = value.substring(numFrom, numTo)
             if (num != SenseIDWithLemma.UNKNOWN_NUMBER) {
                 return SenseIDWithNum(id, num.toInt(16))
             }
 
             // get lemma
-            val lemmaFrom = numTo + 2
             val lemma = value.substring(lemmaFrom)
             require(lemma != SenseIDWithNum.UNKNOWN_LEMMA)
             return SenseIDWithLemma(id, lemma)
@@ -110,7 +113,7 @@ class SenseIDWithNum(synsetID: SynsetID, val senseNumber: Int) : SenseID(synsetI
     }
 
     override fun toString(): String {
-        return "${super.toString()}-${Synset.zeroFillSenseNumber(senseNumber)}-$UNKNOWN_LEMMA"
+        return "${stubString()}-${zeroFillSenseNumber(senseNumber)}-$UNKNOWN_LEMMA"
     }
 
     companion object {
@@ -160,7 +163,7 @@ open class SenseIDWithLemma(synsetID: SynsetID, lemma: String) : SenseID(synsetI
     }
 
     override fun toString(): String {
-        return "${super.toString()}-$UNKNOWN_NUMBER-$lemma"
+        return "${stubString()}-$UNKNOWN_NUMBER-$lemma"
     }
 
     companion object {
@@ -209,6 +212,23 @@ class SenseIDWithLemmaAndNum(synsetID: SynsetID, val senseNumber: Int, lemma: St
     }
 
     override fun toString(): String {
-        return "${super.toString()}-${Synset.zeroFillSenseNumber(senseNumber)}-$lemma"
+        return "${stubString()}-${zeroFillSenseNumber(senseNumber)}-$lemma"
+    }
+
+    companion object {
+
+        /**
+         * Returns a string representation of the specified integer as a two hex digit zero-filled string.
+         * E.g., "1" becomes "01", "10" becomes "0A", and so on.
+         * This is used for the generation of Sense ID numbers.
+         *
+         * @param num the number to be converted
+         * @return a two hex digit zero-filled string representing the specified number
+         * @throws IllegalArgumentException if the specified number is not a legal sense number
+         */
+        @JvmStatic
+        fun zeroFillSenseNumber(num: Int): String {
+            return "%02x".format(num)
+        }
     }
 }

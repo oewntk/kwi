@@ -3,6 +3,7 @@ package org.kwi
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.kwi.DictionaryFactory.fromFile
+import org.kwi.utils.PrintWalker
 import java.io.IOException
 import java.io.PrintStream
 

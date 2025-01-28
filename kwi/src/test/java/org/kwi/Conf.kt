@@ -18,8 +18,8 @@ private val NULLPS = PrintStream(object : OutputStream() {
 })
 
 fun makePS(): PrintStream {
-    // val props = System.getProperties()
-    val verbose = true // TODO !props.containsKey("SILENT")
+    val props = System.getProperties()
+    val verbose = !props.containsKey("SILENT")
     return if (verbose) System.out else NULLPS
 }
 

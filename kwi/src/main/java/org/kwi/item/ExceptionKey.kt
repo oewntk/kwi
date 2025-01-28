@@ -50,13 +50,13 @@ class ExceptionKey(
     companion object {
 
         /**
-         * Convenience method for transforming the result of the toString method back into an IExceptionEntryID.
+         * Convenience method for transforming the result of the toString method back into an ExceptionEntryKey.
          *
          * @param value the string to parse
          * @return the derived exception entry id
          * @throws IllegalArgumentException if the specified string does not conform to an exception entry id
          */
-        fun parseExceptionEntryID(value: String): ExceptionKey {
+        fun parseExceptionEntryKey(value: String): ExceptionKey {
             require(value.startsWith("EID-"))
             require(value[value.length - 2] == '-')
 

@@ -8,6 +8,7 @@ import org.kwi.AnsiColors.yellow
 import org.kwi.AnsiColors.yellowb
 import org.kwi.item.*
 import org.kwi.item.Synset.Sense
+import org.kwi.utils.Stringifier
 
 /**
  * Stringify
@@ -33,49 +34,49 @@ object ColorStringifier : Stringifier() {
     //    return super.senseSep()
     //}
 
-    override fun toString(lemma: String): String {
+    override fun lemmaToString(lemma: String): String {
         return yellowb(lemma)
     }
 
-    override fun toString(pos: POS): String {
-        return yellow(super.toString(pos))
+    override fun posToString(pos: POS): String {
+        return yellow(super.posToString(pos))
     }
 
-    override fun toString(ptr: Pointer): String {
-        return black(super.toString(ptr))
+    override fun ptrToString(ptr: Pointer): String {
+        return black(super.ptrToString(ptr))
     }
 
-    // override fun toString(senseid: SenseID): String {
+    // override fun senseIDToString(senseid: SenseID): String {
     //     return super.toString(senseid)
     // }
 
-    override fun toString(synset: Synset): String {
-        return color(SYNSET, super.toString(synset))
+    override fun synsetToString(synset: Synset): String {
+        return color(SYNSET, super.synsetToString(synset))
     }
 
-    override fun toString(sense: Sense): String {
-        return color(SENSE, super.toString(sense))
+    override fun senseToString(sense: Sense): String {
+        return color(SENSE, super.senseToString(sense))
     }
 
-    override fun toString(senseEntry: SenseEntry): String {
-        return color(SENSE, super.toString(senseEntry))
+    override fun senseEntryToString(senseEntry: SenseEntry): String {
+        return color(SENSE, super.senseEntryToString(senseEntry))
     }
 
-    override fun toString(sense: Sense, pointer: Pointer): String {
-        return color(SENSERELATION, super.toString(sense, pointer))
-    }
-
-    override fun toString(pointer: Pointer, isSense: Boolean, level: Int): String {
+    override fun relatedTypeToString(pointer: Pointer, isSense: Boolean, level: Int): String {
         val indentSpace = "\t".repeat(level)
         val text = "$indentSpace🡆 ${bold(pointer.name)}"
         return if (isSense) color(SENSERELATION, text) else color(SYNSETRELATION, text)
     }
 
-    override fun toString(synset: Synset, level: Int): String {
-        return magenta(super.toString(synset, level))
+    override fun relatedSenseToString(sense: Sense, pointer: Pointer): String {
+        return color(SENSERELATION, super.relatedSenseToString(sense, pointer))
     }
 
-    override fun toString(verbFrame: VerbFrame, lemma: String): String {
+    override fun relatedSynsetToString(synset: Synset, level: Int): String {
+        return magenta(super.relatedSynsetToString(synset, level))
+    }
+
+    override fun verbFramesToString(verbFrame: VerbFrame, lemma: String): String {
         return "  verb frame: ${verbFrame.template} : ${verbFrame.instantiateTemplate(lemma)}"
     }
 }

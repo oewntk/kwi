@@ -5,7 +5,7 @@ import org.kwi.data.IHasLifecycle.ObjectClosedException
 import org.kwi.item.IHasVersion
 import org.kwi.item.POS
 import org.kwi.item.Synset
-import org.kwi.item.Synset.Companion.zeroFillOffset
+import org.kwi.item.SynsetID.Companion.zeroFillOffset
 import org.kwi.item.Version
 import java.io.File
 import java.io.FileFilter
@@ -353,8 +353,7 @@ class FileProvider @JvmOverloads constructor(
      * @return the data source
      */
     private fun <T> createBinarySearch(file: File, contentType: ContentType<T>, charset: Charset?): ILoadableDataSource<T> {
-        //TODO HACK
-        return if ("Word" == contentType.dataType.toString()) BinaryStartSearchWordnetFile<T>(file, contentType, charset) else BinarySearchWordnetFile<T>(file, contentType, charset)
+        return BinarySearchWordnetFile<T>(file, contentType, charset)
     }
 
     override val isOpen: Boolean
