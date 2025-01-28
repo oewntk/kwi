@@ -37,7 +37,7 @@ open class PrintWalker(
 
     override fun consumeSenseID(senseid: SenseID) {
         ps.print(str.senseSep())
-        ps.println(str.senseIDToString(senseid))
+        ps.print(str.senseIDToString(senseid))
     }
 
     override fun consumeSynset(synset: Synset) {
@@ -46,7 +46,7 @@ open class PrintWalker(
     }
 
     override fun consumeSense(sense: Synset.Sense, senseEntry: SenseEntry?) {
-        val se = if (senseEntry != null) " ${str.senseEntryToString(senseEntry)}" else ""
+        val se = if (senseEntry != null) str.senseEntryToString(senseEntry) else ""
         ps.println("${str.senseToString(sense)}$se")
     }
 

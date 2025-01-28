@@ -15,15 +15,15 @@ import org.kwi.item.VerbFrame
 open class Stringifier {
 
     open fun lemmaSep(): String {
-        return "@".repeat(80)
+        return "@".repeat(80) + '\n'
     }
 
     open fun posSep(): String {
-        return "#".repeat(80)
+        return "#".repeat(80) + '\n'
     }
 
     open fun senseSep(): String {
-        return "-".repeat(80)
+        return "-".repeat(80) + '\n'
     }
 
     open fun synsetSep(): String {
@@ -56,7 +56,7 @@ open class Stringifier {
     }
 
     open fun senseEntryToString(senseEntry: SenseEntry): String {
-        return "sensenum=${senseEntry.senseNumber} tagcnt=${senseEntry.tagCount}"
+        return " sensenum=${senseEntry.senseNumber} tagcnt=${senseEntry.tagCount}"
     }
 
     open fun relatedTypeToString(pointer: Pointer, isSense: Boolean, level: Int): String {

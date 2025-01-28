@@ -17,10 +17,10 @@ import org.kwi.utils.Stringifier
  */
 object ColorStringifier : Stringifier() {
 
-    private const val SYNSET = AnsiColors.M
-    private const val SENSE = AnsiColors.C
-    private const val SYNSETRELATION = AnsiColors.M
-    private const val SENSERELATION = AnsiColors.B
+    private const val SYNSET = AnsiColors.K + AnsiColors.bM
+    private const val SYNSET_RELATION = AnsiColors.M
+    private const val SENSE = AnsiColors.K + AnsiColors.bB
+    private const val SENSE_RELATION = AnsiColors.B
 
     override fun lemmaSep(): String {
         return "\n\n"
@@ -65,11 +65,11 @@ object ColorStringifier : Stringifier() {
     override fun relatedTypeToString(pointer: Pointer, isSense: Boolean, level: Int): String {
         val indentSpace = "\t".repeat(level)
         val text = "$indentSpace🡆 ${bold(pointer.name)}"
-        return if (isSense) color(SENSERELATION, text) else color(SYNSETRELATION, text)
+        return if (isSense) color(SENSE_RELATION, text) else color(SYNSET_RELATION, text)
     }
 
     override fun relatedSenseToString(sense: Sense, pointer: Pointer): String {
-        return color(SENSERELATION, super.relatedSenseToString(sense, pointer))
+        return color(SENSE_RELATION, super.relatedSenseToString(sense, pointer))
     }
 
     override fun relatedSynsetToString(synset: Synset, level: Int): String {

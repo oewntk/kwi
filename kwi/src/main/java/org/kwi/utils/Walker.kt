@@ -36,8 +36,8 @@ open class Walker(val dict: IDictionary) {
         }
         idx.senseIDs.forEach { senseid ->
             consumeSenseID(senseid)
-            walkSynset(senseid.synsetID, 1)
             walkSense(senseid)
+            walkSynset(senseid.synsetID, 1)
         }
     }
 
