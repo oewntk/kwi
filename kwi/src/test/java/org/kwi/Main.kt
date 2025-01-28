@@ -27,7 +27,7 @@ class Main {
 
         fun walkWords(vararg words: String) {
             words.forEach {
-                walker.walk(it)
+                walker.walkTop(it)
             }
         }
 

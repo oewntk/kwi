@@ -17,9 +17,9 @@ class ConfigTests {
     fun testWalk() {
         words.splitToSequence(',').forEach {
             PS.print("\n$charset1:")
-            walker1.walk(it)
+            walker1.walkTop(it)
             PS.print("\n$charset2:")
-            walker2.walk(it)
+            walker2.walkTop(it)
         }
     }
 

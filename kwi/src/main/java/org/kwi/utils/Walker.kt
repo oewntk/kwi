@@ -16,7 +16,7 @@ open class Walker(val dict: IDictionary) {
     }
 
     open fun walkTop(lemma: String) {
-        walkTop(lemma)
+        walk(lemma)
     }
 
     open fun walkTop(lemma: String, pos: POS) {
@@ -35,14 +35,14 @@ open class Walker(val dict: IDictionary) {
         walkSynset(synsetid)
     }
 
-    fun walk(lemma: String) {
+    protected fun walk(lemma: String) {
         consumeLemma(lemma)
         POS.entries.forEach { pos ->
             walk(lemma, pos)
         }
     }
 
-    fun walk(lemma: String, pos: POS) {
+    protected fun walk(lemma: String, pos: POS) {
         val idx = dict.getIndex(lemma, pos)
         if (idx != null) {
             consumePos(pos)
@@ -50,7 +50,7 @@ open class Walker(val dict: IDictionary) {
         }
     }
 
-    fun walkIndex(idx: Index) {
+    protected fun walkIndex(idx: Index) {
         idx.pointers.forEach { ptr ->
             consumePointer(ptr)
         }
@@ -61,12 +61,12 @@ open class Walker(val dict: IDictionary) {
         }
     }
 
-    fun walkSense(senseid: SenseID) {
+    protected fun walkSense(senseid: SenseID) {
         val sense = dict.getSense(senseid)!!
         walkSense(sense)
     }
 
-    fun walkSense(sense: Sense) {
+    protected fun walkSense(sense: Sense) {
         val senseEntry = dict.getSenseEntry(sense.senseKey)!!
         consumeSense(sense, senseEntry)
 
@@ -77,14 +77,14 @@ open class Walker(val dict: IDictionary) {
         walkVerbFrames(sense.verbFrames, sense.lemma)
     }
 
-    fun walkRelatedSenses(relatedSenses: Map<Pointer, List<SenseID>>) {
+    protected fun walkRelatedSenses(relatedSenses: Map<Pointer, List<SenseID>>) {
         relatedSenses.entries.forEach { (ptr, relatedSenseIDs) ->
             consumeRelatedSenseType(ptr, 1)
             walkSenseRelationsFor(relatedSenseIDs, ptr)
         }
     }
 
-    fun walkSenseRelationsFor(relatedSenseIDs: List<SenseID>, ptr: Pointer) {
+    protected fun walkSenseRelationsFor(relatedSenseIDs: List<SenseID>, ptr: Pointer) {
         relatedSenseIDs.forEach { relatedId ->
             val related = dict.getSense(relatedId)!!
             consumeRelatedSense(related, ptr, 2)

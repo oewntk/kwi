@@ -26,7 +26,7 @@ class WalkCrossTests {
             PS.println(it)
             PS.println("@".repeat(80))
             PS.println(wnHome1)
-            walker1.walk(it)
+            walker1.walkTop(it)
         }
     }
 
@@ -37,15 +37,15 @@ class WalkCrossTests {
             PS.println(it)
             PS.println("@".repeat(80))
             PS.println(wnHome2)
-            walker2.walk(it)
+            walker2.walkTop(it)
         }
     }
 
     private fun walk2(lemma: String) {
         PS.println(wnHome1)
-        walker1.walk(lemma)
+        walker1.walkTop(lemma)
         PS.println(wnHome2)
-        walker2.walk(lemma)
+        walker2.walkTop(lemma)
     }
 
     companion object {
