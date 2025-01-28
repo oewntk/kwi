@@ -64,7 +64,7 @@ object ColorStringifier : Stringifier() {
 
     override fun relatedTypeToCharSequence(pointer: Pointer, isSense: Boolean, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
-        val text = "$indentSpace$RELATION_BULLET ${bold(pointer.name)}"
+        val text = "$indentSpace$relationBullet ${bold(pointer.name)}"
         return if (isSense) color(SENSE_RELATION, text) else color(SYNSET_RELATION, text)
     }
 

@@ -14,6 +14,14 @@ import org.kwi.item.VerbFrame
  */
 open class Stringifier {
 
+    open val posBullet = "■"
+
+    open val synsetBullet = "●"
+
+    open val senseBullet = "●"
+
+    open val relationBullet = "→"
+
     open fun lemmaSep(): CharSequence {
         return "@".repeat(80) + '\n'
     }
@@ -35,7 +43,7 @@ open class Stringifier {
     }
 
     open fun posToCharSequence(pos: POS): CharSequence {
-        return "$POS_BULLET pos: ${pos.name}"
+        return "$posBullet pos: ${pos.name}"
     }
 
     open fun ptrToCharSequence(ptr: Pointer): CharSequence {
@@ -47,12 +55,12 @@ open class Stringifier {
     }
 
     open fun synsetToCharSequence(synset: Synset): CharSequence {
-        return "$SYNSET_BULLET synset: ${synset.toShortString()}"
+        return "$synsetBullet synset: ${synset.toShortString()}"
     }
 
     open fun senseToCharSequence(sense: Synset.Sense): CharSequence {
         val adjMarker = if (sense.adjectiveMarker != null) " adjmarker=$sense.adjectiveMarker" else ""
-        return "$SENSE_BULLET sense: $sense synset=${sense.synset.toShortString()} lexid=${sense.lexicalID} sensekey=${sense.senseKey}$adjMarker"
+        return "$senseBullet sense: $sense synset=${sense.synset.toShortString()} lexid=${sense.lexicalID} sensekey=${sense.senseKey}$adjMarker"
     }
 
     open fun senseEntryToCharSequence(senseEntry: SenseEntry): CharSequence {
@@ -61,7 +69,7 @@ open class Stringifier {
 
     open fun relatedTypeToCharSequence(pointer: Pointer, isSense: Boolean, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
-        return "$indentSpace$RELATION_BULLET ${pointer.name}"
+        return "$indentSpace$relationBullet ${pointer.name}"
     }
 
     open fun relatedSenseToCharSequence(sense: Synset.Sense, pointer: Pointer): CharSequence {
@@ -78,10 +86,6 @@ open class Stringifier {
     }
 
     companion object {
-        const val POS_BULLET = "■"
-        const val SYNSET_BULLET = "●"
-        const val SENSE_BULLET = "●"
-        const val RELATION_BULLET = "→"
 
         fun Synset.toShortString(): CharSequence {
             return "${this.iD}-${membersOf(this)}"
