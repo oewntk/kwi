@@ -41,7 +41,7 @@ open class BuilderWalker(
 
     override fun consumeSense(sense: Synset.Sense, senseEntry: SenseEntry?) {
         val se = if (senseEntry != null) str.senseEntryToCharSequence(senseEntry) else ""
-        builder.append("${str.senseToCharSequence(sense)}$se").append('\n')
+        builder.append(str.senseToCharSequence(sense)).append(se).append('\n')
     }
 
     override fun consumeRelatedSenseType(pointer: Pointer, level: Int) {
