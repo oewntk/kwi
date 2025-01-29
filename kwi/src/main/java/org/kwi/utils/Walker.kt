@@ -80,14 +80,14 @@ open class Walker(val dict: IDictionary) {
     protected fun walkRelatedSenses(relatedSenses: Map<Pointer, List<SenseID>>) {
         relatedSenses.entries.forEach { (ptr, relatedSenseIDs) ->
             consumeRelatedSenseType(ptr, 1)
-            walkSenseRelationsFor(relatedSenseIDs, ptr)
+            walkSenseRelationsFor(relatedSenseIDs, ptr, 2)
         }
     }
 
-    protected fun walkSenseRelationsFor(relatedSenseIDs: List<SenseID>, ptr: Pointer) {
+    protected fun walkSenseRelationsFor(relatedSenseIDs: List<SenseID>, ptr: Pointer, level: Int = 0) {
         relatedSenseIDs.forEach { relatedId ->
             val related = dict.getSense(relatedId)!!
-            consumeRelatedSense(related, ptr, 2)
+            consumeRelatedSense(related, ptr, level + 1)
         }
     }
 
@@ -104,7 +104,7 @@ open class Walker(val dict: IDictionary) {
         consumeSynset(synset)
         synset.relatedSynsets.entries.forEach { (ptr, related) ->
             consumeRelatedSynsetType(ptr, level)
-            walkSynsetRelationsFor(related, ptr, level)
+            walkSynsetRelationsFor(related, ptr, level+1)
         }
     }
 
@@ -125,6 +125,8 @@ open class Walker(val dict: IDictionary) {
             }
         }
     }
+
+    // verb frames
 
     fun walkVerbFrames(verbFrames: List<VerbFrame>?, lemma: String) {
         verbFrames?.forEach { verbFrame ->

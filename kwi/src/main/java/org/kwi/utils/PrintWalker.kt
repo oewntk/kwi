@@ -5,7 +5,6 @@ import org.kwi.item.Index
 import org.kwi.item.POS
 import org.kwi.item.SenseID
 import org.kwi.item.SynsetID
-import org.kwi.item.VerbFrame
 import java.io.PrintStream
 
 /**
@@ -18,30 +17,30 @@ open class PrintWalker(
     str: Stringifier,
     val ps: PrintStream,
 
-    ) : BuilderWalker(dict, str) {
+    ) : BuilderWalker(dict, str, StringBuilder()) {
 
     override fun walkTop(lemma: String) {
         walk(lemma)
-        ps.print(sb.toString())
+        ps.print(builder.toString())
     }
 
     override fun walkTop(lemma: String, pos: POS) {
         walk(lemma, pos)
-        ps.print(sb.toString())
+        ps.print(builder.toString())
     }
 
     override fun walkTop(idx: Index) {
         walkIndex(idx)
-        ps.print(sb.toString())
+        ps.print(builder.toString())
     }
 
     override fun walkTop(senseid: SenseID) {
         walkSense(senseid)
-        ps.print(sb.toString())
+        ps.print(builder.toString())
     }
 
     override fun walkTop(synsetid: SynsetID) {
         walkSynset(synsetid)
-        ps.print(sb.toString())
+        ps.print(builder.toString())
     }
 }

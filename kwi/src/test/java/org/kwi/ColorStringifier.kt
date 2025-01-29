@@ -68,15 +68,15 @@ object ColorStringifier : Stringifier() {
         return if (isSense) color(SENSE_RELATION, text) else color(SYNSET_RELATION, text)
     }
 
-    override fun relatedSenseToCharSequence(sense: Sense, pointer: Pointer): CharSequence {
-        return color(SENSE_RELATION, super.relatedSenseToCharSequence(sense, pointer))
+    override fun relatedSenseToCharSequence(sense: Sense, pointer: Pointer, level: Int): CharSequence {
+        return color(SENSE_RELATION, super.relatedSenseToCharSequence(sense, pointer, level))
     }
 
     override fun relatedSynsetToCharSequence(synset: Synset, level: Int): CharSequence {
         return magenta(super.relatedSynsetToCharSequence(synset, level))
     }
 
-    override fun verbFramesToCharSequence(verbFrame: VerbFrame, lemma: String): CharSequence {
-        return "  verb frame: ${verbFrame.template} : ${verbFrame.instantiateTemplate(lemma)}"
-    }
+    // override fun verbFramesToCharSequence(verbFrame: VerbFrame, lemma: String): CharSequence {
+    //     return super.verbFramesToCharSequence(verbFrame, lemma)
+    // }
 }
