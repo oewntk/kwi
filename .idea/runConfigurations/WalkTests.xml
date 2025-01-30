@@ -11,7 +11,7 @@
     <option name="MAIN_CLASS_NAME" value="org.kwi.WalkTests" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
-    <option name="VM_PARAMETERS" value="-ea -DWORD=love,abandon,earth,Earth,south,South,zero" />
+    <option name="VM_PARAMETERS" value="-ea -DWORD=love,abandon,earth,Earth,south,South,zero,harum-scarum" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

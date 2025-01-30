@@ -41,7 +41,6 @@ open class Stringifier {
 
     open fun posToCharSequence(pos: POS): CharSequence {
         return StringBuilder(posBullet)
-            .append("pos: ")
             .append(pos.name)
     }
 
@@ -56,14 +55,12 @@ open class Stringifier {
 
     open fun synsetToCharSequence(synset: Synset): CharSequence {
         return StringBuilder(synsetBullet)
-            .append("synset: ")
             .append(synset.toShortString())
     }
 
     open fun senseToCharSequence(sense: Synset.Sense): CharSequence {
         val adjMarker = if (sense.adjectiveMarker != null) " adjmarker=$sense.adjectiveMarker" else ""
         return StringBuilder(senseBullet)
-            .append("sense: ")
             .append(sense)
             .append(' ')
             .append("synset=${sense.synset.toShortString()} lexid=${sense.lexicalID} sensekey=${sense.senseKey}$adjMarker")
