@@ -144,7 +144,7 @@ class Synset internal constructor(
     }
 
     override fun toString(): String {
-        return "$SYNSET_PREFIX-{${iD} [${senses.joinToString(separator = ", ")}]}"
+        return "$SYNSET_PREFIX id={${iD} words=[${senses.joinToString(separator = ", ")}]}"
     }
 
     /**
@@ -226,7 +226,7 @@ class Synset internal constructor(
 
         override fun toString(): String {
             val sid = iD.synsetID.toString().substring(SynsetID.PREFIX.length)
-            return "$SENSE_PREFIX-$sid-${iD.senseNumber}-${iD.lemma}"
+            return "$SENSE_PREFIX id=$sid num=${iD.senseNumber} lemma=${iD.lemma}"
         }
 
         override fun hashCode(): Int {
@@ -330,7 +330,7 @@ class Synset internal constructor(
 
         const val SYNSET_PREFIX = "S"
 
-        const val SENSE_PREFIX = "W"
+        const val SENSE_PREFIX = "s"
 
         /**
          * Throws an exception if the specified offset is not in the valid range of [0,99999999].

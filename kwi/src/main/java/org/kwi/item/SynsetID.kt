@@ -57,7 +57,7 @@ class SynsetID(
         /**
          * String prefix for the toString method.
          */
-        const val PREFIX = "SID-"
+        const val PREFIX = "S-"
 
         /**
          * Takes an integer in the closed range [0,99999999] and converts it into an eight decimal digit zero-filled string.

@@ -51,12 +51,12 @@ class IndexID(
     }
 
     override fun toString(): String {
-        return "$PREFIX-$lemma-${pOS.tag}"
+        return "$PREFIX$lemma-${pOS.tag}"
     }
 
     companion object {
 
-        const val PREFIX = "XID"
+        const val PREFIX = "X-"
 
         /**
          * Convenience method for transforming the result of the toString method into an IndexID
@@ -66,11 +66,10 @@ class IndexID(
          * @throws IllegalArgumentException if the specified string does not conform to an index id string
          */
         fun parseIndexID(value: String): IndexID {
-            require(value.startsWith("$PREFIX-"))
-            require(value[value.length - 2] == '-')
+            require(value.startsWith(PREFIX))
 
             val pos = POS.getPartOfSpeech(value[value.length - 1])
-            return IndexID(value.substring(PREFIX.length + 1, value.length - 2), pos)
+            return IndexID(value.substring(PREFIX.length, value.length - 2), pos)
         }
     }
 }

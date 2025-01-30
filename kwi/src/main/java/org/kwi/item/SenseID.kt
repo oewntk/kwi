@@ -28,7 +28,7 @@ abstract class SenseID(
 
     companion object {
 
-        const val PREFIX = "WID-"
+        const val PREFIX = "s-"
 
         /**
          * Parses the result of the toString method back into an SenseID.
