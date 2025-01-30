@@ -22,17 +22,11 @@ object ColorStringifier : Stringifier() {
     private const val SENSE = AnsiColors.K + AnsiColors.bB
     private const val SENSE_RELATION = AnsiColors.B
 
-    override fun lemmaSep(): CharSequence {
-        return "\n\n"
-    }
+    override val lemmaSep: CharSequence = "\n\n"
 
-    override fun posSep(): CharSequence {
-        return "\n"
-    }
+    override val posSep: CharSequence = "\n"
 
-    //override fun senseSep(): CharSequence{
-    //    return super.senseSep()
-    //}
+    override val senseSep: CharSequence  = super.senseSep
 
     override fun lemmaToCharSequence(lemma: String): CharSequence {
         return yellowb(lemma)
@@ -64,7 +58,7 @@ object ColorStringifier : Stringifier() {
 
     override fun relatedTypeToCharSequence(pointer: Pointer, isSense: Boolean, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
-        val text = "$indentSpace$relationBullet ${bold(pointer.name)}"
+        val text = "$indentSpace$relationHeader ${bold(pointer.name)}"
         return if (isSense) color(SENSE_RELATION, text) else color(SYNSET_RELATION, text)
     }
 

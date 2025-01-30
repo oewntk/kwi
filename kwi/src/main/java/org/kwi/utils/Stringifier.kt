@@ -9,38 +9,32 @@ import org.kwi.item.*
  */
 open class Stringifier {
 
-    open val posBullet: CharSequence = "■ "
+    private val width = 80
 
-    open val synsetBullet: CharSequence = "● "
+    open val lemmaSep: CharSequence = "@".repeat(width) + '\n'
 
-    open val senseBullet: CharSequence = "● "
+    open val posSep: CharSequence  = "#".repeat(width) + '\n'
 
-    open val relationBullet: CharSequence = "→ "
+    open val senseSep: CharSequence = "-".repeat(width) + '\n'
 
-    open val relatedBullet: CharSequence = "- "
+    open val synsetSep: CharSequence = ""
 
-    open fun lemmaSep(): CharSequence {
-        return "@".repeat(80) + '\n'
-    }
+    open val posHeader: CharSequence = "■ "
 
-    open fun posSep(): CharSequence {
-        return "#".repeat(80) + '\n'
-    }
+    open val synsetHeader: CharSequence = "● "
 
-    open fun senseSep(): CharSequence {
-        return "-".repeat(80) + '\n'
-    }
+    open val senseHeader: CharSequence = "● "
 
-    open fun synsetSep(): CharSequence {
-        return ""
-    }
+    open val relationHeader: CharSequence = "→ "
+
+    open val relatedHeader: CharSequence = "- "
 
     open fun lemmaToCharSequence(lemma: String): CharSequence {
         return lemma
     }
 
     open fun posToCharSequence(pos: POS): CharSequence {
-        return StringBuilder(posBullet)
+        return StringBuilder(posHeader)
             .append(pos.name)
     }
 
@@ -54,13 +48,13 @@ open class Stringifier {
     }
 
     open fun synsetToCharSequence(synset: Synset): CharSequence {
-        return StringBuilder(synsetBullet)
+        return StringBuilder(synsetHeader)
             .append(synset.toShortString())
     }
 
     open fun senseToCharSequence(sense: Synset.Sense): CharSequence {
         val adjMarker = if (sense.adjectiveMarker != null) " adjmarker=$sense.adjectiveMarker" else ""
-        return StringBuilder(senseBullet)
+        return StringBuilder(senseHeader)
             .append(sense)
             .append(' ')
             .append("synset=${sense.synset.toShortString()} lexid=${sense.lexicalID} sensekey=${sense.senseKey}$adjMarker")
@@ -74,21 +68,21 @@ open class Stringifier {
     open fun relatedTypeToCharSequence(pointer: Pointer, isSense: Boolean, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
         return StringBuilder(indentSpace)
-            .append(relationBullet)
+            .append(relationHeader)
             .append(pointer.name)
     }
 
     open fun relatedSenseToCharSequence(sense: Synset.Sense, pointer: Pointer, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
         return StringBuilder(indentSpace)
-            .append(relatedBullet)
+            .append(relatedHeader)
             .append("'${sense.lemma}' in synset=${sense.synset.toShortString()}")
     }
 
     open fun relatedSynsetToCharSequence(synset: Synset, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
         return StringBuilder(indentSpace)
-            .append(relatedBullet)
+            .append(relatedHeader)
             .append("${membersOf(synset)} ${synset.gloss}")
     }
 

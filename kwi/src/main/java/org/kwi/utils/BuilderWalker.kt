@@ -14,14 +14,13 @@ open class BuilderWalker(
     val builder: Appendable,
 ) : Walker(dict) {
 
-
     override fun consumeLemma(lemma: String) {
-        builder.append(str.lemmaSep())
+        builder.append(str.lemmaSep)
         builder.append(str.lemmaToCharSequence(lemma)).append('\n')
     }
 
     override fun consumePos(pos: POS) {
-        builder.append(str.posSep())
+        builder.append(str.posSep)
         builder.append(str.posToCharSequence(pos)).append('\n')
     }
 
@@ -30,12 +29,12 @@ open class BuilderWalker(
     }
 
     override fun consumeSenseID(senseid: SenseID) {
-        builder.append(str.senseSep())
+        builder.append(str.senseSep)
         builder.append(str.senseIDToCharSequence(senseid))
     }
 
     override fun consumeSynset(synset: Synset) {
-        builder.append(str.synsetSep())
+        builder.append(str.synsetSep)
         builder.append(str.synsetToCharSequence(synset)).append('\n')
     }
 
