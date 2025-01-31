@@ -1,6 +1,7 @@
 package org.kwi.utils
 
 import org.kwi.item.*
+import org.kwi.item.Synset.Sense
 
 /**
  * Stringify
@@ -52,10 +53,10 @@ open class Stringifier {
             .append(synset.toShortString())
     }
 
-    open fun senseToCharSequence(sense: Synset.Sense): CharSequence {
+    open fun senseToCharSequence(sense: Sense): CharSequence {
         val adjMarker = if (sense.adjectiveMarker != null) " adjmarker=$sense.adjectiveMarker" else ""
         return StringBuilder(senseHeader)
-            .append(sense)
+            .append(sense.toShortString())
             .append(' ')
             .append("synset=${sense.synset.toShortString()} lexid=${sense.lexicalID} sensekey=${sense.senseKey}$adjMarker")
     }
@@ -72,7 +73,7 @@ open class Stringifier {
             .append(pointer.name)
     }
 
-    open fun relatedSenseToCharSequence(sense: Synset.Sense, pointer: Pointer, level: Int): CharSequence {
+    open fun relatedSenseToCharSequence(sense: Sense, pointer: Pointer, level: Int): CharSequence {
         val indentSpace = "\t".repeat(level)
         return StringBuilder(indentSpace)
             .append(relatedHeader)
@@ -94,8 +95,12 @@ open class Stringifier {
 
     companion object {
 
+        fun Sense.toShortString(): CharSequence {
+            return "$iD #${iD.senseNumber} '${iD.lemma}'"
+        }
+
         fun Synset.toShortString(): CharSequence {
-            return "${this.iD}-${membersOf(this)}"
+            return "$iD ${membersOf(this)}"
         }
 
         fun membersOf(synset: Synset): CharSequence {
