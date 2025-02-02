@@ -6,10 +6,14 @@ import org.kwi.item.Synset.Sense
 
 /**
  * Tree exploration
- *
+ * @param dict tionary
+ * @param maxLevel maximum recursion level
  * @author Bernard Bou
  */
-open class Walker(val dict: IDictionary) {
+open class Walker(
+    val dict: IDictionary,
+    val maxLevel: Int = 0,
+) {
 
     init {
         dict.open()
@@ -104,7 +108,7 @@ open class Walker(val dict: IDictionary) {
         consumeSynset(synset)
         synset.relatedSynsets.entries.forEach { (ptr, related) ->
             consumeRelatedSynsetType(ptr, level)
-            walkSynsetRelationsFor(related, ptr, level+1)
+            walkSynsetRelationsFor(related, ptr, level + 1)
         }
     }
 
@@ -120,7 +124,7 @@ open class Walker(val dict: IDictionary) {
             val relatedSynset = dict.getSynset(relatedSynsetID)!!
             consumeRelatedSynset(relatedSynset, ptr, level)
 
-            if (Pointer.canRecurse(ptr)) {
+            if (Pointer.canRecurse(ptr) && (level > 0 || level < maxLevel)) {
                 walkSynsetRelationsFor(relatedSynset, ptr, level + 1)
             }
         }
