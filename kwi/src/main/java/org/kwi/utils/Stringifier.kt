@@ -51,6 +51,8 @@ open class Stringifier {
     open fun synsetToCharSequence(synset: Synset): CharSequence {
         return StringBuilder(synsetHeader)
             .append(synset.toShortString())
+            .append(' ')
+            .append(Gloss(synset.gloss).definition)
     }
 
     open fun senseToCharSequence(sense: Sense): CharSequence {
@@ -84,7 +86,7 @@ open class Stringifier {
         val indentSpace = "\t".repeat(level)
         return StringBuilder(indentSpace)
             .append(relatedHeader)
-            .append("${membersOf(synset)} ${synset.gloss}")
+            .append("${membersOf(synset)} ${Gloss(synset.gloss).definition}")
     }
 
     open fun verbFramesToCharSequence(verbFrame: VerbFrame, lemma: String): CharSequence {
