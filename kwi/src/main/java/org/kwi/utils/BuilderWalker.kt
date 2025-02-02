@@ -6,13 +6,20 @@ import org.kwi.item.*
 /**
  * Tree exploration
  *
+ * @param dict dictionary
+ * @property str stringifier
+ * @property builder appendable that accumulates result
+ * @param maxLevel maximum recursion level
+ *
  * @author Bernard Bou
  */
 open class BuilderWalker(
     dict: IDictionary,
     val str: Stringifier,
     val builder: Appendable,
-) : Walker(dict) {
+    maxLevel: Int = 0,
+
+    ) : Walker(dict, maxLevel) {
 
     override fun consumeLemma(lemma: String) {
         builder.append(str.lemmaSep)

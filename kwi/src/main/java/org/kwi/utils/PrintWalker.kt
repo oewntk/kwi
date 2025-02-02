@@ -10,14 +10,20 @@ import java.io.PrintStream
 /**
  * Tree exploration
  *
+ * @param dict dictionary
+ * @param str stringifier
+ * @param ps print stream to output builder to
+ * @param maxLevel maximum recursion level
+ *
  * @author Bernard Bou
  */
 open class PrintWalker(
     dict: IDictionary,
     str: Stringifier,
     val ps: PrintStream,
+    maxLevel: Int = 0,
 
-    ) : BuilderWalker(dict, str, StringBuilder()) {
+    ) : BuilderWalker(dict, str, StringBuilder(), maxLevel) {
 
     override fun walkTop(lemma: String) {
         walk(lemma)

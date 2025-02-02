@@ -6,14 +6,17 @@ import org.kwi.item.Synset.Sense
 
 /**
  * Tree exploration
- * @param dict tionary
- * @param maxLevel maximum recursion level
+ *
+ * @property dict dictionary
+ * @property maxLevel maximum recursion level
+ *
  * @author Bernard Bou
  */
 open class Walker(
     val dict: IDictionary,
     val maxLevel: Int = 0,
-) {
+
+    ) {
 
     init {
         dict.open()
