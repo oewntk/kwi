@@ -22,6 +22,6 @@ Added Maven support.
 GroupID and ArtifactID on Maven Central:
 
 	<groupId>io.github.oewntk</groupId>
-	<artifactId>kwix</artifactId>
+	<artifactId>kwi</artifactId>
 	<packaging>jar</packaging>
-	<version>2.4.1.1</version>
+	<version>1.0.0</version>
