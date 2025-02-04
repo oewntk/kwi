@@ -24,4 +24,4 @@ GroupID and ArtifactID on Maven Central:
 	<groupId>io.github.oewntk</groupId>
 	<artifactId>kwi</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0</version>
+	<version>3.0.0</version>
