@@ -29,6 +29,7 @@ class SynsetID(
      * The Part Of Speech
      */
     override val pOS: POS,
+
 ) : IHasPOS, IItemID {
 
     init {

@@ -113,10 +113,6 @@ class Index(
         require(senseids.isNotEmpty())
     }
 
-    override fun toString(): String {
-        return "[$iD${iD.lemma} (${iD.pOS}) ${senseIDs.joinToString(separator = ", ")}]"
-    }
-
     override fun hashCode(): Int {
         return Objects.hash(iD, tagSenseCount, senseIDs, pointers)
     }
@@ -142,5 +138,9 @@ class Index(
             return false
         }
         return pointers == other.pointers
+    }
+
+    override fun toString(): String {
+        return "[$iD${iD.lemma} (${iD.pOS}) ${senseIDs.joinToString(separator = ", ")}]"
     }
 }

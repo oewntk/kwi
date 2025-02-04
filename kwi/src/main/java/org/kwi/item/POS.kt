@@ -30,17 +30,12 @@ enum class POS
     private val posName: String,
 
     /**
-     * The tag that is used to indicate this part-of-speech in Wordnet data
-     * files
-     *
-     * @return the character representing this part-of-speech
+     * The character tag that is used to indicate this part-of-speech in Wordnet data files
      */
     val tag: Char,
 
     /**
      * Returns the standard WordNet number of this part-of-speech
-     *
-     * @return the standard WordNet number of this part-of-speech
      */
     val number: Int,
 
@@ -67,27 +62,16 @@ enum class POS
      */
     ADVERB("adverb", TAG_ADVERB, NUM_ADVERB, "adv", "adverb");
 
+    override fun toString(): String {
+        return posName
+    }
+
     /**
      * Returns a set of strings that can be used to identify resource corresponding to objects with this part-of-speech.
      */
     val resourceNameHints: Set<String> = setOf(*names)
 
-    override fun toString(): String {
-        return posName
-    }
-
     companion object {
-
-        /**
-         * Returns true if the specified number represents an adjective satellite, namely, if the number is 5; false otherwise
-         *
-         * @param num the number to be checked
-         * @return true if the specified number represents an adjective satellite, namely, if the number is 5; false otherwise
-         */
-        @JvmStatic
-        fun isAdjectiveSatellite(num: Int): Boolean {
-            return num == NUM_ADJECTIVE_SATELLITE
-        }
 
         /**
          * Retrieves the part-of-speech object given the number.
@@ -121,6 +105,17 @@ enum class POS
                 TAG_ADJECTIVE_SATELLITE, TAG_ADJECTIVE -> return ADJECTIVE
             }
             return throw IllegalArgumentException(tag.toString())
+        }
+
+        /**
+         * Returns true if the specified number represents an adjective satellite, namely, if the number is 5; false otherwise
+         *
+         * @param num the number to be checked
+         * @return true if the specified number represents an adjective satellite, namely, if the number is 5; false otherwise
+         */
+        @JvmStatic
+        fun isAdjectiveSatellite(num: Int): Boolean {
+            return num == NUM_ADJECTIVE_SATELLITE
         }
     }
 }

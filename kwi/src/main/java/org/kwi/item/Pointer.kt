@@ -63,19 +63,6 @@ class Pointer(
         @JvmStatic val IS_ENTAILED: Pointer = Pointer("*^", "Is entailed by")
         @JvmStatic val COLLOCATION: Pointer = Pointer("`", "Collocation")
 
-        /**
-         * Throws an exception if the specified string empty, or all whitespace. Returns a trimmed form of the string.
-         *
-         * @param str the string to be checked
-         * @return a trimmed form of the string
-         * @throws IllegalArgumentException if the specified string is empty or all whitespace
-         */
-        private fun checkString(str: String): String {
-            var str = str.trim { it <= ' ' }
-            require(str.isNotEmpty())
-            return str
-        }
-
         private val pointerSet: Set<Pointer> = setOf(
             ALSO_SEE,
             ANTONYM,
@@ -122,6 +109,19 @@ class Pointer(
          */
         fun values(): Collection<Pointer> {
             return pointerSet
+        }
+
+        /**
+         * Throws an exception if the specified string empty, or all whitespace. Returns a trimmed form of the string.
+         *
+         * @param str the string to be checked
+         * @return a trimmed form of the string
+         * @throws IllegalArgumentException if the specified string is empty or all whitespace
+         */
+        private fun checkString(str: String): String {
+            var str = str.trim { it <= ' ' }
+            require(str.isNotEmpty())
+            return str
         }
 
         private const val AMBIGUOUS_SYMBOL = "\\"

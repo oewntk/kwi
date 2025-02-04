@@ -24,12 +24,10 @@ class VerbFrame(
      */
     val number: Int,
     /**
-     * The string form of the template, drawn directly from the data file.
-     * Will never return null
-     *
-     * @return the non-null, non-empty template of the verb frame
+     * The string form of the non-empty template, drawn directly from the data file.
      */
     val template: String,
+
 ) : Serializable {
 
     /**

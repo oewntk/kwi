@@ -55,10 +55,6 @@ open class LexFile(
         checkString(name)
     }
 
-    override fun toString(): String {
-        return name
-    }
-
     override fun hashCode(): Int {
         return Objects.hash(name, description, POS, number)
     }
@@ -88,6 +84,10 @@ open class LexFile(
         } else {
             pOS == other.pOS
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 
     companion object {
@@ -137,43 +137,6 @@ open class LexFile(
         val VERB_STATIVE: LexFile = LexFile(42, "verb.stative", "verbs of being, having, spatial relations", POS.VERB)
         val VERB_WEATHER: LexFile = LexFile(43, "verb.weather", "verbs of raining, snowing, thawing, thundering", POS.VERB)
         val ADJ_PPL: LexFile = LexFile(44, "adj.ppl", "participial adjectives", POS.ADJECTIVE)
-
-        /**
-         * Throws an exception if the specified string is null, empty,
-         * or all whitespace. Returns a trimmed form of the string.
-         *
-         * @param str the string to be checked
-         * @return a trimmed form of the string
-         * @throws IllegalArgumentException if the specified string is empty or all whitespace
-         */
-        protected fun checkString(str: String): String {
-            var str = str
-            str = str.trim { it <= ' ' }
-            require(str.isNotEmpty())
-            return str
-        }
-
-        /**
-         * Throws an exception if the specified lexical file number is not a valid lexical file number
-         *
-         * @param num the number to be checked
-         * @throws IllegalArgumentException if the specified lexical file number is not a legal lexical file number
-         */
-        @JvmStatic
-        fun checkLexicalFileNumber(num: Int): Int {
-            require(!isIllegalLexicalFileNumber(num)) { "'$num is an illegal lexical file number: Lexical file numbers must be in the closed range [0,99]" }
-            return num
-        }
-
-        /**
-         * Returns true if the number represents a valid lexical file* number, namely, a number in the closed range [0, 99]; returns false otherwise.
-         *
-         * @param num the number to be checked
-         * @return true if the number represents a valid lexical file number, namely, a number in the closed range [0, 99]; returns false otherwise.
-         */
-        fun isIllegalLexicalFileNumber(num: Int): Boolean {
-            return num < 0 || 99 < num
-        }
 
         private val lexFileMap: Map<Int, LexFile> = listOf(
             ADJ_ALL,
@@ -226,12 +189,40 @@ open class LexFile(
             .toMap()
 
         /**
-         * Emulates the `Enum#values()` function. Returns an unmodifiable collection of all the lexical file descriptions declared in this class, in the order they are declared.
+         * Throws an exception if the specified string is null, empty,
+         * or all whitespace. Returns a trimmed form of the string.
          *
-         * @return returns an unmodifiable collection of the lexical file description declared in this class
+         * @param str the string to be checked
+         * @return a trimmed form of the string
+         * @throws IllegalArgumentException if the specified string is empty or all whitespace
          */
-        fun values(): Collection<LexFile> {
-            return lexFileMap.values
+        protected fun checkString(str: String): String {
+            var str = str
+            str = str.trim { it <= ' ' }
+            require(str.isNotEmpty())
+            return str
+        }
+
+        /**
+         * Throws an exception if the specified lexical file number is not a valid lexical file number
+         *
+         * @param num the number to be checked
+         * @throws IllegalArgumentException if the specified lexical file number is not a legal lexical file number
+         */
+        @JvmStatic
+        fun checkLexicalFileNumber(num: Int): Int {
+            require(!isIllegalLexicalFileNumber(num)) { "'$num is an illegal lexical file number: Lexical file numbers must be in the closed range [0,99]" }
+            return num
+        }
+
+        /**
+         * Returns true if the number represents a valid lexical file* number, namely, a number in the closed range [0, 99]; returns false otherwise.
+         *
+         * @param num the number to be checked
+         * @return true if the number represents a valid lexical file number, namely, a number in the closed range [0, 99]; returns false otherwise.
+         */
+        fun isIllegalLexicalFileNumber(num: Int): Boolean {
+            return num < 0 || 99 < num
         }
 
         /**
@@ -244,6 +235,15 @@ open class LexFile(
         @JvmStatic
         fun getLexicalFile(num: Int): LexFile {
             return lexFileMap[num]!!
+        }
+
+        /**
+         * Emulates the `Enum#values()` function. Returns an unmodifiable collection of all the lexical file descriptions declared in this class, in the order they are declared.
+         *
+         * @return returns an unmodifiable collection of the lexical file description declared in this class
+         */
+        fun values(): Collection<LexFile> {
+            return lexFileMap.values
         }
     }
 }

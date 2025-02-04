@@ -18,12 +18,7 @@ package org.kwi.item
 class Gloss(
     gloss: String,
 ) {
-
-    private val splitGloss: Array<String>
-
-    init {
-        this.splitGloss = split(gloss.trim { it <= ' ' })
-    }
+    private val splitGloss: Array<String> = split(gloss.trim { it <= ' ' })
 
     /**
      * Parse gloss into fields
