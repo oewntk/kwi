@@ -18,6 +18,8 @@ object ExceptionLineComparator : ILineComparator {
 
     override var commentDetector: ICommentDetector? = null
 
+    private val SEPARATOR: Regex = " ".toRegex()
+
     override fun compare(line1: String, line2: String): Int {
         val tokens1 = SEPARATOR.split(line1)
         if (tokens1.isEmpty()) {
@@ -29,6 +31,4 @@ object ExceptionLineComparator : ILineComparator {
         }
         return tokens1[0].compareTo(tokens2[0])
     }
-
-    private val SEPARATOR: Regex = " ".toRegex()
 }

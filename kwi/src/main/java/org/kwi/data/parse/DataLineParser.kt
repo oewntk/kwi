@@ -134,14 +134,14 @@ object DataLineParser : ILineParser<Synset> {
                     val verbFrameCount = peekTok.toInt()
 
                     val frames = List(verbFrameCount) {
-                        // Consume '+'
+                        // consume '+'
                         tokenizer.nextToken()
 
-                        // Get frame number
+                        // get frame number
                         var frameNum: Int = tokenizer.nextToken().toInt()
                         var frame: VerbFrame = resolveVerbFrame(frameNum)
 
-                        // Get sense number
+                        // get sense number
                         val senseNum: Int = tokenizer.nextToken().toInt(16)
                         senseNum to frame
 
