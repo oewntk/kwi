@@ -16,7 +16,7 @@ import org.kwi.item.SynsetID
 import java.io.PrintStream
 
 /**
- * Tree exploration
+ * Tree exploration that prints to a print stream
  *
  * @param dict dictionary
  * @param str stringifier

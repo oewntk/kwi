@@ -12,7 +12,7 @@ import org.kwi.IDictionary
 import org.kwi.item.*
 
 /**
- * Tree exploration
+ * Tree exploration that consumes visits and builds result to an appendable
  *
  * @param dict dictionary
  * @property str stringifier
