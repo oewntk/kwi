@@ -17,6 +17,8 @@ import java.util.concurrent.locks.ReentrantLock
 
 /**
  * A dictionary that caches the results of another dictionary
+ *
+ * @property backingDictionary the dictionary that is wrapped by this dictionary
  */
 open class CachingDictionary(
     /**
