@@ -19,8 +19,6 @@ import org.kwi.item.POS
 class WordnetStemmer(
     /**
      * The dictionary in use by the stemmer
-     *
-     * @return the dictionary in use by this stemmer
      */
     val dictionary: IDictionary,
 ) : SimpleStemmer() {

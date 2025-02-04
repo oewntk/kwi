@@ -16,13 +16,13 @@ import java.util.regex.Pattern
  * It also attempts to strip "ful" endings.
  * It does not search Wordnet to see if stems actually exist.
  * In particular, quoting from that man page:
- * <h3>Rules of Detachment</h3>
- * *
+ *
+ * Rules of Detachment
+ *
  * The following table shows the rules of detachment used by Morphy.
  * If a word ends with one of the suffixes, it is stripped from the word and the
  * corresponding ending is added.
  * No rules are applicable to adverbs.
- *
  *
  * POS Suffix Ending<br></br>
  *
@@ -47,7 +47,7 @@ import java.util.regex.Pattern
  *  * ADJ "er" "e"
  *  * ADJ "est" "e"
  *
- * <h3>Special Processing for nouns ending with 'ful'</h3>
+ * Special Processing for nouns ending with 'ful'
  *
  * Morphy contains code that searches for nouns ending with ful and performs a transformation on the substring preceding it.
  * It then appends 'ful' back onto the resulting string and returns it.
