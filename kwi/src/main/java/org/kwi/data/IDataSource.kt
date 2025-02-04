@@ -31,7 +31,6 @@ interface IDataSource<T> : IHasVersion, Iterable<String>, IHasLifecycle {
      * @param key the key which indexes the desired data
      * @return the line indexed by the specified key in the resource
      */
-
     fun getLine(key: String): String?
 
     /**

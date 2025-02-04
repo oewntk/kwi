@@ -114,6 +114,8 @@ class FileProvider @JvmOverloads constructor(
             }
         }
 
+    // C O N S T R U C T O R
+
     /**
      * Constructs the file provider pointing to the resource indicated by the path.
      * This file provider has an initial NO_LOAD load policy.
@@ -138,6 +140,29 @@ class FileProvider @JvmOverloads constructor(
         @Suppress("UNCHECKED_CAST")
         return contentTypesByKey.entries
             .first { (k, _) -> k.dataType == dataType && k.pOS == pos }.value as ContentType<T>
+    }
+
+    // O P E N
+
+    override val isOpen: Boolean
+        get() {
+            try {
+                lifecycleLock.lock()
+                return fileMap != null
+            } finally {
+                lifecycleLock.unlock()
+            }
+        }
+
+    /**
+     * Convenience method that throws an exception if the provider is closed.
+     *
+     * @throws ObjectClosedException if the provider is closed
+     */
+    private fun checkOpen() {
+        if (!isOpen) {
+            throw ObjectClosedException()
+        }
     }
 
     @Throws(IOException::class)
@@ -177,6 +202,29 @@ class FileProvider @JvmOverloads constructor(
             loadingLock.unlock()
         }
     }
+
+    /**
+     * Close
+     */
+    override fun close() {
+        try {
+            lifecycleLock.lock()
+            if (!isOpen) {
+                return
+            }
+            if (loader != null) {
+                loader!!.cancel()
+            }
+            for (source in fileMap!!.values) {
+                source.close()
+            }
+            fileMap = null
+        } finally {
+            lifecycleLock.unlock()
+        }
+    }
+
+    // L O A D
 
     override fun load() {
         try {
@@ -222,6 +270,56 @@ class FileProvider @JvmOverloads constructor(
                 loadingLock.unlock()
             }
         }
+
+    /**
+     * A thread class which tries to load each data source in this provider.
+     */
+    private inner class KWIBackgroundLoader : Thread() {
+
+        @Transient
+        private var cancel = false
+
+        /**
+         * Constructs a new background loader that operates on the internal data structures of this provider.
+         */
+        init {
+            name = KWIBackgroundLoader::class.java.simpleName
+            isDaemon = true
+        }
+
+        /**
+         * Job
+         */
+        override fun run() {
+            try {
+                for (source in fileMap!!.values) {
+                    if (!cancel && !source.isLoaded) {
+                        try {
+                            source.load(true)
+                        } catch (e: InterruptedException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            } finally {
+                loader = null
+            }
+        }
+
+        /**
+         * Sets the cancel flag for this loader.
+         */
+        fun cancel() {
+            cancel = true
+            try {
+                join()
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // S O U R C E
 
     /**
      * Returns a data source object for the specified content type, if one is available; otherwise returns null.
@@ -364,106 +462,7 @@ class FileProvider @JvmOverloads constructor(
         return BinarySearchWordnetFile<T>(file, contentType, charset)
     }
 
-    override val isOpen: Boolean
-        get() {
-            try {
-                lifecycleLock.lock()
-                return fileMap != null
-            } finally {
-                lifecycleLock.unlock()
-            }
-        }
-
-    override fun close() {
-        try {
-            lifecycleLock.lock()
-            if (!isOpen) {
-                return
-            }
-            if (loader != null) {
-                loader!!.cancel()
-            }
-            for (source in fileMap!!.values) {
-                source.close()
-            }
-            fileMap = null
-        } finally {
-            lifecycleLock.unlock()
-        }
-    }
-
-    /**
-     * Convenience method that throws an exception if the provider is closed.
-     *
-     * @throws ObjectClosedException if the provider is closed
-     */
-    private fun checkOpen() {
-        if (!isOpen) {
-            throw ObjectClosedException()
-        }
-    }
-
-    /**
-     * A thread class which tries to load each data source in this provider.
-     */
-    private inner class KWIBackgroundLoader : Thread() {
-
-        @Transient
-        private var cancel = false
-
-        /**
-         * Constructs a new background loader that operates on the internal data structures of this provider.
-         */
-        init {
-            name = KWIBackgroundLoader::class.java.simpleName
-            isDaemon = true
-        }
-
-        override fun run() {
-            try {
-                for (source in fileMap!!.values) {
-                    if (!cancel && !source.isLoaded) {
-                        try {
-                            source.load(true)
-                        } catch (e: InterruptedException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            } finally {
-                loader = null
-            }
-        }
-
-        /**
-         * Sets the cancel flag for this loader.
-         */
-        fun cancel() {
-            cancel = true
-            try {
-                join()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    /**
-     * Determines a version from the set of data sources, if possible, otherwise returns NO_VERSION
-     *
-     * @param srcs the data sources to be used to determine the version
-     * @return the single version that describes these data sources, or NO_VERSION if there is none
-     */
-    private fun mergeVersions(srcs: Collection<IDataSource<*>>): Version? {
-
-        val versionedSources = srcs.filter { it.version != null }.toList()
-        val version = versionedSources.firstOrNull()?.version
-        return if (version != null && versionedSources.all { version.value == it.version?.value })
-            version
-        else null
-    }
-
-    companion object {
+     companion object {
 
         /**
          * Transforms a URL into a File. The URL must use the 'file' protocol and must be in a UTF-8 compatible format as specified in URLDecoder.
@@ -538,6 +537,20 @@ class FileProvider @JvmOverloads constructor(
          */
         fun isLocalFile(file: File): Boolean {
             return file.exists() && file.isFile
+        }
+
+        /**
+         * Determines a version from the set of data sources, if possible, otherwise returns NO_VERSION
+         *
+         * @param srcs the data sources to be used to determine the version
+         * @return the single version that describes these data sources, or NO_VERSION if there is none
+         */
+        private fun mergeVersions(srcs: Collection<IDataSource<*>>): Version? {
+            val versionedSources = srcs.filter { it.version != null }.toList()
+            val version = versionedSources.firstOrNull()?.version
+            return if (version != null && versionedSources.all { version.value == it.version?.value })
+                version
+            else null
         }
     }
 }

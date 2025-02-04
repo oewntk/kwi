@@ -40,7 +40,6 @@ interface IHasLifecycle : IClosable {
      * It may be closed, open, in the processing of opening, or in the process of closing.
      */
     enum class LifecycleState {
-
         CLOSED, OPENING, OPEN, CLOSING
     }
 
