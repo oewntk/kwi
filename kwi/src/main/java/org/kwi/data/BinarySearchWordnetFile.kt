@@ -35,8 +35,8 @@ class BinarySearchWordnetFile<T>(
     private val bufferLock = Any()
 
     override fun getLine(key: String): String? {
-        val buffer = getBuffer()
 
+        val buffer = obtainBuffer()
         synchronized(bufferLock) {
             var start = 0
             var stop = buffer.limit()
@@ -99,6 +99,7 @@ class BinarySearchWordnetFile<T>(
         }
 
         override fun findFirstLine(key: String) {
+
             synchronized(bufferLock) {
                 var lastOffset = -1
                 var start = 0

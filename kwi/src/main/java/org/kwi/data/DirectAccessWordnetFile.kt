@@ -33,7 +33,8 @@ class DirectAccessWordnetFile<T>(
     private val bufferLock = Any()
 
     override fun getLine(key: String): String? {
-        val buffer = getBuffer()
+
+        val buffer = obtainBuffer()
         synchronized(bufferLock) {
             try {
                 val byteOffset = key.toInt()
@@ -70,6 +71,7 @@ class DirectAccessWordnetFile<T>(
         }
 
         override fun findFirstLine(key: String) {
+
             synchronized(bufferLock) {
                 try {
                     val byteOffset = key.toInt()

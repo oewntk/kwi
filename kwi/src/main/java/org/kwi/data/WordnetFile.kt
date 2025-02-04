@@ -35,7 +35,6 @@ import java.util.concurrent.locks.ReentrantLock
  *
  * @property file the file which backs this Wordnet file
  * @property contentType the content type for this file
- * @property contentType the content type for this file
  * @property charset the character sset used for decoding
  * @param <T> the type of the objects represented in this file
  */
@@ -75,7 +74,7 @@ abstract class WordnetFile<T>(
      * @return the buffer which backs this object
      * @throws ObjectClosedException if the object is closed
      */
-    fun getBuffer(): ByteBuffer {
+    fun obtainBuffer(): ByteBuffer {
         if (!isOpen) {
             throw ObjectClosedException()
         }
@@ -214,14 +213,14 @@ abstract class WordnetFile<T>(
         if (!isOpen) {
             throw ObjectClosedException()
         }
-        return makeIterator(getBuffer(), null)
+        return makeIterator(obtainBuffer(), null)
     }
 
     override fun iterator(key: String?): LineIterator {
         if (!isOpen) {
             throw ObjectClosedException()
         }
-        return makeIterator(getBuffer(), key)
+        return makeIterator(obtainBuffer(), key)
     }
 
     /**
@@ -246,10 +245,9 @@ abstract class WordnetFile<T>(
         protected val parentBuffer: ByteBuffer = buffer
 
         @JvmField
-        protected var itrBuffer: ByteBuffer
+        protected var itrBuffer: ByteBuffer = buffer.asReadOnlyBuffer()
 
         init {
-            itrBuffer = buffer.asReadOnlyBuffer()
             itrBuffer.clear()
         }
 
